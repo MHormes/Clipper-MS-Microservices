@@ -1,0 +1,19 @@
+@startuml
+skinparam SequenceMessageAlignment center
+actor User
+User -> WebPortal: login
+WebPortal -> Keycloak: Request authorization code
+Keycloak -> User: Redirect to login/authentication page
+User -> Keycloak: Login / authenticate
+Keycloak --> WebPortal: Return authorization code
+WebPortal -> Keycloak: Request access token using authorization code, client id and secret
+Keycloak -> Keycloak: Validate received information
+Keycloak --> WebPortal: Return ID and access token
+User -> WebPortal: Get list of articles
+WebPortal ->Backend: GET api/article(with access token)
+Backend ->Backend:Validate access token
+Backend-->WebPortal:Return the Response
+WebPortal -> User: Display articles
+@enduml
+
+

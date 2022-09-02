@@ -1,0 +1,26 @@
+@startuml
+start
+:insert clipper name;
+switch(select series)
+    case( new)
+        :insert name;
+        if(custom) then (yes)
+            :series number = 1
+            (first clipper in series);
+        else(no)
+            :insert series number;
+        endif
+    case( existing)
+        if(custom) then (yes)
+            :auto fill next number;
+        else(no)
+            :insert (available) series number;
+        endif
+    case( no)
+        :series number = 0;
+endswitch
+:insert notes;
+:add photo;
+:create clipper;
+stop
+@enduml

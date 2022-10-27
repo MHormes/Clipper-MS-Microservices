@@ -45,4 +45,8 @@ public class AppUser {
     @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Clipper> createdClippers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Series> createdSeries = new ArrayList<>();
 }

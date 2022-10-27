@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public class SeriesDataSource implements ISeriesDataSource {
@@ -22,16 +23,16 @@ public class SeriesDataSource implements ISeriesDataSource {
     @Override
     public Series addSeries(Series seriesToAdd) {
         seriesRepo.save(seriesToAdd);
-        return getSeriesWithId(seriesToAdd.getId().toString());
+        return getSeriesWithId(seriesToAdd.getId());
     }
 
     @Override
-    public int[] getTakenSeriesNumber(String id) {
+    public int[] getTakenSeriesNumber(UUID id) {
         return seriesRepo.getAvailableSeriesNumbers(id);
     }
 
     @Override
-    public Series getSeriesWithId(String id) {
+    public Series getSeriesWithId(UUID id) {
         Optional<Series> series = seriesRepo.findById(id);
         return series.orElse(null);
     }
@@ -44,7 +45,7 @@ public class SeriesDataSource implements ISeriesDataSource {
     @Override
     public Series updateSeries(Series seriesWithUpdate) {
         //Get the series to update
-        var seriesToUpdate = seriesRepo.getSeriesById(seriesWithUpdate.getId().toString());
+        var seriesToUpdate = seriesRepo.getSeriesById(seriesWithUpdate.getId());
         //Assign new values
         seriesToUpdate.setName(seriesWithUpdate.getName());
         seriesToUpdate.setClippers(seriesWithUpdate.getClippers());
@@ -54,11 +55,11 @@ public class SeriesDataSource implements ISeriesDataSource {
         seriesRepo.save(seriesToUpdate);
 
         //get series from db after update, using incoming data to verify the update was successful
-        return getSeriesWithId(seriesWithUpdate.getId().toString());
+        return getSeriesWithId(seriesWithUpdate.getId());
     }
 
     @Override
-    public Series deleteSeries(String id) {
+    public Series deleteSeries(UUID id) {
         seriesRepo.deleteById(id);
         return getSeriesWithId(id);
     }

@@ -34,7 +34,7 @@ public class ClipperService implements IClipperService {
         //separate id == null? -> not part of a series. so leave seriesId null -> is set when converting dto to model
         if (seriesId != null) {
             //Check if series exists
-            var seriesObject = clipperData.getExistingSeriesForNewClipper(seriesId);
+            var seriesObject = clipperData.getExistingSeriesForNewClipper(UUID.fromString(seriesId));
             if (seriesObject == null) {
                 throw new IncorrectInputException(ExceptionMessages.SERIES_WITH_ID_NOT_FOUND + seriesId);
             } else {
@@ -54,7 +54,7 @@ public class ClipperService implements IClipperService {
     //method to get a single clipper based on id
     @Override
     public Clipper getClipperWithId(String id) throws IncorrectInputException {
-        var clipperWithId = clipperData.getClipperWithId(id);
+        var clipperWithId = clipperData.getClipperWithId(UUID.fromString(id));
         if (clipperWithId == null) {
             throw new IncorrectInputException(ExceptionMessages.CLIPPER_WITH_ID_NOT_FOUND + id);
         }
@@ -79,7 +79,7 @@ public class ClipperService implements IClipperService {
         //ensure clipper with id exists
         getClipperWithId(clipperId);
 
-        if (clipperData.deleteClipper(clipperId) != null) {
+        if (clipperData.deleteClipper(UUID.fromString(clipperId)) != null) {
             throw new DatabaseFailedOperationException(ExceptionMessages.CLIPPER_PRESENT_AFTER_DELETE);
         }
     }

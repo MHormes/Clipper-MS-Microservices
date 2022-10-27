@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -45,14 +44,12 @@ public class AppUserService implements IAppUserService, UserDetailsService {
 
     @Override
     public AppUser saveUser(AppUser user) {
-        user.setId(UUID.randomUUID());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepo.save(user);
     }
 
     @Override
     public AppRole saveRole(AppRole role) {
-        role.setId(UUID.randomUUID());
         return roleRepo.save(role);
     }
 

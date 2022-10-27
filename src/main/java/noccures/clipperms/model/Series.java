@@ -1,5 +1,6 @@
 package noccures.clipperms.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Setter
 @Table(name = "Series", uniqueConstraints = {@UniqueConstraint(name = "series_name_unique", columnNames = "name")})
 @Entity(name = "Series")
+@AllArgsConstructor
 public class Series {
 
     @Id
@@ -26,6 +28,10 @@ public class Series {
 
     @OneToMany(mappedBy = "seriesId")
     private List<Clipper> clippers;
+
+    @ManyToOne
+    @JoinColumn(name = "created_by")
+    private AppUser createdBy;
 
     @Column(name = "custom",
             nullable = false)

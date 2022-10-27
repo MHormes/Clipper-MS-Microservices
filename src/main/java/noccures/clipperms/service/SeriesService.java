@@ -31,8 +31,9 @@ public class SeriesService implements ISeriesService {
         if (seriesToAdd.getName().isBlank()) {
             throw new IncorrectInputException(ExceptionMessages.SERIES_NO_NAME);
         }
-        //assign new random id to series
-        seriesToAdd.setId(UUID.randomUUID());
+        if(seriesToAdd.getId() == null){
+            seriesToAdd.setId(UUID.randomUUID());
+        }
         var expectedResult = seriesData.addSeries(seriesToAdd);
         if (expectedResult == null) {
             throw new DatabaseFailedOperationException(ExceptionMessages.SERIES_GET_FAILED);
@@ -49,7 +50,7 @@ public class SeriesService implements ISeriesService {
             return seriesWithId.getClippers().size() + 1;
         }
         //actual clipper series -> check what numbers have been added
-        var takenSeriesNumbers = seriesData.getTakenSeriesNumber(id);
+        var takenSeriesNumbers = seriesData.getTakenSeriesNumber(UUID.fromString(id));
         List<Integer> possibleNumbers = new ArrayList<>(Arrays.asList(1,2,3,4));
         for(int i: takenSeriesNumbers){
             possibleNumbers.remove(Integer.valueOf(i));
@@ -60,7 +61,8 @@ public class SeriesService implements ISeriesService {
     //get series with specific id
     @Override
     public Series getSeriesWithId(String id) throws DatabaseFailedOperationException {
-        var seriesWithId = seriesData.getSeriesWithId(id);
+        //todo check if id is valid uuid
+        var seriesWithId = seriesData.getSeriesWithId(UUID.fromString(id));
         if (seriesWithId == null) {
             throw new DatabaseFailedOperationException(ExceptionMessages.SERIES_WITH_ID_NOT_FOUND + id);
         }
@@ -90,7 +92,7 @@ public class SeriesService implements ISeriesService {
         getSeriesWithId(id);
 
         //return should be null after delete
-        if (seriesData.deleteSeries(id) != null) {
+        if (seriesData.deleteSeries(UUID.fromString(id)) != null) {
             throw new DatabaseFailedOperationException(ExceptionMessages.SERIES_PRESENT_AFTER_DELETE);
         }
     }

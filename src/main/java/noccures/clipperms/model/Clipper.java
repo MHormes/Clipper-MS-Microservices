@@ -1,6 +1,7 @@
 package noccures.clipperms.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,7 @@ import java.util.UUID;
 )
 @Getter
 @Setter
+@AllArgsConstructor
 public class Clipper {
 
     @Id

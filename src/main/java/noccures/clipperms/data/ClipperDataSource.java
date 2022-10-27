@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public class ClipperDataSource implements IClipperDataSource {
@@ -22,16 +23,16 @@ public class ClipperDataSource implements IClipperDataSource {
     @Override
     public Clipper saveClipper(Clipper clipperToAdd) {
         clipperRepo.save(clipperToAdd);
-        return getClipperWithId(clipperToAdd.getId().toString());
+        return getClipperWithId(clipperToAdd.getId());
     }
 
     @Override
-    public Series getExistingSeriesForNewClipper(String seriesId) {
+    public Series getExistingSeriesForNewClipper(UUID seriesId) {
         return clipperRepo.findSeriesBySeriesId(seriesId);
     }
 
     @Override
-    public Clipper getClipperWithId(String id) {
+    public Clipper getClipperWithId(UUID id) {
         Optional<Clipper> clipperWithId = clipperRepo.findById(id);
         return clipperWithId.orElse(null);
     }
@@ -39,7 +40,7 @@ public class ClipperDataSource implements IClipperDataSource {
     @Override
     public Clipper updateClipper(Clipper clipperWithUpdate) {
         //find reference for clipper to update
-        var clipperToUpdate = clipperRepo.getClipperById(clipperWithUpdate.getId().toString());
+        var clipperToUpdate = clipperRepo.getClipperById(clipperWithUpdate.getId());
         //assign values from incoming clipper to clipper in db
         clipperToUpdate.setName(clipperWithUpdate.getName());
         clipperToUpdate.setSeriesId(clipperWithUpdate.getSeriesId());
@@ -48,11 +49,11 @@ public class ClipperDataSource implements IClipperDataSource {
         clipperRepo.save(clipperToUpdate);
 
         //get clipper from db after update, using incoming data to verify the update was successful
-        return getClipperWithId(clipperWithUpdate.getId().toString());
+        return getClipperWithId(clipperWithUpdate.getId());
     }
 
     @Override
-    public Clipper deleteClipper(String clipperId) {
+    public Clipper deleteClipper(UUID clipperId) {
         clipperRepo.deleteById(clipperId);
         return getClipperWithId(clipperId);
     }

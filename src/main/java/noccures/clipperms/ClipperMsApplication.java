@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 
 @SpringBootApplication
@@ -28,13 +29,13 @@ public class ClipperMsApplication {
 	@Bean
 	CommandLineRunner run(AppUserService userService){
 		return args -> {
-			userService.saveRole(new AppRole( "", "ROLE_USER"));
-			userService.saveRole(new AppRole("", "ROLE_ADMIN"));
-			userService.saveRole(new AppRole("", "ROLE_SUPER_ADMIN"));
+			userService.saveRole(new AppRole( UUID.randomUUID(), "ROLE_USER"));
+			userService.saveRole(new AppRole(UUID.randomUUID(), "ROLE_ADMIN"));
+			userService.saveRole(new AppRole(UUID.randomUUID(), "ROLE_SUPER_ADMIN"));
 
-			userService.saveUser(new AppUser("", "john doe", "john", "1234", new ArrayList<>()));
-			userService.saveUser(new AppUser("", "maarten", "maarten", "1234", new ArrayList<>()));
-			userService.saveUser(new AppUser("", "snoop dog", "do2g", "1234", new ArrayList<>()));
+			userService.saveUser(new AppUser(UUID.randomUUID(), "john doe", "john", "1234", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+			userService.saveUser(new AppUser(UUID.randomUUID(), "maarten", "maarten", "1234", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+			userService.saveUser(new AppUser(UUID.randomUUID(), "snoop dog", "do2g", "1234", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
 			userService.addRoleToUser("maarten", "ROLE_SUPER_ADMIN");
 			userService.addRoleToUser("maarten", "ROLE_ADMIN");

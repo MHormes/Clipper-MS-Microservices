@@ -4,6 +4,7 @@ import noccures.clipperms.exceptions.DatabaseFailedOperationException;
 import noccures.clipperms.exceptions.IncorrectInputException;
 import noccures.clipperms.model.Clipper;
 
+
 public interface IClipperService {
 
     Clipper addClipper(Clipper clipperToAdd, String seriesId) throws IncorrectInputException, DatabaseFailedOperationException;

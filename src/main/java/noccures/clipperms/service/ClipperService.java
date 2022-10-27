@@ -9,7 +9,6 @@ import noccures.clipperms.service.interfaces.IClipperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -31,6 +30,7 @@ public class ClipperService implements IClipperService {
         }
 
         //seriesId set to null -> conversion from dto to model sets this value. Controller sends actual seriesId separately to add method
+        //todo introduce no-series series
         //separate id == null? -> not part of a series. so leave seriesId null -> is set when converting dto to model
         if (seriesId != null) {
             //Check if series exists
@@ -42,9 +42,8 @@ public class ClipperService implements IClipperService {
                 clipperToAdd.setSeriesId(seriesObject);
             }
         }
-        //Generate id and set time of add
-        clipperToAdd.setId(UUID.randomUUID().toString());
-        clipperToAdd.setDateAdded(LocalDateTime.now());
+        //Generate id
+        clipperToAdd.setId(UUID.randomUUID());
         var expectedResult = clipperData.saveClipper(clipperToAdd);
         if (expectedResult == null) {
             throw new DatabaseFailedOperationException(ExceptionMessages.CLIPPER_GET_FAILED);
@@ -66,7 +65,7 @@ public class ClipperService implements IClipperService {
     @Override
     public Clipper updateClipper(Clipper clipperWithUpdate) throws IncorrectInputException, DatabaseFailedOperationException {
         //make sure clipper with supplied id exists.
-        getClipperWithId(clipperWithUpdate.getId());
+        getClipperWithId(clipperWithUpdate.getId().toString());
         var updatedClipper = clipperData.updateClipper(clipperWithUpdate);
         if (updatedClipper == null) {
             throw new DatabaseFailedOperationException(ExceptionMessages.CLIPPER_GET_FAILED);

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity(name = "Clipper")
 @Table(
@@ -24,7 +24,8 @@ public class Clipper {
             updatable = false,
             nullable = false
     )
-    private String id;
+    private UUID id;
+
     @Column(
             name = "name",
             nullable = false
@@ -35,28 +36,27 @@ public class Clipper {
     @JoinColumn(name = "series_id")
     @JsonBackReference
     private Series seriesId;
+
     @Column(
             name = "series_number",
             nullable = false
     )
     private int seriesNumber;
-    @Column(name = "notes")
-    private String notes;
-    @Column(
-            name = "date_added",
-            nullable = false
-    )
-    private LocalDateTime dateAdded;
+
+    @ManyToOne
+    @JoinColumn(name = "created_by")
+    @JsonBackReference
+    private AppUser createdBy;
 
     public Clipper() {
 
     }
 
-    public Clipper(String name, Series seriesId, int seriesNumber, String notes) {
+    public Clipper(String name, Series seriesId, int seriesNumber, AppUser creator) {
         this.name = name;
         this.seriesId = seriesId;
         this.seriesNumber = seriesNumber;
-        this.notes = notes;
+        this.createdBy = creator;
     }
 
     @Override
@@ -66,8 +66,6 @@ public class Clipper {
                 ", name='" + name + '\'' +
                 ", seriesId=" + seriesId +
                 ", seriesNumber=" + seriesNumber +
-                ", notes='" + notes + '\'' +
-                ", dateAdded=" + dateAdded +
                 '}';
     }
 }

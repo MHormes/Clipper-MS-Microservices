@@ -1,23 +1,23 @@
 package noccures.clipperms.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.UUID;
 
 @Entity(name="AppRole")
 @Table(name = "app_role")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class AppRole {
 
     @Id
-    private String id;
+    private UUID id;
     @Column(name = "name")
     private String name;
 }

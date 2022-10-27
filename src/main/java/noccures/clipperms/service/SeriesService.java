@@ -32,7 +32,7 @@ public class SeriesService implements ISeriesService {
             throw new IncorrectInputException(ExceptionMessages.SERIES_NO_NAME);
         }
         //assign new random id to series
-        seriesToAdd.setId(UUID.randomUUID().toString());
+        seriesToAdd.setId(UUID.randomUUID());
         var expectedResult = seriesData.addSeries(seriesToAdd);
         if (expectedResult == null) {
             throw new DatabaseFailedOperationException(ExceptionMessages.SERIES_GET_FAILED);
@@ -75,7 +75,7 @@ public class SeriesService implements ISeriesService {
     @Override
     public Series updateSeries(Series seriesWithUpdate) throws DatabaseFailedOperationException {
         //make sure series with supplied id exists.
-        getSeriesWithId(seriesWithUpdate.getId());
+        getSeriesWithId(seriesWithUpdate.getId().toString());
         var updatedSeries = seriesData.updateSeries(seriesWithUpdate);
         if (updatedSeries == null) {
             throw new DatabaseFailedOperationException(ExceptionMessages.SERIES_GET_FAILED);

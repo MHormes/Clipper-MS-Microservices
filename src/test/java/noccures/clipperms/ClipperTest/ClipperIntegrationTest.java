@@ -2,6 +2,7 @@ package noccures.clipperms.ClipperTest;
 
 import noccures.clipperms.data.interfaces.IClipperDataSource;
 import noccures.clipperms.exceptions.ExceptionMessages;
+import noccures.clipperms.model.AppUser;
 import noccures.clipperms.model.Clipper;
 import noccures.clipperms.service.ClipperService;
 import noccures.clipperms.service.interfaces.IClipperService;
@@ -11,6 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.ArrayList;
+import java.util.UUID;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -22,16 +26,19 @@ class ClipperIntegrationTest {
 
     IClipperService clipperService;
 
+    AppUser creator;
+
     @BeforeEach
     void setUp() {
         clipperService = new ClipperService(clipperDataSource);
+        this.creator = new AppUser(UUID.randomUUID() ,"Maarten", "MHormes", "Hormes123", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
 
     //Test adding new clipper. Asserts based on inputted name and name returned by db after add
     @Test
     void addNewClipperSuccessfulTest() {
         //Create clipper to add
-        Clipper clipperToAdd = new Clipper("Berlin <3", null, 0, null);
+        Clipper clipperToAdd = new Clipper("Berlin <3", null, 0, creator);
 
         //Make new clipper instance to get db return
         Clipper databaseReturn = new Clipper();
@@ -49,7 +56,7 @@ class ClipperIntegrationTest {
     @Test
     void getClipperWithIdSuccessfulTest() {
         //Create clipper to add and get after adding (no clipper added means no clipper to get)
-        Clipper clipperToAdd = new Clipper("Modena <3", null, 0, null);
+        Clipper clipperToAdd = new Clipper("Modena <3", null, 0, creator);
         //Make new clipper instance to get db return
         Clipper databaseAddReturn = new Clipper();
         try {
@@ -61,7 +68,7 @@ class ClipperIntegrationTest {
         //Get clipper with id from db
         Clipper databaseGetReturn = new Clipper();
         try {
-            databaseGetReturn = clipperService.getClipperWithId(databaseAddReturn.getId());
+            databaseGetReturn = clipperService.getClipperWithId(databaseAddReturn.getId().toString());
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -74,7 +81,7 @@ class ClipperIntegrationTest {
     @Test
     void updateClipperSuccessful(){
         //Create clipper to add
-        Clipper clipperToAdd = new Clipper("California <3", null, 0, null);
+        Clipper clipperToAdd = new Clipper("California <3", null, 0, creator);
 
         //Make new clipper instance to get db return
         Clipper databaseAddReturn = new Clipper();
@@ -85,7 +92,7 @@ class ClipperIntegrationTest {
         }
 
         //create clipper with update values. Set id manually -> normally gets taken from FE
-        Clipper clipperWithUpdate = new Clipper("new name", null, 0, "Value assigned for assertion");
+        Clipper clipperWithUpdate = new Clipper("new name", null, 0, creator);
         clipperWithUpdate.setId(databaseAddReturn.getId());
 
         //Make new clipper instance to get db return
@@ -96,16 +103,15 @@ class ClipperIntegrationTest {
             System.out.println(ex);
         }
 
-        //Assert if clipperWithUpdate value is the same as return after update. Check if notes are no longer null after update
+        //Assert if clipperWithUpdate value is the same as return after update.
         Assertions.assertEquals(clipperWithUpdate.getName(), databaseUpdateReturn.getName());
-        Assertions.assertNotNull(databaseUpdateReturn.getNotes());
     }
 
     //Test delete clipper. Assertion based on getting clipper with id after its being deleted -> not found? -> successful delete :)
     @Test
     void deleteClipperSuccessful(){
         //Create clipper to add and delete
-        Clipper clipperToAdd = new Clipper("Valencia <3", null, 0, null);
+        Clipper clipperToAdd = new Clipper("Valencia <3", null, 0, creator);
 
         //Make new clipper instance to get db return
         Clipper databaseAddReturn = new Clipper();
@@ -116,7 +122,7 @@ class ClipperIntegrationTest {
         }
 
         try{
-            clipperService.deleteClipper(databaseAddReturn.getId());
+            clipperService.deleteClipper(databaseAddReturn.getId().toString());
         }
         catch (Exception ex){
             System.out.println(ex);
@@ -125,7 +131,7 @@ class ClipperIntegrationTest {
         //Get clipper with id from db
         Clipper databaseGetReturn = null;
         try {
-            databaseGetReturn = clipperService.getClipperWithId(databaseAddReturn.getId());
+            databaseGetReturn = clipperService.getClipperWithId(databaseAddReturn.getId().toString());
         } catch (Exception ex) {
             System.out.println(ex);
             Assertions.assertEquals(ExceptionMessages.CLIPPER_WITH_ID_NOT_FOUND + databaseAddReturn.getId(), ex.getMessage());

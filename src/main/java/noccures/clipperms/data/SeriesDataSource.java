@@ -22,7 +22,7 @@ public class SeriesDataSource implements ISeriesDataSource {
     @Override
     public Series addSeries(Series seriesToAdd) {
         seriesRepo.save(seriesToAdd);
-        return getSeriesWithId(seriesToAdd.getId());
+        return getSeriesWithId(seriesToAdd.getId().toString());
     }
 
     @Override
@@ -44,18 +44,17 @@ public class SeriesDataSource implements ISeriesDataSource {
     @Override
     public Series updateSeries(Series seriesWithUpdate) {
         //Get the series to update
-        var seriesToUpdate = seriesRepo.getSeriesById(seriesWithUpdate.getId());
+        var seriesToUpdate = seriesRepo.getSeriesById(seriesWithUpdate.getId().toString());
         //Assign new values
         seriesToUpdate.setName(seriesWithUpdate.getName());
         seriesToUpdate.setClippers(seriesWithUpdate.getClippers());
         seriesToUpdate.setCustom(seriesWithUpdate.isCustom());
-        seriesToUpdate.setComplete(seriesWithUpdate.isComplete());
 
         //save new values
         seriesRepo.save(seriesToUpdate);
 
         //get series from db after update, using incoming data to verify the update was successful
-        return getSeriesWithId(seriesWithUpdate.getId());
+        return getSeriesWithId(seriesWithUpdate.getId().toString());
     }
 
     @Override

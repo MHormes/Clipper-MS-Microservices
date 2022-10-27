@@ -6,9 +6,9 @@ WebPortal -> Backend:POST request with username and password
 Backend ->Backend:Validation.Generate JWT token.
 Backend -->WebPortal:Return JWT token
 WebPortal ->WebPortal:Store JWT token
-User -> WebPortal:Get list of articles
-WebPortal ->Backend:GET api/article(with JWT token)
+User -> WebPortal:Get list of clippers
+WebPortal ->Backend:GET api/clipper(with JWT token)
 Backend ->Backend:Validate JWT token
 Backend-->WebPortal:Return the Response
-WebPortal -> User: Display articles
+WebPortal -> User: Display clippers
 @enduml

@@ -4,15 +4,16 @@ import noccures.clipperms.model.Series;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class SeriesConverter {
 
     public Series convertDTOtoModel(SeriesDTO seriesDTO){
-        return new Series(seriesDTO.getId(), seriesDTO.getName(), seriesDTO.isCustom(), seriesDTO.isComplete());
+        return new Series(UUID.fromString(seriesDTO.getId()), seriesDTO.getName(), seriesDTO.isCustom());
     }
 
     public SeriesDTO convertModelToDTO(Series series){
-        return new SeriesDTO(series.getId(), series.getName(), series.getClippers(), series.isCustom(), series.isComplete());
+        return new SeriesDTO(series.getId().toString(), series.getName(), series.getClippers(), series.isCustom());
     }
 
     public List<SeriesDTO> convertModelListToDTO(List<Series> seriesList){

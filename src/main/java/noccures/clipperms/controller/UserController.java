@@ -57,7 +57,6 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    //Endpoint not needed for the OAuth2 authorization configuration
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);

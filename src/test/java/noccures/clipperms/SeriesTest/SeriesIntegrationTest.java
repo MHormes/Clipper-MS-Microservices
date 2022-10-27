@@ -31,7 +31,7 @@ class SeriesIntegrationTest {
     @Test
     void addNewSeriesSuccessfulTest() {
         //Create series to add
-        Series seriesToAdd = new Series("Love letter", false, false);
+        Series seriesToAdd = new Series("Love letter", false);
 
         //Make new series instance to get db return
         Series databaseReturn = new Series();
@@ -49,7 +49,7 @@ class SeriesIntegrationTest {
     @Test
     void getSeriesWithIdSuccessfulTest() {
         //Create series to add and get after adding (no series added means no series to get)
-        Series seriesToAdd = new Series("Weed Letters", false, false);
+        Series seriesToAdd = new Series("Weed Letters",  false);
         //Make new series instance to get db return
         Series databaseAddReturn = new Series();
         try {
@@ -61,7 +61,7 @@ class SeriesIntegrationTest {
         //Get series with id from db
         Series databaseGetReturn = new Series();
         try {
-            databaseGetReturn = seriesService.getSeriesWithId(databaseAddReturn.getId());
+            databaseGetReturn = seriesService.getSeriesWithId(databaseAddReturn.getId().toString());
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -74,7 +74,7 @@ class SeriesIntegrationTest {
     @Test
     void updateSeriesSuccessful(){
         //Create series to add
-        Series seriesToAdd = new Series("Hippie mandala", false,  false);
+        Series seriesToAdd = new Series("Hippie mandala", false);
 
         //Make new series instance to get db return
         Series databaseAddReturn = new Series();
@@ -85,7 +85,7 @@ class SeriesIntegrationTest {
         }
 
         //create series with update values. Set id manually -> normally gets taken from FE
-        Series seriesWithUpdate = new Series("new name", false, true);
+        Series seriesWithUpdate = new Series("new name", true);
         seriesWithUpdate.setId(databaseAddReturn.getId());
 
         //Make new series instance to get db return
@@ -96,16 +96,15 @@ class SeriesIntegrationTest {
             System.out.println(ex);
         }
 
-        //Assert if seriesWithUpdate value is the same as return after update. Check if complete is no longer false -> now true
+        //Assert if seriesWithUpdate value is the same as return after update
         Assertions.assertEquals(seriesWithUpdate.getName(), databaseUpdateReturn.getName());
-        Assertions.assertTrue(databaseUpdateReturn.isComplete());
     }
 
     //Test delete series. Assertion based on getting series with id after its being deleted -> not found? -> successful delete :)
     @Test
     void deleteSeriesSuccessful(){
         //Create series to add and delete
-        Series seriesToAdd = new Series("60's drawings", false, false);
+        Series seriesToAdd = new Series("60's drawings", false);
 
         //Make new series instance to get db return
         Series databaseAddReturn = new Series();
@@ -117,7 +116,7 @@ class SeriesIntegrationTest {
 
         //Delete the series
         try{
-            seriesService.deleteSeries(databaseAddReturn.getId());
+            seriesService.deleteSeries(databaseAddReturn.getId().toString());
         }
         catch (Exception ex){
             System.out.println(ex);
@@ -126,7 +125,7 @@ class SeriesIntegrationTest {
         //Get series with id from db
         Series databaseGetReturn = null;
         try {
-            databaseGetReturn = seriesService.getSeriesWithId(databaseAddReturn.getId());
+            databaseGetReturn = seriesService.getSeriesWithId(databaseAddReturn.getId().toString());
         } catch (Exception ex) {
             System.out.println(ex);
             Assertions.assertEquals(ExceptionMessages.SERIES_WITH_ID_NOT_FOUND + databaseAddReturn.getId(), ex.getMessage());

@@ -17,9 +17,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 //commenting the configuration and EnableWebSecurity annotations let the keycloak security take over. Same works the other way around
-//@Configuration
-//@EnableWebSecurity
+@Configuration
+@EnableWebSecurity
 @RequiredArgsConstructor
+//todo Replace deprecated adapter
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;

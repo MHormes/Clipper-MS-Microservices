@@ -22,7 +22,7 @@ public class ClipperDataSource implements IClipperDataSource {
     @Override
     public Clipper saveClipper(Clipper clipperToAdd) {
         clipperRepo.save(clipperToAdd);
-        return getClipperWithId(clipperToAdd.getId());
+        return getClipperWithId(clipperToAdd.getId().toString());
     }
 
     @Override
@@ -39,17 +39,16 @@ public class ClipperDataSource implements IClipperDataSource {
     @Override
     public Clipper updateClipper(Clipper clipperWithUpdate) {
         //find reference for clipper to update
-        var clipperToUpdate = clipperRepo.getClipperById(clipperWithUpdate.getId());
+        var clipperToUpdate = clipperRepo.getClipperById(clipperWithUpdate.getId().toString());
         //assign values from incoming clipper to clipper in db
         clipperToUpdate.setName(clipperWithUpdate.getName());
         clipperToUpdate.setSeriesId(clipperWithUpdate.getSeriesId());
         clipperToUpdate.setSeriesNumber(clipperWithUpdate.getSeriesNumber());
-        clipperToUpdate.setNotes(clipperWithUpdate.getNotes());
         //save changes made to clipper
         clipperRepo.save(clipperToUpdate);
 
         //get clipper from db after update, using incoming data to verify the update was successful
-        return getClipperWithId(clipperWithUpdate.getId());
+        return getClipperWithId(clipperWithUpdate.getId().toString());
     }
 
     @Override

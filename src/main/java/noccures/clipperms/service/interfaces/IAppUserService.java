@@ -16,4 +16,6 @@ public interface IAppUserService {
     AppUser getUser(String username);
 
     List<AppUser> getUsers();
+
+
 }

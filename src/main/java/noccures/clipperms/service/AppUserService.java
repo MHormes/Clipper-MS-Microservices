@@ -6,7 +6,6 @@ import noccures.clipperms.data.repositories.IAppUserRepository;
 import noccures.clipperms.model.AppRole;
 import noccures.clipperms.model.AppUser;
 import noccures.clipperms.service.interfaces.IAppUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -46,14 +45,14 @@ public class AppUserService implements IAppUserService, UserDetailsService {
 
     @Override
     public AppUser saveUser(AppUser user) {
-        user.setId(UUID.randomUUID().toString());
+        user.setId(UUID.randomUUID());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepo.save(user);
     }
 
     @Override
     public AppRole saveRole(AppRole role) {
-        role.setId(UUID.randomUUID().toString());
+        role.setId(UUID.randomUUID());
         return roleRepo.save(role);
     }
 

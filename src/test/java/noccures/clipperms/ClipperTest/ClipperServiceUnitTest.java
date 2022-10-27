@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.UUID;
+
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -22,10 +24,12 @@ class ClipperServiceUnitTest {
 
     IClipperService clipperService;
 
+    String clipperId = "b7319afb-946e-410d-a6f0-e72d7c3c314e";
+
     @BeforeEach
     void setUp() {
         clipperService = new ClipperService(clipperDataSource);
-        when(clipperDataSource.getClipperWithId("1")).thenReturn(null);
+        when(clipperDataSource.getClipperWithId(clipperId)).thenReturn(null);
     }
 
     //Test if add method throws exception when clipper has empty name.
@@ -67,10 +71,10 @@ class ClipperServiceUnitTest {
     void getClipperWithIdNonExisting() {
         Clipper expectedResult = null;
         try {
-            expectedResult = clipperService.getClipperWithId("1");
+            expectedResult = clipperService.getClipperWithId(clipperId);
         } catch (Exception ex) {
             System.out.println(ex);
-            Assertions.assertEquals(ExceptionMessages.CLIPPER_WITH_ID_NOT_FOUND + "1", ex.getMessage());
+            Assertions.assertEquals(ExceptionMessages.CLIPPER_WITH_ID_NOT_FOUND + clipperId, ex.getMessage());
         }
 
         //Check that no clipper value gets returned when exception is thrown.
@@ -82,14 +86,14 @@ class ClipperServiceUnitTest {
     void updateClipperNonExisting(){
         //Create clipper as if it comes from FE. Assign non-existing id for test -> will be assigned in FE normally
         Clipper clipperWithUpdate = new Clipper("updated clipper", null, 0, null);
-        clipperWithUpdate.setId("1");
+        clipperWithUpdate.setId(UUID.fromString("b7319afb-946e-410d-a6f0-e72d7c3c314e"));
 
         Clipper expectedResult = null;
         try {
             expectedResult = clipperService.updateClipper(clipperWithUpdate);
         } catch (Exception ex) {
             System.out.println(ex);
-            Assertions.assertEquals(ExceptionMessages.CLIPPER_WITH_ID_NOT_FOUND + "1", ex.getMessage());
+            Assertions.assertEquals(ExceptionMessages.CLIPPER_WITH_ID_NOT_FOUND + clipperId, ex.getMessage());
         }
 
         //Check that no clipper value gets returned when exception is thrown.
@@ -100,10 +104,10 @@ class ClipperServiceUnitTest {
     @Test
     void deleteClipperNonExisting(){
         try{
-            clipperService.deleteClipper("1");
+            clipperService.deleteClipper(clipperId);
         }catch (Exception ex){
             System.out.println(ex);
-            Assertions.assertEquals(ExceptionMessages.CLIPPER_WITH_ID_NOT_FOUND + "1", ex.getMessage());
+            Assertions.assertEquals(ExceptionMessages.CLIPPER_WITH_ID_NOT_FOUND + clipperId, ex.getMessage());
         }
     }
 }

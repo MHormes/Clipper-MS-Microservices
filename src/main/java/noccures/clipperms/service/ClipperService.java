@@ -29,8 +29,6 @@ public class ClipperService implements IClipperService {
             throw new IncorrectInputException(ExceptionMessages.CLIPPER_NO_NAME);
         }
 
-        //seriesId set to null -> conversion from dto to model sets this value. Controller sends actual seriesId separately to add method
-        //todo introduce no-series series
         //separate id == null? -> not part of a series. so leave seriesId null -> is set when converting dto to model
         if (seriesId != null) {
             //Check if series exists
@@ -42,8 +40,7 @@ public class ClipperService implements IClipperService {
                 clipperToAdd.setSeriesId(seriesObject);
             }
         }
-        //Generate id
-        clipperToAdd.setId(UUID.randomUUID());
+        //Add to DB
         var expectedResult = clipperData.saveClipper(clipperToAdd);
         if (expectedResult == null) {
             throw new DatabaseFailedOperationException(ExceptionMessages.CLIPPER_GET_FAILED);

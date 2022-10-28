@@ -29,7 +29,7 @@ class ClipperServiceUnitTest {
     @BeforeEach
     void setUp() {
         clipperService = new ClipperService(clipperDataSource);
-        when(clipperDataSource.getClipperWithId(clipperId)).thenReturn(null);
+        when(clipperDataSource.getClipperWithId(UUID.fromString(clipperId))).thenReturn(null);
     }
 
     //Test if add method throws exception when clipper has empty name.

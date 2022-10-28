@@ -8,4 +8,6 @@ import java.util.UUID;
 
 @Repository
 public interface ICollectedClipperRepository extends JpaRepository<CollectedClipper, UUID> {
+
+    CollectedClipper getCollectedClipperById(UUID id);
 }

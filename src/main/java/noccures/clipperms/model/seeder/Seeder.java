@@ -1,19 +1,16 @@
 package noccures.clipperms.model.seeder;
 
 import lombok.AllArgsConstructor;
-import noccures.clipperms.model.AppRole;
-import noccures.clipperms.model.AppUser;
-import noccures.clipperms.model.Clipper;
-import noccures.clipperms.model.Series;
-import noccures.clipperms.service.AppUserService;
-import noccures.clipperms.service.ClipperService;
+import noccures.clipperms.model.*;
 import noccures.clipperms.service.interfaces.IAppUserService;
 import noccures.clipperms.service.interfaces.IClipperService;
+import noccures.clipperms.service.interfaces.ICollectedClipperService;
 import noccures.clipperms.service.interfaces.ISeriesService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -22,7 +19,7 @@ import java.util.UUID;
 public class Seeder {
 
     @Bean
-    CommandLineRunner run(IAppUserService userService, IClipperService clipperService, ISeriesService seriesService) {
+    CommandLineRunner run(IAppUserService userService, IClipperService clipperService, ISeriesService seriesService, ICollectedClipperService collectedClipperService) {
         return args -> {
 
             AppRole adminRole = new AppRole(UUID.randomUUID(), "ROLE_ADMIN");
@@ -34,15 +31,15 @@ public class Seeder {
             userService.saveRole(superAdminRole);
 
             AppUser superAdmin = new AppUser(UUID.fromString("b1e7544d-b5bc-429a-83c8-8b222ae2519f"), "Maarten Hormes", "MHormes", "1234", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-            AppUser admin = new AppUser(UUID.fromString("9354e367-d749-4cf1-bbd8-c778d807eb7d"), "John Doe", "admin", "admin", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-            AppUser user = new AppUser(UUID.fromString("66127a88-438e-4b88-ae4a-0f33218aead9"), "Pietje Bel", "user", "user", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+            AppUser admin = new AppUser(UUID.fromString("9354e367-d749-4cf1-bbd8-c778d807eb7d"), "Sten Ruijten", "SRuijten", "admin", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+            AppUser user = new AppUser(UUID.fromString("66127a88-438e-4b88-ae4a-0f33218aead9"), "Marco Hormes", "user", "user", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
             userService.saveUser(superAdmin);
             userService.saveUser(admin);
             userService.saveUser(user);
 
             userService.addRoleToUser("MHormes", "ROLE_SUPER_ADMIN");
-            userService.addRoleToUser("admin", "ROLE_USER");
+            userService.addRoleToUser("SRuijten", "ROLE_USER");
 
 
             Series skateSeries = new Series(UUID.fromString("962b7877-0d71-4e7d-bb34-24a12dd4617d"), "Skate Boards", new ArrayList<>(), superAdmin, false);
@@ -64,6 +61,22 @@ public class Seeder {
             clipperService.addClipper(skate4, skateSeries.getId().toString());
             clipperService.addClipper(mascotte, mascotteSeries.getId().toString());
             clipperService.addClipper(noSeries, null);
+
+            CollectedClipper cSkate1 = new CollectedClipper(UUID.fromString("489f550a-4612-43e8-a36c-1a88925ed81e"), skate1, superAdmin, "", LocalDate.now(), "Roermond");
+            CollectedClipper cSkate2 = new CollectedClipper(UUID.fromString("5d4861b4-ead4-49f2-bd80-a069556e7aac"), skate2, superAdmin, "", LocalDate.now(), "Roermond");
+            CollectedClipper cSkate3 = new CollectedClipper(UUID.fromString("8f0b5659-b3a3-42c6-9e61-260461d507a4"), skate3, superAdmin, "", LocalDate.now(), "Roermond");
+            CollectedClipper cSkate4 = new CollectedClipper(UUID.fromString("0bd1f4ee-a230-4658-a846-7cbb4ef4e0fd"), skate4, superAdmin, "", LocalDate.now(), "Roermond");
+            CollectedClipper cMascotte1 = new CollectedClipper(UUID.fromString("45b3d63c-2bdc-48c0-9f92-5472ef1c7295"), mascotte, superAdmin, "", LocalDate.now(), "Lommel");
+            CollectedClipper cMascotte2 = new CollectedClipper(UUID.fromString("23f8248b-d3d4-4a78-9694-b847cc13ea6b"), mascotte, admin, "", LocalDate.now(), "Lommel");
+            CollectedClipper cNoSeries = new CollectedClipper(UUID.fromString("25bc8b10-a90c-4f9a-aab2-a6e0e2ebaec0"), skate1, admin, "", LocalDate.now(), "Nijmegen");
+
+            collectedClipperService.addCollectedClipper(cSkate1);
+            collectedClipperService.addCollectedClipper(cSkate2);
+            collectedClipperService.addCollectedClipper(cSkate3);
+            collectedClipperService.addCollectedClipper(cSkate4);
+            collectedClipperService.addCollectedClipper(cMascotte1);
+            collectedClipperService.addCollectedClipper(cMascotte2);
+            collectedClipperService.addCollectedClipper(cNoSeries);
         };
     }
 

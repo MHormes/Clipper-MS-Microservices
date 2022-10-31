@@ -17,7 +17,7 @@ switch(select series)
             :insert (available) series number;
         endif
     case( no)
-        :series number = 0;
+        :seriesId = null;
 endswitch
 :insert notes;
 :add photo;

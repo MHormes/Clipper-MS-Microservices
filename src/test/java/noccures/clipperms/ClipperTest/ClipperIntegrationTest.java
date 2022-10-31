@@ -5,6 +5,7 @@ import noccures.clipperms.exceptions.ExceptionMessages;
 import noccures.clipperms.model.AppUser;
 import noccures.clipperms.model.Clipper;
 import noccures.clipperms.service.ClipperService;
+import noccures.clipperms.service.interfaces.IAppUserService;
 import noccures.clipperms.service.interfaces.IClipperService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,12 +27,16 @@ class ClipperIntegrationTest {
 
     IClipperService clipperService;
 
+    @Autowired
+    IAppUserService appUserService;
+
     AppUser creator;
 
     @BeforeEach
     void setUp() {
         clipperService = new ClipperService(clipperDataSource);
-        this.creator = new AppUser(UUID.randomUUID() ,"Maarten", "MHormes", "Hormes123", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        this.creator = new AppUser(UUID.randomUUID() ,"Maarten", "MHormes", "Hormes123", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        appUserService.saveUser(creator);
     }
 
     //Test adding new clipper. Asserts based on inputted name and name returned by db after add

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.UUID;
 
 import static org.mockito.Mockito.when;
 
+@ActiveProfiles("test")
 @SpringBootTest
 class SeriesServiceUnitTest {
 
@@ -36,15 +38,15 @@ class SeriesServiceUnitTest {
     void setUp() {
         seriesService = new SeriesService(seriesDataSource);
         //simulate expected database response when id does not exist -> return null
-        when(seriesDataSource.getSeriesWithId(clipperId1)).thenReturn(null);
+        when(seriesDataSource.getSeriesWithId(UUID.fromString(clipperId1))).thenReturn(null);
         //simulate series return with random amount of clippers inside -> amount of clippers can be exchanged,
         //as long as they get changed in the test methods 2.
-        when(seriesDataSource.getSeriesWithId(clipperId2)).thenReturn(new Series(UUID.fromString(clipperId2), "custom series", new ArrayList<>(List.of(new Clipper(), new Clipper())),true));
+        when(seriesDataSource.getSeriesWithId(UUID.fromString(clipperId2))).thenReturn(new Series(UUID.fromString(clipperId2), "custom series", new ArrayList<>(List.of(new Clipper(), new Clipper())),true));
         //simulate random number return on get taken series numbers -> numbers can be exchanged,
         // as long as they get changed in the test method 2.
-        when(seriesDataSource.getTakenSeriesNumber(clipperId3)).thenReturn(new int[]{1, 3});
+        when(seriesDataSource.getTakenSeriesNumber(UUID.fromString(clipperId3))).thenReturn(new int[]{1, 3});
         //simulate expected database response when id should exist -> return series
-        when(seriesDataSource.getSeriesWithId(clipperId3)).thenReturn(new Series("actual series", false));
+        when(seriesDataSource.getSeriesWithId(UUID.fromString(clipperId3))).thenReturn(new Series("actual series", false));
     }
 
 

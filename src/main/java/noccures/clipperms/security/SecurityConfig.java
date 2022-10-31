@@ -33,12 +33,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
+        //todo create CSRF and CORS configuration
+        http.csrf().disable().cors().disable();
+        //STATELESS session configuration
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/clipper/**", "/series/**", "/api/token/refresh/**").permitAll();
-        http.authorizeRequests().antMatchers("/clipper/**", "series/**").hasAuthority("ROLE_ADMIN");
-        http.authorizeRequests().antMatchers("/api/user/**").hasAuthority("ROLE_SUPER_ADMIN");
-        http.authorizeRequests().anyRequest().authenticated();
+
+        //ACCESS CONTROL
+        http.authorizeRequests()
+                //Allow all get requests on clippers series and refresh endpoints
+                .antMatchers(HttpMethod.GET, "/clipper/**", "/series/**", "/api/token/refresh/**").permitAll()
+                //Only allows admins to create, update and clippers
+                .antMatchers("/clipper/**", "series/**").hasAuthority("ROLE_ADMIN")
+                //Only allow super admin to manage users.
+                .antMatchers("/api/user/**").hasAuthority("ROLE_SUPER_ADMIN")
+                //Allow Swagger UI
+                .antMatchers("**/docs/**").permitAll()
+                .anyRequest().authenticated();
+
+        //CUSTOM FILTERS
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }

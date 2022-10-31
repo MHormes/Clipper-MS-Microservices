@@ -40,6 +40,9 @@ public class ClipperService implements IClipperService {
                 clipperToAdd.setSeriesId(seriesObject);
             }
         }
+        if(clipperToAdd.getId() == null){
+            clipperToAdd.setId(UUID.randomUUID());
+        }
         //Add to DB
         var expectedResult = clipperData.saveClipper(clipperToAdd);
         if (expectedResult == null) {

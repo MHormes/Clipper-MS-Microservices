@@ -23,7 +23,7 @@ public class Clipper {
     @Id
     @Column(
             name = "id",
-            updatable = false,
+            updatable = true,
             nullable = false
     )
     private UUID id;

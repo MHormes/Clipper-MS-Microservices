@@ -10,11 +10,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.UUID;
 
 import static org.mockito.Mockito.when;
 
+@ActiveProfiles("test")
 @SpringBootTest
 class ClipperServiceUnitTest {
 
@@ -56,10 +58,10 @@ class ClipperServiceUnitTest {
 
         Clipper expectedResult = null;
         try{
-            expectedResult = clipperService.addClipper(clipperToAdd, "non-existing");
+            expectedResult = clipperService.addClipper(clipperToAdd, "a9c516e4-1f15-473a-bf9b-ec750a4ed691");
         }catch(Exception ex){
             System.out.println(ex.getMessage());
-            Assertions.assertEquals(ExceptionMessages.SERIES_WITH_ID_NOT_FOUND + "non-existing", ex.getMessage());
+            Assertions.assertEquals(ExceptionMessages.SERIES_WITH_ID_NOT_FOUND + "a9c516e4-1f15-473a-bf9b-ec750a4ed691", ex.getMessage());
         }
 
         //Check no clipper value gets returned from add

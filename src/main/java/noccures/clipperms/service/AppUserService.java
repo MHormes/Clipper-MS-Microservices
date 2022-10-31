@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityExistsException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -50,7 +51,13 @@ public class AppUserService implements IAppUserService, UserDetailsService {
 
     @Override
     public AppRole saveRole(AppRole role) {
-        return roleRepo.save(role);
+        var existingRole = roleRepo.findByName(role.getName());
+        if(existingRole == null){
+            return roleRepo.save(role);
+        }
+        else{
+            throw new EntityExistsException("Role with name: " + role.getName() + " already exists");
+        }
     }
 
     @Override

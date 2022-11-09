@@ -30,7 +30,7 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if(request.getServletPath().equals("/login") || request.getServletPath().equals("/api/token/refresh")){
+        if(request.getServletPath().equals("/login") || request.getServletPath().equals("/token/refresh")){
             filterChain.doFilter(request, response);
         }else{
             String authorizationHeader = request.getHeader(AUTHORIZATION);
@@ -53,17 +53,15 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     log.error("Error: " + ex.getMessage());
                     response.setHeader("error", ex.getMessage());
                     response.setStatus(FORBIDDEN.value());
-                    //response.sendError(FORBIDDEN.value());
+                    response.sendError(FORBIDDEN.value());
                     Map<String, String> error = new HashMap<>();
                     error.put("error_msg", ex.getMessage());
                     response.setContentType(APPLICATION_JSON_VALUE);
                     new ObjectMapper().writeValue(response.getWriter(), error);
                 }
-
             }else{
                 filterChain.doFilter(request, response);
             }
         }
-
     }
 }

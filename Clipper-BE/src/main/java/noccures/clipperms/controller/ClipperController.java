@@ -1,5 +1,6 @@
 package noccures.clipperms.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import noccures.clipperms.dto.ClipperConverter;
 import noccures.clipperms.dto.ClipperDTO;
 import noccures.clipperms.exceptions.DatabaseFailedOperationException;
@@ -11,8 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@SecurityRequirement(name = "bearerAuth")
 @RestController
-@RequestMapping("/clipper")
+@RequestMapping("/api/clipper")
 public class ClipperController {
 
     private final ClipperService clipperService;
@@ -43,6 +48,20 @@ public class ClipperController {
             return clipperConverter.convertModelNoSeriesToDTO(clipperWithId);
         }
         return clipperConverter.convertModelToDTO(clipperWithId);
+    }
+
+    @GetMapping("/all")
+    public List<ClipperDTO> getAllClippers(){
+        List<ClipperDTO> returnList = new ArrayList<>();
+        List<Clipper> allClippers = clipperService.getAllClippers();
+        for(Clipper c: allClippers){
+            if(c.getSeriesId() != null){
+                returnList.add(clipperConverter.convertModelToDTO(c));
+            }else{
+                returnList.add(clipperConverter.convertModelNoSeriesToDTO(c));
+            }
+        }
+        return returnList;
     }
 
     @PutMapping("/update/{id}")

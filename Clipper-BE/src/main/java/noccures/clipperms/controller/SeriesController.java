@@ -1,5 +1,6 @@
 package noccures.clipperms.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import noccures.clipperms.dto.SeriesConverter;
 import noccures.clipperms.dto.SeriesDTO;
 import noccures.clipperms.exceptions.DatabaseFailedOperationException;
@@ -12,8 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@SecurityRequirement(name = "bearerAuth")
 @RestController
-@RequestMapping("/series")
+@RequestMapping("/api/series")
 public class SeriesController {
 
     private final ISeriesService seriesService;

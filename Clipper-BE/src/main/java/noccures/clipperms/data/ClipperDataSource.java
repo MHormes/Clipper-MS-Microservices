@@ -7,6 +7,7 @@ import noccures.clipperms.model.Series;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -35,6 +36,11 @@ public class ClipperDataSource implements IClipperDataSource {
     public Clipper getClipperWithId(UUID id) {
         Optional<Clipper> clipperWithId = clipperRepo.findById(id);
         return clipperWithId.orElse(null);
+    }
+
+    @Override
+    public List<Clipper> getAllClippers() {
+        return clipperRepo.findAll();
     }
 
     @Override

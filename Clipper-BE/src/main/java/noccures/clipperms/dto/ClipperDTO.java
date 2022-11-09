@@ -14,7 +14,6 @@ public class ClipperDTO {
     String name;
     SeriesDTO seriesId;
     int seriesNumber;
-
     AppUser createdBy;
 
 }

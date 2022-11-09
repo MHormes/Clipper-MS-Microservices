@@ -26,6 +26,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private static String clipperPath = "/api/clipper";
+
+    private static String seriesPath = "/api/series/";
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
@@ -41,14 +45,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //ACCESS CONTROL
         http.authorizeRequests()
                 //Allow all get requests on clippers series and refresh endpoints
-                .antMatchers(HttpMethod.GET, "/clipper/**", "/series/**", "/api/token/refresh/**").permitAll()
+                .antMatchers(HttpMethod.GET, clipperPath + "/**", seriesPath + "/**", "/token/refresh/**").permitAll()
+                //Allow login
+                .antMatchers("/login").permitAll()
                 //Only allows admins to create, update and clippers
-                .antMatchers("/clipper/**", "series/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(clipperPath + "/**", seriesPath + "/**").hasAuthority("ROLE_ADMIN")
                 //Only allow super admin to manage users.
                 .antMatchers("/api/user/**").hasAuthority("ROLE_SUPER_ADMIN")
                 //Allow Swagger UI
-                .antMatchers("**/docs/**").permitAll()
-                .anyRequest().authenticated();
+                .antMatchers("/docs/**", "/v3/api-docs/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin();
 
         //CUSTOM FILTERS
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));

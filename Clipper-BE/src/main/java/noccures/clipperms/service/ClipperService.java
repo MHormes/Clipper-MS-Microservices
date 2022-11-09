@@ -9,6 +9,7 @@ import noccures.clipperms.service.interfaces.IClipperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -40,7 +41,7 @@ public class ClipperService implements IClipperService {
                 clipperToAdd.setSeriesId(seriesObject);
             }
         }
-        if(clipperToAdd.getId() == null){
+        if (clipperToAdd.getId() == null) {
             clipperToAdd.setId(UUID.randomUUID());
         }
         //Add to DB
@@ -59,6 +60,11 @@ public class ClipperService implements IClipperService {
             throw new IncorrectInputException(ExceptionMessages.CLIPPER_WITH_ID_NOT_FOUND + id);
         }
         return clipperWithId;
+    }
+
+    @Override
+    public List<Clipper> getAllClippers() {
+        return clipperData.getAllClippers();
     }
 
     //method to update clipper with new values based on id

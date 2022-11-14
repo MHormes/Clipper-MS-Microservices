@@ -1,5 +1,6 @@
-package noccures.clipperms.dto;
+package noccures.clipperms.dto.mapper;
 
+import noccures.clipperms.dto.SeriesDTO;
 import noccures.clipperms.model.Series;
 
 import java.util.ArrayList;

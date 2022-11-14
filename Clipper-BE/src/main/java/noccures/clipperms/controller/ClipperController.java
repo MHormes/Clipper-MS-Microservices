@@ -1,7 +1,7 @@
 package noccures.clipperms.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import noccures.clipperms.dto.ClipperConverter;
+import noccures.clipperms.dto.mapper.ClipperConverter;
 import noccures.clipperms.dto.ClipperDTO;
 import noccures.clipperms.exceptions.DatabaseFailedOperationException;
 import noccures.clipperms.exceptions.IncorrectInputException;
@@ -21,11 +21,12 @@ import java.util.List;
 public class ClipperController {
 
     private final ClipperService clipperService;
-    private final ClipperConverter clipperConverter = new ClipperConverter();
+    private final ClipperConverter clipperConverter;
 
     @Autowired
-    public ClipperController(ClipperService clipperService) {
+    public ClipperController(ClipperService clipperService, ClipperConverter clipperConverter) {
         this.clipperService = clipperService;
+        this.clipperConverter = clipperConverter;
     }
 
     @PostMapping("/add")

@@ -1,5 +1,7 @@
 package noccures.clipperms.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +29,7 @@ public class Series {
     private String name;
 
     @OneToMany(mappedBy = "seriesId")
+    @JsonManagedReference
     private List<Clipper> clippers;
 
     @ManyToOne

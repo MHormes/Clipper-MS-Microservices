@@ -1,7 +1,7 @@
 package noccures.clipperms.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import noccures.clipperms.dto.SeriesConverter;
+import noccures.clipperms.dto.mapper.SeriesConverter;
 import noccures.clipperms.dto.SeriesDTO;
 import noccures.clipperms.exceptions.DatabaseFailedOperationException;
 import noccures.clipperms.exceptions.IncorrectInputException;

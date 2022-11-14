@@ -15,6 +15,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.List;
 
 //commenting the configuration and EnableWebSecurity annotations let the keycloak security take over. Same works the other way around
 @Configuration
@@ -37,8 +40,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        final CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedOrigins(List.of("*"));
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        corsConfiguration.setAllowedHeaders(List.of("*"));
+
+
         //todo create CSRF and CORS configuration
-        http.csrf().disable().cors().disable();
+        http.csrf().disable().cors().configurationSource(request -> corsConfiguration);
         //STATELESS session configuration
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

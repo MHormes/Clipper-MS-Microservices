@@ -1,5 +1,7 @@
 package noccures.clipperms.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +18,7 @@ import java.util.List;
 public class SeriesDTO {
     String id;
     String name;
-
+    @JsonBackReference
     List<Clipper> clippers;
     boolean custom;
 

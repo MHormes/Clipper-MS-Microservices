@@ -1,5 +1,7 @@
 package noccures.clipperms.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import noccures.clipperms.model.AppUser;
 
@@ -14,6 +16,6 @@ public class ClipperDTO {
     String name;
     SeriesDTO seriesId;
     int seriesNumber;
-    AppUser createdBy;
+    String createdById;
 
 }

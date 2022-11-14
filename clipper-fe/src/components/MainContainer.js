@@ -1,12 +1,6 @@
-import React, {useEffect} from "react";
+import React from "react";
 
-const MainContainer = (props) => {
-
-    useEffect(() => {
-        console.log(props)
-        localStorage.setItem("accessToken", props)
-    })
-
+const MainContainer = () => {
     return (
         <>
             <h1>Clipper</h1>

@@ -8,12 +8,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import noccures.clipperms.dto.AddRoleToUserRequest;
 import noccures.clipperms.model.AppRole;
 import noccures.clipperms.model.AppUser;
 import noccures.clipperms.service.AppUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @PutMapping("/role/addToUser")
-    public ResponseEntity<HttpStatus> addRoleToUser(@RequestBody RoleToUserForm form) {
+    public ResponseEntity<HttpStatus> addRoleToUser(@RequestBody AddRoleToUserRequest form) {
         userService.addRoleToUser(form.getUsername(), form.getRoleName());
         return ResponseEntity.ok().build();
     }
@@ -95,11 +95,4 @@ public class UserController {
             throw new RuntimeException("Refresh token is missing");
         }
     }
-}
-
-//PLEASE REFACTOR FTLOG
-@Data
-class RoleToUserForm {
-    private String username;
-    private String roleName;
 }

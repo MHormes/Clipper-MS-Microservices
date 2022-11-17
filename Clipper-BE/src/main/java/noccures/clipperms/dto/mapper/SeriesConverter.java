@@ -2,7 +2,6 @@ package noccures.clipperms.dto.mapper;
 
 import lombok.RequiredArgsConstructor;
 import noccures.clipperms.dto.clipper.ClipperNoSeriesRequest;
-import noccures.clipperms.dto.series.SeriesDTO;
 import noccures.clipperms.dto.series.SeriesNoClipperRequest;
 import noccures.clipperms.dto.series.SeriesWithClipperRequest;
 import noccures.clipperms.model.Clipper;

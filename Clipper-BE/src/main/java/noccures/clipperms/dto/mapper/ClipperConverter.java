@@ -1,10 +1,8 @@
 package noccures.clipperms.dto.mapper;
 
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import noccures.clipperms.data.repositories.IAppUserRepository;
 import noccures.clipperms.dto.clipper.ClipperCreateRequest;
-import noccures.clipperms.dto.clipper.ClipperDTO;
 import noccures.clipperms.dto.clipper.ClipperNoSeriesRequest;
 import noccures.clipperms.dto.clipper.ClipperWithSeriesRequest;
 import noccures.clipperms.model.Clipper;

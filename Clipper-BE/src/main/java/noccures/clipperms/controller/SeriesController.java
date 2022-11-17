@@ -24,6 +24,7 @@ public class SeriesController {
 
     private final SeriesConverter seriesConverter;
 
+
     @Autowired
     public SeriesController(ISeriesService seriesService, SeriesConverter seriesConverter) {
         this.seriesService = seriesService;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ClipperApi from "../../api/ClipperApi";
+import ClipperApi from "../../../services/api/ClipperApi";
 import ClipperSingle from "./ClipperSingle";
 
 const clipperApi = new ClipperApi();

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import SeriesApi from "../../api/SeriesApi";
+import SeriesApi from "../../../services/api/SeriesApi";
 import ClipperSingle from "../../clipper/viewClipper/ClipperSingle";
 
 const seriesApi = new SeriesApi();

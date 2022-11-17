@@ -1,4 +1,4 @@
-package noccures.clipperms.dto;
+package noccures.clipperms.dto.series;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -14,13 +14,5 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class SeriesDTO {
-    String id;
-    String name;
-    @JsonBackReference
-    List<Clipper> clippers;
-    boolean custom;
-
-
+public abstract class SeriesDTO {
 }

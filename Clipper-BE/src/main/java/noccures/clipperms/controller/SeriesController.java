@@ -2,7 +2,9 @@ package noccures.clipperms.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import noccures.clipperms.dto.mapper.SeriesConverter;
-import noccures.clipperms.dto.SeriesDTO;
+import noccures.clipperms.dto.series.SeriesDTO;
+import noccures.clipperms.dto.series.SeriesNoClipperRequest;
+import noccures.clipperms.dto.series.SeriesWithClipperRequest;
 import noccures.clipperms.exceptions.DatabaseFailedOperationException;
 import noccures.clipperms.exceptions.IncorrectInputException;
 import noccures.clipperms.service.interfaces.ISeriesService;
@@ -20,18 +22,19 @@ public class SeriesController {
 
     private final ISeriesService seriesService;
 
-    private final SeriesConverter seriesConverter = new SeriesConverter();
+    private final SeriesConverter seriesConverter;
 
     @Autowired
-    public SeriesController(ISeriesService seriesService) {
+    public SeriesController(ISeriesService seriesService, SeriesConverter seriesConverter) {
         this.seriesService = seriesService;
+        this.seriesConverter = seriesConverter;
     }
 
     @PostMapping("/add")
-    public SeriesDTO addSeries(@RequestBody SeriesDTO seriesDTO) throws IncorrectInputException, DatabaseFailedOperationException {
-        var seriesToAdd = seriesConverter.convertDTOtoModel(seriesDTO);
+    public SeriesDTO addSeries(@RequestBody SeriesNoClipperRequest seriesDTO) throws IncorrectInputException, DatabaseFailedOperationException {
+        var seriesToAdd = seriesConverter.convertRequestNoClipperToModel(seriesDTO);
         var addedSeriesReturn = seriesService.addSeries(seriesToAdd);
-        return seriesConverter.convertModelToDTO(addedSeriesReturn);
+        return seriesConverter.convertModelToRequestWithClipper(addedSeriesReturn);
     }
 
     @GetMapping("/{id}/available")
@@ -43,20 +46,20 @@ public class SeriesController {
     @GetMapping("/{id}")
     public SeriesDTO getSeriesWithId(@PathVariable(value = "id") String id) throws DatabaseFailedOperationException {
         var seriesWithId = seriesService.getSeriesWithId(id);
-        return seriesConverter.convertModelToDTO(seriesWithId);
+        return seriesConverter.convertModelToRequestWithClipper(seriesWithId);
     }
 
     @GetMapping("/all")
-    public List<SeriesDTO> getAllSeries() {
+    public List<SeriesWithClipperRequest> getAllSeries() {
         var seriesList = seriesService.getAllSeries();
-        return seriesConverter.convertModelListToDTO(seriesList);
+        return seriesConverter.convertModelListToRequestWithClipper(seriesList);
     }
 
     @PutMapping("/update")
-    public SeriesDTO updateSeries(@RequestBody SeriesDTO seriesDTO) throws DatabaseFailedOperationException {
-        var seriesWithUpdate = seriesConverter.convertDTOtoModel(seriesDTO);
+    public SeriesDTO updateSeries(@RequestBody SeriesNoClipperRequest seriesDTO) throws DatabaseFailedOperationException {
+        var seriesWithUpdate = seriesConverter.convertRequestNoClipperToModel(seriesDTO);
         var updatedSeriesReturn = seriesService.updateSeries(seriesWithUpdate);
-        return seriesConverter.convertModelToDTO(updatedSeriesReturn);
+        return seriesConverter.convertModelToRequestWithClipper(updatedSeriesReturn);
     }
 
     @DeleteMapping("/delete/{id}")

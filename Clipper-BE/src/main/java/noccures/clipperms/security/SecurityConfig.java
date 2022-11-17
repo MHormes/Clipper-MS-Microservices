@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static String clipperPath = "/api/clipper";
 
-    private static String seriesPath = "/api/series/";
+    private static String seriesPath = "/api/series";
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -46,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         corsConfiguration.setAllowedHeaders(List.of("*"));
 
 
-        //todo create CSRF and CORS configuration
+        //todo create CSRF configuration
         http.csrf().disable().cors().configurationSource(request -> corsConfiguration);
         //STATELESS session configuration
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

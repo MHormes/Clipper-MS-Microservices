@@ -1,8 +1,11 @@
 package noccures.clipperms.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import noccures.clipperms.dto.clipper.ClipperCreateRequest;
+import noccures.clipperms.dto.clipper.ClipperWithSeriesRequest;
 import noccures.clipperms.dto.mapper.ClipperConverter;
-import noccures.clipperms.dto.ClipperDTO;
+import noccures.clipperms.dto.clipper.ClipperDTO;
+import noccures.clipperms.dto.mapper.SeriesConverter;
 import noccures.clipperms.exceptions.DatabaseFailedOperationException;
 import noccures.clipperms.exceptions.IncorrectInputException;
 import noccures.clipperms.model.Clipper;
@@ -22,61 +25,71 @@ public class ClipperController {
 
     private final ClipperService clipperService;
     private final ClipperConverter clipperConverter;
+    private final SeriesConverter seriesConverter;
 
     @Autowired
-    public ClipperController(ClipperService clipperService, ClipperConverter clipperConverter) {
+    public ClipperController(ClipperService clipperService, ClipperConverter clipperConverter, SeriesConverter seriesConverter) {
         this.clipperService = clipperService;
         this.clipperConverter = clipperConverter;
+        this.seriesConverter = seriesConverter;
     }
 
     @PostMapping("/add")
-    public ClipperDTO addClipper(@RequestBody ClipperDTO clipperDTO) throws IncorrectInputException, DatabaseFailedOperationException {
-        var clipperToAdd = clipperConverter.convertDTOtoModel(clipperDTO);
+    public ClipperDTO addClipper(@RequestBody ClipperCreateRequest clipperDTO) throws IncorrectInputException, DatabaseFailedOperationException {
+        var clipperToAdd = clipperConverter.convertClipperCreateToModel(clipperDTO);
         Clipper addedClipperReturn;
-        if(clipperDTO.getSeriesId() != null){
-             addedClipperReturn = clipperService.addClipper(clipperToAdd, clipperDTO.getSeriesId().getId());
-            return clipperConverter.convertModelToDTO(addedClipperReturn);
-        }else{
-             addedClipperReturn = clipperService.addClipper(clipperToAdd, null);
-            return clipperConverter.convertModelNoSeriesToDTO(addedClipperReturn);
+        if (clipperDTO.getSeriesId() != null) {
+            addedClipperReturn = clipperService.addClipper(clipperToAdd, clipperDTO.getSeriesId());
+            ClipperWithSeriesRequest clipperWithSeriesRequest = clipperConverter.convertModelToClipperWithSeriesRequest(addedClipperReturn);
+            clipperWithSeriesRequest.setSeriesId(seriesConverter.convertModelToRequestNoClipper(addedClipperReturn.getSeriesId()));
+            return clipperWithSeriesRequest;
+        } else {
+            addedClipperReturn = clipperService.addClipper(clipperToAdd, null);
+            return clipperConverter.convertModelNoSeriesToClipperNoSeries(addedClipperReturn);
         }
     }
 
     @GetMapping("/{id}")
     public ClipperDTO getClipperWithId(@PathVariable(value = "id") String id) throws IncorrectInputException {
         var clipperWithId = clipperService.getClipperWithId(id);
-        if(clipperWithId.getSeriesId() == null){
-            return clipperConverter.convertModelNoSeriesToDTO(clipperWithId);
+        if (clipperWithId.getSeriesId() == null) {
+            return clipperConverter.convertModelNoSeriesToClipperNoSeries(clipperWithId);
         }
-        return clipperConverter.convertModelToDTO(clipperWithId);
+        ClipperWithSeriesRequest clipperWithSeriesRequest = clipperConverter.convertModelToClipperWithSeriesRequest(clipperWithId);
+        clipperWithSeriesRequest.setSeriesId(seriesConverter.convertModelToRequestNoClipper(clipperWithId.getSeriesId()));
+        return clipperWithSeriesRequest;
     }
 
     @GetMapping("/all")
-    public List<ClipperDTO> getAllClippers(){
+    public List<ClipperDTO> getAllClippers() {
         List<ClipperDTO> returnList = new ArrayList<>();
         List<Clipper> allClippers = clipperService.getAllClippers();
-        for(Clipper c: allClippers){
-            if(c.getSeriesId() != null){
-                returnList.add(clipperConverter.convertModelToDTO(c));
-            }else{
-                returnList.add(clipperConverter.convertModelNoSeriesToDTO(c));
+        for (Clipper c : allClippers) {
+            if (c.getSeriesId() != null) {
+                ClipperWithSeriesRequest clipperWithSeriesRequest = clipperConverter.convertModelToClipperWithSeriesRequest(c);
+                clipperWithSeriesRequest.setSeriesId(seriesConverter.convertModelToRequestNoClipper(c.getSeriesId()));
+                returnList.add(clipperWithSeriesRequest);
+            } else {
+                returnList.add(clipperConverter.convertModelNoSeriesToClipperNoSeries(c));
             }
         }
         return returnList;
     }
 
     @PutMapping("/update/{id}")
-    public ClipperDTO updateClipper(@PathVariable(value = "id") String id, @RequestBody ClipperDTO clipperDTO) throws IncorrectInputException, DatabaseFailedOperationException {
-        var clipperWithUpdate = clipperConverter.convertDTOtoModel(clipperDTO);
+    public ClipperDTO updateClipper(@PathVariable(value = "id") String id, @RequestBody ClipperCreateRequest clipperDTO) throws IncorrectInputException, DatabaseFailedOperationException {
+        var clipperWithUpdate = clipperConverter.convertClipperCreateToModel(clipperDTO);
         var updatedClipperReturn = clipperService.updateClipper(clipperWithUpdate);
-        if(updatedClipperReturn.getSeriesId() == null){
-            return clipperConverter.convertModelNoSeriesToDTO(updatedClipperReturn);
+        if (updatedClipperReturn.getSeriesId() == null) {
+            return clipperConverter.convertModelNoSeriesToClipperNoSeries(updatedClipperReturn);
         }
-        return clipperConverter.convertModelToDTO(updatedClipperReturn);
+        ClipperWithSeriesRequest clipperWithSeriesRequest = clipperConverter.convertModelToClipperWithSeriesRequest(updatedClipperReturn);
+        clipperWithSeriesRequest.setSeriesId(seriesConverter.convertModelToRequestNoClipper(updatedClipperReturn.getSeriesId()));
+        return clipperWithSeriesRequest;
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<HttpStatus> deleteClipper(@PathVariable (value = "id")String id) throws IncorrectInputException, DatabaseFailedOperationException {
+    public ResponseEntity<HttpStatus> deleteClipper(@PathVariable(value = "id") String id) throws IncorrectInputException, DatabaseFailedOperationException {
         clipperService.deleteClipper(id);
         return ResponseEntity.ok().build();
     }

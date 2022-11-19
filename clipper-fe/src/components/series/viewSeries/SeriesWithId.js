@@ -1,36 +1,38 @@
 import React, { useEffect, useState } from "react";
 import SeriesApi from "../../../services/api/SeriesApi";
 import ClipperSingle from "../../clipper/viewClipper/ClipperSingle";
+import {Grid, Typography} from "@mui/material";
+import {useParams} from "react-router";
+import ClipperList from "../../clipper/viewClipper/ClipperList";
+import type {ISeries} from "../../../services/model/SeriesModel";
 
 const seriesApi = new SeriesApi();
-const debug = true;
-const SeriesWithId = (props) => {
+const debug = false;
+const SeriesWithId = () => {
 
-    const seriesId = props.seriesIdProps;
-    const [seriesWithId, setSeriesWithId] = useState();
+    const params = useParams();
+    const [seriesWithId: ISeries, setSeriesWithId] = useState();
 
     useEffect(() => {
-        async function getSeriesWithId(seriesId) {
-            const response = await seriesApi.getSeriesWithId(seriesId);
+        async function getSeriesWithId() {
+            const response = await seriesApi.getSeriesWithId(params.id);
             setSeriesWithId(response.data);
             if (debug) console.log(response.data);
         }
-        getSeriesWithId(seriesId).then(r => console.log("Series data fetched!"));
-    }, [])
+        getSeriesWithId().then(r => {if (debug) console.log("Series data fetched!")});
+    }, [params])
 
     if (seriesWithId != null)
         return (
             <>
                 <div>
-                    <h1>Series: {seriesWithId.name}</h1>
-                    <ul>
-                        {seriesWithId.clippers.map(
-                            (clipper) =>
-                                <ClipperSingle
-                                    key={clipper.id}
-                                    clipperProp={clipper} />
-                        )}
-                    </ul>
+                    <Typography variant="h2" align='center' sx={{mt: 2}}>
+                        Series: {seriesWithId.name}
+                    </Typography>
+                    <ClipperList
+                        clipperListProp={seriesWithId.clippers}
+                        seriesViewProp={true}
+                    />
                 </div>
             </>
         )

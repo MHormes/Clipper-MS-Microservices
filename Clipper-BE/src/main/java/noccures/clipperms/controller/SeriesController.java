@@ -1,18 +1,23 @@
 package noccures.clipperms.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import noccures.clipperms.dto.clipper.ClipperWithSeriesRequest;
+import noccures.clipperms.dto.mapper.ClipperConverter;
 import noccures.clipperms.dto.mapper.SeriesConverter;
 import noccures.clipperms.dto.series.SeriesDTO;
 import noccures.clipperms.dto.series.SeriesNoClipperRequest;
 import noccures.clipperms.dto.series.SeriesWithClipperRequest;
 import noccures.clipperms.exceptions.DatabaseFailedOperationException;
 import noccures.clipperms.exceptions.IncorrectInputException;
+import noccures.clipperms.model.Clipper;
+import noccures.clipperms.model.Series;
 import noccures.clipperms.service.interfaces.ISeriesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SecurityRequirement(name = "bearerAuth")
@@ -24,11 +29,14 @@ public class SeriesController {
 
     private final SeriesConverter seriesConverter;
 
+    private final ClipperConverter clipperConverter;
+
 
     @Autowired
-    public SeriesController(ISeriesService seriesService, SeriesConverter seriesConverter) {
+    public SeriesController(ISeriesService seriesService, SeriesConverter seriesConverter, ClipperConverter clipperConverter) {
         this.seriesService = seriesService;
         this.seriesConverter = seriesConverter;
+        this.clipperConverter = clipperConverter;
     }
 
     @PostMapping("/add")
@@ -39,7 +47,7 @@ public class SeriesController {
     }
 
     @GetMapping("/{id}/available")
-    public ResponseEntity<Integer> getAvailableSeriesNumber(@PathVariable (value="id") String id) throws DatabaseFailedOperationException {
+    public ResponseEntity<Integer> getAvailableSeriesNumber(@PathVariable(value = "id") String id) throws DatabaseFailedOperationException {
         var availableNumber = seriesService.getAvailableSeriesNumber(id);
         return ResponseEntity.ok().body(availableNumber);
     }
@@ -47,13 +55,30 @@ public class SeriesController {
     @GetMapping("/{id}")
     public SeriesDTO getSeriesWithId(@PathVariable(value = "id") String id) throws DatabaseFailedOperationException {
         var seriesWithId = seriesService.getSeriesWithId(id);
-        return seriesConverter.convertModelToRequestWithClipper(seriesWithId);
+        SeriesWithClipperRequest seriesWithClipperRequest = seriesConverter.convertModelToRequestWithClipper(seriesWithId);
+        return addClippersWithSeriesToSeriesWithClipperRequest(seriesWithId, seriesWithClipperRequest);
     }
 
     @GetMapping("/all")
     public List<SeriesWithClipperRequest> getAllSeries() {
         var seriesList = seriesService.getAllSeries();
-        return seriesConverter.convertModelListToRequestWithClipper(seriesList);
+        List<SeriesWithClipperRequest> returnList = new ArrayList<>();
+        for (Series series : seriesList){
+            SeriesWithClipperRequest seriesWithClipperRequest = seriesConverter.convertModelToRequestWithClipper(series);
+            addClippersWithSeriesToSeriesWithClipperRequest(series, seriesWithClipperRequest);
+            returnList.add(seriesWithClipperRequest);
+        }
+        return returnList;
+    }
+
+    //todo refactor assign clipperWithSeriesRequest -> move out of controller
+    private SeriesWithClipperRequest addClippersWithSeriesToSeriesWithClipperRequest(Series series, SeriesWithClipperRequest seriesWithClipperRequest) {
+        List<ClipperWithSeriesRequest> clipperWithSeriesRequestList = new ArrayList<>();
+        for (Clipper clipper : series.getClippers()) {
+            clipperWithSeriesRequestList.add(clipperConverter.convertModelToClipperWithSeriesRequest(clipper));
+        }
+        seriesWithClipperRequest.setClippers(clipperWithSeriesRequestList);
+        return seriesWithClipperRequest;
     }
 
     @PutMapping("/update")

@@ -4,9 +4,8 @@ import ClipperList from "./clipper/viewClipper/ClipperList";
 import SeriesWithId from "./series/viewSeries/SeriesWithId";
 import LoginScreen from "./homePage/LoginScreen";
 import Navbar from "./siteDefaults/Navbar";
-
-//todo refactor
-const seriesId="962b7877-0d71-4e7d-bb34-24a12dd4617d";
+import AllClippers from "./clipper/allClippers/AllClippers";
+import AllSeries from "./series/allSeries/AllSeries";
 
 const MainContainer = () => {
     return (
@@ -18,12 +17,16 @@ const MainContainer = () => {
                     />
                 } />
                 <Route path="/clippers" element={
-                    <ClipperList
+                    <AllClippers
                     />
                 } />
                 <Route path="/series" element={
+                    <AllSeries/>
+                }>
+
+                </Route>
+                <Route path="/series/:id" element={
                     <SeriesWithId
-                        seriesIdProps={seriesId}
                     />}
                 />
             </Routes>

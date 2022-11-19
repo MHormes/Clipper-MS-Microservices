@@ -25,13 +25,11 @@ public class ClipperController {
 
     private final ClipperService clipperService;
     private final ClipperConverter clipperConverter;
-    private final SeriesConverter seriesConverter;
 
     @Autowired
-    public ClipperController(ClipperService clipperService, ClipperConverter clipperConverter, SeriesConverter seriesConverter) {
+    public ClipperController(ClipperService clipperService, ClipperConverter clipperConverter) {
         this.clipperService = clipperService;
         this.clipperConverter = clipperConverter;
-        this.seriesConverter = seriesConverter;
     }
 
     @PostMapping("/add")
@@ -41,7 +39,6 @@ public class ClipperController {
         if (clipperDTO.getSeriesId() != null) {
             addedClipperReturn = clipperService.addClipper(clipperToAdd, clipperDTO.getSeriesId());
             ClipperWithSeriesRequest clipperWithSeriesRequest = clipperConverter.convertModelToClipperWithSeriesRequest(addedClipperReturn);
-            clipperWithSeriesRequest.setSeriesId(seriesConverter.convertModelToRequestNoClipper(addedClipperReturn.getSeriesId()));
             return clipperWithSeriesRequest;
         } else {
             addedClipperReturn = clipperService.addClipper(clipperToAdd, null);
@@ -56,7 +53,6 @@ public class ClipperController {
             return clipperConverter.convertModelNoSeriesToClipperNoSeries(clipperWithId);
         }
         ClipperWithSeriesRequest clipperWithSeriesRequest = clipperConverter.convertModelToClipperWithSeriesRequest(clipperWithId);
-        clipperWithSeriesRequest.setSeriesId(seriesConverter.convertModelToRequestNoClipper(clipperWithId.getSeriesId()));
         return clipperWithSeriesRequest;
     }
 
@@ -67,7 +63,6 @@ public class ClipperController {
         for (Clipper c : allClippers) {
             if (c.getSeriesId() != null) {
                 ClipperWithSeriesRequest clipperWithSeriesRequest = clipperConverter.convertModelToClipperWithSeriesRequest(c);
-                clipperWithSeriesRequest.setSeriesId(seriesConverter.convertModelToRequestNoClipper(c.getSeriesId()));
                 returnList.add(clipperWithSeriesRequest);
             } else {
                 returnList.add(clipperConverter.convertModelNoSeriesToClipperNoSeries(c));
@@ -84,7 +79,6 @@ public class ClipperController {
             return clipperConverter.convertModelNoSeriesToClipperNoSeries(updatedClipperReturn);
         }
         ClipperWithSeriesRequest clipperWithSeriesRequest = clipperConverter.convertModelToClipperWithSeriesRequest(updatedClipperReturn);
-        clipperWithSeriesRequest.setSeriesId(seriesConverter.convertModelToRequestNoClipper(updatedClipperReturn.getSeriesId()));
         return clipperWithSeriesRequest;
     }
 

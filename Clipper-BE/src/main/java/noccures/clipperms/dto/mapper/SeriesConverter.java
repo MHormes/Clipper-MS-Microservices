@@ -1,10 +1,8 @@
 package noccures.clipperms.dto.mapper;
 
 import lombok.RequiredArgsConstructor;
-import noccures.clipperms.dto.clipper.ClipperNoSeriesRequest;
 import noccures.clipperms.dto.series.SeriesNoClipperRequest;
 import noccures.clipperms.dto.series.SeriesWithClipperRequest;
-import noccures.clipperms.model.Clipper;
 import noccures.clipperms.model.Series;
 import org.springframework.stereotype.Component;
 
@@ -15,8 +13,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Component
 public class SeriesConverter {
-
-    public final ClipperConverter clipperConverter;
 
     public Series convertRequestNoClipperToModel(SeriesNoClipperRequest seriesDTO){
         return new Series(UUID.fromString(seriesDTO.getId()), seriesDTO.getName(), seriesDTO.isCustom());
@@ -32,12 +28,6 @@ public class SeriesConverter {
         seriesWithClipperRequest.setName(series.getName());
         seriesWithClipperRequest.setCustom(series.isCustom());
         seriesWithClipperRequest.setCreatedById(series.getCreatedBy().getId().toString());
-
-        List<ClipperNoSeriesRequest> clipperNoSeriesRequestList = new ArrayList<>();
-        for(Clipper c : series.getClippers()){
-            clipperNoSeriesRequestList.add(clipperConverter.convertModelNoSeriesToClipperNoSeries(c));
-        }
-        seriesWithClipperRequest.setClippers(clipperNoSeriesRequestList);
         return seriesWithClipperRequest;
     }
 

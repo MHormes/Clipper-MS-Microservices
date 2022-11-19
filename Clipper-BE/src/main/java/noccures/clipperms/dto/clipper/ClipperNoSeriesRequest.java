@@ -15,6 +15,7 @@ public class ClipperNoSeriesRequest extends ClipperDTO {
 
     String id;
     String name;
+    String seriesId;
     int seriesNumber;
     String createdById;
 }

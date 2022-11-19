@@ -1,7 +1,6 @@
-import axios from "axios";
+import axios, {AxiosInstance} from "axios";
 
 const debug = false;
-
 export default class apiInstance {
 
 
@@ -15,7 +14,7 @@ export default class apiInstance {
                 apiToken
             }`;
         }
-        let axiosInstance = axios.create({baseURL: process.env.REACT_APP_API_BASE_URL});
+        let axiosInstance: AxiosInstance<AxiosInstance> = axios.create({baseURL: process.env.REACT_APP_API_BASE_URL});
         axiosInstance.headers = {
             Authorization: `Bearer ${apiToken}`
         };

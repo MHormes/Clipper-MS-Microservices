@@ -1,7 +1,8 @@
-import axios from "axios";
 import apiInstance from "./apiInstance";
+import {AxiosResponse} from "axios";
+import type {ISeries} from "../model/SeriesModel";
 
-const debug = true;
+const debug = false;
 
 let api;
 export default class SeriesApi {
@@ -11,10 +12,24 @@ export default class SeriesApi {
     }
 
     getSeriesWithId = async (seriesId) => {
-        console.log("getSeriesWithId", api.url);
         return api
             .get("/series/" + seriesId)
-            .then((response) => {
+            .then((response: AxiosResponse<ISeries>) => {
+                if(debug) console.log(response.data);
+                if(response.status === 200){
+                    return response;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                return null;
+            });
+    }
+
+    getAllSeries = async () => {
+        return api
+            .get("/series/all")
+            .then((response: AxiosResponse<ISeries[]>) => {
                 if(debug) console.log(response.data);
                 if(response.status === 200){
                     return response;

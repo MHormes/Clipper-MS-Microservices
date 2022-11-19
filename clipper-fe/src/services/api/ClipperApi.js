@@ -1,35 +1,20 @@
-import axios from "axios";
+import {AxiosResponse} from "axios";
+import apiInstance from "./apiInstance";
+import type {IClipper} from "../model/ClipperModel";
 
-const debug = false;
+const debug = true;
+
+let api;
 export default class ClipperApi {
 
     constructor() {
-        this.apiToken = null;
-        this.axiosInstance = null;
-        this.apiUrl = process.env.REACT_APP_API_BASE_URL;
+        api = apiInstance.init();
     }
 
-    init = () => {
-        this.apiToken = process.env.REACT_APP_ACCESS_TOKEN_DEV;
-        let headers = {
-            Accept: "application/json"
-        };
-        if (this.apiToken) {
-            headers.Authorization = `Bearer ${
-                this.apiToken
-            }`;
-        }
-        this.axiosInstance = axios.create({baseURL: this.apiUrl});
-        this.axiosInstance.headers = {
-            Authorization: `Bearer ${this.apiToken}`
-        };
-        return this.axiosInstance;
-    };
-
     getAllClippers = async () => {
-        return this.init()
+        return api
             .get("/clipper/all")
-            .then((response) => {
+            .then((response: AxiosResponse<IClipper[]>) => {
                 if(debug) console.log(response.data);
                 if(response.status === 200){
                     return response;

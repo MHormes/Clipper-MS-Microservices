@@ -25,4 +25,19 @@ export default class ClipperApi {
                 return null;
             });
     }
+
+    getClipperWithId = async (clipperId) => {
+        return api
+            .get("/clipper/" + clipperId)
+            .then((response: AxiosResponse<IClipper>) => {
+                if(debug) console.log(response.data);
+                if(response.status === 200){
+                    return response;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                return null;
+            });
+    }
 }

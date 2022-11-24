@@ -9,5 +9,5 @@ export interface IClipper{
     name: string;
     series: ISeries;
     seriesNumber: string;
-    createdBy: string;
+    createdById: string;
 }

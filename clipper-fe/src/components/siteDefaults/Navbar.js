@@ -15,7 +15,6 @@ import {
 
 
 import MenuIcon from '@mui/icons-material/Menu';
-import AdbIcon from '@mui/icons-material/Adb';
 import {useNavigate} from "react-router";
 
 //todo refactor away from navbar component

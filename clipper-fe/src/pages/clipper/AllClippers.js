@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
-import ClipperList from "../viewClipper/ClipperList";
-import ClipperApi from "../../../services/api/ClipperApi";
-import type {IClipper} from "../../../services/api/ClipperApi";
+import ClipperList from "../../components/clipper/viewClipper/ClipperList";
+import ClipperApi from "../../services/api/ClipperApi";
+import type {IClipper} from "../../services/api/ClipperApi";
 import {Typography} from "@mui/material";
 
 const clipperApi = new ClipperApi();

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import SeriesApi from "../../../services/api/SeriesApi";
-import ClipperSingle from "../../clipper/viewClipper/ClipperSingle";
+import SeriesApi from "../../services/api/SeriesApi";
+import ClipperSingle from "../../components/clipper/viewClipper/ClipperSingle";
 import {Grid, Typography} from "@mui/material";
 import {useParams} from "react-router";
-import ClipperList from "../../clipper/viewClipper/ClipperList";
-import type {ISeries} from "../../../services/model/SeriesModel";
+import ClipperList from "../../components/clipper/viewClipper/ClipperList";
+import type {ISeries} from "../../services/model/SeriesModel";
 
 const seriesApi = new SeriesApi();
 const debug = false;

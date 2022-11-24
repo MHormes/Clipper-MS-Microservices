@@ -11,7 +11,6 @@ const ClipperList = (props) => {
     useEffect(() => {
         async function loadClipperList() {
             setClipperList(props.clipperListProp)
-            console.log(props.seriesViewProp)
             if (debug) console.log(props.clipperListProp);
         }
 
@@ -24,7 +23,7 @@ const ClipperList = (props) => {
         return (
             <>
                 <div>
-                    <Grid container spacing={12} columns={4} sx={{m: 0}}>
+                    <Grid container spacing={4} columns={4} sx={{m: 0}} justifyContent="center">
                         {clipperList.map(
                             (clipper) =>
                                 (

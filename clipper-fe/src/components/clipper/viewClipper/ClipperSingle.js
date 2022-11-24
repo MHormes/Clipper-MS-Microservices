@@ -3,7 +3,6 @@ import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
 import pic from "../../../assets/clipper-aansteker.jpg";
 import type {IClipper} from "../../../services/model/ClipperModel";
-import type {ISeries} from "../../../services/model/SeriesModel";
 
 
 const ClipperSingle = (props) => {
@@ -18,11 +17,12 @@ const ClipperSingle = (props) => {
     }, []);
 
     const goToClipper = (clipper) => {
-        console.log("Redirect user to page of clipper: " + props.clipperProp)
+        navigate(`/clipper/${clipper}`);
+        console.log("Redirect user to page of clipper: " + clipper)
     }
 
     const viewFullSeries = (series) => {
-        navigate("/series/" + series);
+        navigate(`/clipper/${series}`);
         console.log("Redirect user to series list: " + series)
     }
 
@@ -53,7 +53,7 @@ const ClipperSingle = (props) => {
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button size="small" onClick={() => goToClipper(clipper)}>View clipper</Button>
+                    <Button size="small" onClick={() => goToClipper(clipper.id)}>View clipper</Button>
 
                     { (clipper.series != null && !props.seriesViewProp) &&
                         <Button size="small" onClick={() => viewFullSeries(clipper.series.id)}>

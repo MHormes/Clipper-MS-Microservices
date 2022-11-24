@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
-import type {ISeries} from "../../../services/model/SeriesModel";
-import SeriesList from "../viewSeries/SeriesList";
-import SeriesApi from "../../../services/api/SeriesApi";
+import type {ISeries} from "../../services/model/SeriesModel";
+import SeriesList from "../../components/series/viewSeries/SeriesList";
+import SeriesApi from "../../services/api/SeriesApi";
 import {Box, Typography} from "@mui/material";
 
 const seriesApi = new SeriesApi();
@@ -24,7 +24,7 @@ const AllSeries = () => {
         return (
             <>
                 <div>
-                    <Typography variant="h2" align='center' sx={{mt: 2}}>
+                    <Typography variant="h3" align='center' sx={{mt: 2}}>
                         All Series
                     </Typography>
                     <SeriesList

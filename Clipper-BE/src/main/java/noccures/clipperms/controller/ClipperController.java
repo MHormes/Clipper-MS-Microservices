@@ -78,8 +78,7 @@ public class ClipperController {
         if (updatedClipperReturn.getSeriesId() == null) {
             return clipperConverter.convertModelNoSeriesToClipperNoSeries(updatedClipperReturn);
         }
-        ClipperWithSeriesRequest clipperWithSeriesRequest = clipperConverter.convertModelToClipperWithSeriesRequest(updatedClipperReturn);
-        return clipperWithSeriesRequest;
+        return clipperConverter.convertModelToClipperWithSeriesRequest(updatedClipperReturn);
     }
 
     @DeleteMapping("/delete/{id}")

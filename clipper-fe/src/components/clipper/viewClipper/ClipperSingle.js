@@ -22,7 +22,7 @@ const ClipperSingle = (props) => {
     }
 
     const viewFullSeries = (series) => {
-        navigate(`/clipper/${series}`);
+        navigate(`/series/${series}`);
         console.log("Redirect user to series list: " + series)
     }
 

@@ -35,7 +35,7 @@ public class AppUser {
             nullable = false)
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<AppRole> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)

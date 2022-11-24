@@ -5,7 +5,9 @@ import noccures.clipperms.exceptions.DatabaseFailedOperationException;
 import noccures.clipperms.exceptions.ExceptionMessages;
 import noccures.clipperms.exceptions.IncorrectInputException;
 import noccures.clipperms.model.Clipper;
+import noccures.clipperms.model.CollectedClipper;
 import noccures.clipperms.service.interfaces.IClipperService;
+import noccures.clipperms.service.interfaces.ICollectedClipperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +19,12 @@ public class ClipperService implements IClipperService {
 
     IClipperDataSource clipperData;
 
+    ICollectedClipperService collectedClipperService;
+
     @Autowired
-    public ClipperService(IClipperDataSource clipperDataSource) {
+    public ClipperService(IClipperDataSource clipperDataSource, ICollectedClipperService collectedClipperService) {
         clipperData = clipperDataSource;
+        this.collectedClipperService = collectedClipperService;
     }
 
 
@@ -85,6 +90,13 @@ public class ClipperService implements IClipperService {
         //ensure clipper with id exists
         getClipperWithId(clipperId);
 
+        //todo let JPA remove collected clippers on delete???
+        var collectedClippers = collectedClipperService.getCollectedClippersForClipperId(clipperId);
+        if(collectedClippers.size() != 0){
+            for(CollectedClipper cc: collectedClippers){
+                collectedClipperService.deleteCollectedClipper(cc.getId().toString());
+            }
+        }
         if (clipperData.deleteClipper(UUID.fromString(clipperId)) != null) {
             throw new DatabaseFailedOperationException(ExceptionMessages.CLIPPER_PRESENT_AFTER_DELETE);
         }

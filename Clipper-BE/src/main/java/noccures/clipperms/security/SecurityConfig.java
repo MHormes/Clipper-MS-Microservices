@@ -1,8 +1,8 @@
 package noccures.clipperms.security;
 
 import lombok.RequiredArgsConstructor;
-import noccures.clipperms.filter.CustomAuthenticationFilter;
-import noccures.clipperms.filter.CustomAuthorizationFilter;
+import noccures.clipperms.security.filter.CustomAuthenticationFilter;
+import noccures.clipperms.security.filter.CustomAuthorizationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -57,8 +57,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, clipperPath + "/**", seriesPath + "/**", "/token/refresh/**").permitAll()
                 //Allow login
                 .antMatchers("/login").permitAll()
-                //Only allows admins to create, update and clippers
-                .antMatchers(clipperPath + "/**", seriesPath + "/**").hasAuthority("ROLE_ADMIN")
+                //Only allow (super) admins to create clippers
+                .antMatchers(HttpMethod.POST, clipperPath + "/**", seriesPath + "/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_SUPER_ADMIN")
+                //Only allow (super) admins to update clippers
+                .antMatchers(HttpMethod.PUT, clipperPath + "/**", seriesPath + "/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_SUPER_ADMIN")
+                //Only allow super admins to delete clippers
+                .antMatchers(HttpMethod.DELETE, clipperPath + "/**", seriesPath + "/**").hasAuthority("ROLE_SUPER_ADMIN")
                 //Only allow super admin to manage users.
                 .antMatchers("/api/user/**").hasAuthority("ROLE_SUPER_ADMIN")
                 //Allow Swagger UI

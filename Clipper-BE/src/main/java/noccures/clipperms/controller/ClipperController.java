@@ -5,11 +5,11 @@ import noccures.clipperms.dto.clipper.ClipperCreateRequest;
 import noccures.clipperms.dto.clipper.ClipperWithSeriesRequest;
 import noccures.clipperms.dto.mapper.ClipperConverter;
 import noccures.clipperms.dto.clipper.ClipperDTO;
-import noccures.clipperms.dto.mapper.SeriesConverter;
 import noccures.clipperms.exceptions.DatabaseFailedOperationException;
 import noccures.clipperms.exceptions.IncorrectInputException;
 import noccures.clipperms.model.Clipper;
 import noccures.clipperms.service.ClipperService;
+import noccures.clipperms.service.interfaces.IClipperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +23,11 @@ import java.util.List;
 @RequestMapping("/api/clipper")
 public class ClipperController {
 
-    private final ClipperService clipperService;
+    private final IClipperService clipperService;
     private final ClipperConverter clipperConverter;
 
     @Autowired
-    public ClipperController(ClipperService clipperService, ClipperConverter clipperConverter) {
+    public ClipperController(IClipperService clipperService, ClipperConverter clipperConverter) {
         this.clipperService = clipperService;
         this.clipperConverter = clipperConverter;
     }

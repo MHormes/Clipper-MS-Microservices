@@ -17,6 +17,8 @@ public class ExceptionMessages {
     public static final String C_CLIPPER_WITH_ID_NOT_FOUND = "Collected clipper with given id not found. id: ";
     public static final String C_CLIPPER_PRESENT_AFTER_DELETE = "Collected clipper still found in system after delete";
 
+    public static final String C_CLIPPERS_WITH_CLIPPER_ID_NOT_FOUND = "No collected clippers found for clipper id: ";
+
 
     //SERIES EXCEPTIONS
     public static final String SERIES_NO_NAME = "Name cannot be empty";

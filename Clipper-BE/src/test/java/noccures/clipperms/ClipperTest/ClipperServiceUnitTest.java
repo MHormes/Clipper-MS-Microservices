@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -24,13 +25,13 @@ class ClipperServiceUnitTest {
     @Mock
     IClipperDataSource clipperDataSource;
 
+    @Autowired
     IClipperService clipperService;
 
     String clipperId = "b7319afb-946e-410d-a6f0-e72d7c3c314e";
 
     @BeforeEach
     void setUp() {
-        clipperService = new ClipperService(clipperDataSource);
         when(clipperDataSource.getClipperWithId(UUID.fromString(clipperId))).thenReturn(null);
     }
 

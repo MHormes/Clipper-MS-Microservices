@@ -1,11 +1,13 @@
 package noccures.clipperms.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "Clipper")
@@ -23,7 +25,7 @@ public class Clipper {
     @Id
     @Column(
             name = "id",
-            updatable = true,
+            updatable = false,
             nullable = false
     )
     private UUID id;

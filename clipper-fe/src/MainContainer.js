@@ -1,7 +1,7 @@
 import React from "react";
 import {Route, Routes} from "react-router-dom";
 import SeriesWithId from "./pages/series/SeriesWithId";
-import LoginScreen from "./components/homePage/LoginScreen";
+import LoginScreen from "./pages/homePage/LoginScreen";
 import Navbar from "./components/siteDefaults/Navbar";
 import AllClippers from "./pages/clipper/AllClippers";
 import AllSeries from "./pages/series/AllSeries";

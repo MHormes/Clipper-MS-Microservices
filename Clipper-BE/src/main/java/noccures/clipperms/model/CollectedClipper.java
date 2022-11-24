@@ -37,16 +37,13 @@ public class CollectedClipper {
 
     @Column(name = "notes")
     private String notes;
-    @Column(
-            name = "date_added",
+
+    @Column(name = "date_added",
             nullable = false,
-            updatable = false
-    )
+            updatable = false)
     private LocalDate dateAdded;
 
-    @Column(
-            name = "location_bought"
-    )
+    @Column(name = "location_bought")
     private String locationBought;
 
 }

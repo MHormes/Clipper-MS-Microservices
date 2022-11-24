@@ -6,6 +6,7 @@ import noccures.clipperms.model.CollectedClipper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,6 +29,11 @@ public class CollectedClipperDataSource implements ICollectedClipperDataSource {
     public CollectedClipper getCollectedClipperWithId(UUID id) {
         Optional<CollectedClipper> clipperWithId = collectedClipperRepo.findById(id);
         return clipperWithId.orElse(null);
+    }
+
+    @Override
+    public List<CollectedClipper> getCollectedClippersForClipperId(UUID clipperId) {
+        return collectedClipperRepo.getCollectedClippersByClipperId_Id(clipperId);
     }
 
     @Override

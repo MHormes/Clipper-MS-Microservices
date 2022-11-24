@@ -25,6 +25,7 @@ class ClipperIntegrationTest {
     @Autowired
     IClipperDataSource clipperDataSource;
 
+    @Autowired
     IClipperService clipperService;
 
     @Autowired
@@ -34,7 +35,6 @@ class ClipperIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        clipperService = new ClipperService(clipperDataSource);
         this.creator = new AppUser(UUID.randomUUID() ,"Maarten", "MHormes", "Hormes123", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         appUserService.saveUser(creator);
     }
@@ -130,7 +130,7 @@ class ClipperIntegrationTest {
             clipperService.deleteClipper(databaseAddReturn.getId().toString());
         }
         catch (Exception ex){
-            System.out.println(ex);
+            System.out.println("SECOND" + ex);
         }
 
         //Get clipper with id from db
@@ -138,7 +138,7 @@ class ClipperIntegrationTest {
         try {
             databaseGetReturn = clipperService.getClipperWithId(databaseAddReturn.getId().toString());
         } catch (Exception ex) {
-            System.out.println(ex);
+            System.out.println("THIRD" + ex);
             Assertions.assertEquals(ExceptionMessages.CLIPPER_WITH_ID_NOT_FOUND + databaseAddReturn.getId(), ex.getMessage());
         }
 

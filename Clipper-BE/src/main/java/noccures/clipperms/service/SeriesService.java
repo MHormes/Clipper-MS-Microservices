@@ -61,7 +61,6 @@ public class SeriesService implements ISeriesService {
     //get series with specific id
     @Override
     public Series getSeriesWithId(String id) throws DatabaseFailedOperationException {
-        //todo check if id is valid uuid
         var seriesWithId = seriesData.getSeriesWithId(UUID.fromString(id));
         if (seriesWithId == null) {
             throw new DatabaseFailedOperationException(ExceptionMessages.SERIES_WITH_ID_NOT_FOUND + id);

@@ -1,4 +1,4 @@
-package noccures.clipperms.filter;
+package noccures.clipperms.security.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

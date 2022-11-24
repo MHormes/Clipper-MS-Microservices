@@ -2,7 +2,7 @@ import {AxiosResponse} from "axios";
 import apiInstance from "./apiInstance";
 import type {IClipper} from "../model/ClipperModel";
 
-const debug = true;
+const debug = false;
 
 let api;
 export default class ClipperApi {
@@ -31,6 +31,21 @@ export default class ClipperApi {
             .get("/clipper/" + clipperId)
             .then((response: AxiosResponse<IClipper>) => {
                 if(debug) console.log(response.data);
+                if(response.status === 200){
+                    return response;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                return null;
+            });
+    }
+
+    deleteClipper = async (clipperId) => {
+        return api
+            .delete("/clipper/delete/" + clipperId)
+            .then((response) => {
+                if(debug) console.log(response);
                 if(response.status === 200){
                     return response;
                 }

@@ -9,6 +9,7 @@ import noccures.clipperms.service.interfaces.ICollectedClipperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -36,6 +37,12 @@ public class CollectedClipperService implements ICollectedClipperService {
         }
         return collectedWithId;
     }
+
+    @Override
+    public List<CollectedClipper> getCollectedClippersForClipperId(String clipperId){
+        return collectedClipperData.getCollectedClippersForClipperId(UUID.fromString(clipperId));
+    }
+
 
     @Override
     public CollectedClipper updateCollectedClipper(CollectedClipper clipperWithUpdate) throws IncorrectInputException, DatabaseFailedOperationException {

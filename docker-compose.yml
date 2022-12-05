@@ -5,13 +5,49 @@ volumes:
     driver: local
 
 services:
+#
+##============================#
+##=========SONARQUBE==========#
+##============================#
+#  sonarqube:
+#    image: sonarqube:community
+#    hostname: sonarqube
+#    container_name: sonarqube
+#    depends_on:
+#      - postgres-sonar
+#    environment:
+#      SONAR_JDBC_URL: jdbc:postgresql://db:5434/sonar
+#      SONAR_JDBC_USERNAME: sonar
+#      SONAR_JDBC_PASSWORD: sonar
+#    volumes:
+#      - sonarqube_data:/opt/sonarqube/data
+#      - sonarqube_extensions:/opt/sonarqube/extensions
+#      - sonarqube_logs:/opt/sonarqube/logs
+#    ports:
+#      - "9000:9000"
+#
+##==================================#
+##==========POSTGRES-SONAR==========#
+##==================================#
+#  postgres-sonar:
+#    image: postgres
+#    environment:
+#      POSTGRES_DB: sonar
+#      POSTGRES_USER: sonar
+#      POSTGRES_PASSWORD: sonar
+#    ports:
+#      - '5434:5432'
+#    volumes:
+#      - postgresql:/var/lib/postgresql
+#      - ./docker/postgresql_data_sonar:/var/lib/postgresql/data
+
 #============================#
-#==========POSTGRES==========#
+#========POSTGRES-DEV========#
 #============================#
   postgres-dev:
     image: postgres
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres_data_dev:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: noccures
       POSTGRES_USER: admin

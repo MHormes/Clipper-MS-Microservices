@@ -7,78 +7,70 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.List;
 
-//commenting the configuration and EnableWebSecurity annotations let the keycloak security take over. Same works the other way around
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-//todo Replace deprecated adapter
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
-    private final UserDetailsService userDetailsService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final static String clipperPath = "/api/clipper";
+    private final static String seriesPath = "/api/series";
 
-    private static String clipperPath = "/api/clipper";
-
-    private static String seriesPath = "/api/series";
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         final CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOrigins(List.of("*"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         corsConfiguration.setAllowedHeaders(List.of("*"));
-
-
         //todo create CSRF configuration
         http.csrf().disable().cors().configurationSource(request -> corsConfiguration);
+
         //STATELESS session configuration
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         //ACCESS CONTROL
-        http.authorizeRequests()
-                //Allow all get requests on clippers series and refresh endpoints
-                .antMatchers(HttpMethod.GET, clipperPath + "/**", seriesPath + "/**", "/token/refresh/**").permitAll()
+
+        http.authorizeHttpRequests()
                 //Allow login
-                .antMatchers("/login").permitAll()
+                .requestMatchers("/login").permitAll()
+                //Allow all get requests on clippers series and refresh endpoints
+                .requestMatchers(HttpMethod.GET, clipperPath + "/**", seriesPath + "/**", "/token/refresh/**").permitAll()
                 //Only allow (super) admins to create clippers
-                .antMatchers(HttpMethod.POST, clipperPath + "/**", seriesPath + "/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_SUPER_ADMIN")
+                .requestMatchers(HttpMethod.POST, clipperPath + "/**", seriesPath + "/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_SUPER_ADMIN")
                 //Only allow (super) admins to update clippers
-                .antMatchers(HttpMethod.PUT, clipperPath + "/**", seriesPath + "/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_SUPER_ADMIN")
+                .requestMatchers(HttpMethod.PUT, clipperPath + "/**", seriesPath + "/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_SUPER_ADMIN")
                 //Only allow super admins to delete clippers
-                .antMatchers(HttpMethod.DELETE, clipperPath + "/**", seriesPath + "/**").hasAuthority("ROLE_SUPER_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, clipperPath + "/**", seriesPath + "/**").hasAuthority("ROLE_SUPER_ADMIN")
                 //Only allow super admin to manage users.
-                .antMatchers("/api/user/**").hasAuthority("ROLE_SUPER_ADMIN")
+                .requestMatchers("/api/user/**").hasAuthority("ROLE_SUPER_ADMIN")
                 //Allow Swagger UI
-                .antMatchers("/docs/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers("/docs/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin();
 
         //CUSTOM FILTERS
-        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
+        http.addFilter(new CustomAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))));
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+
 }
+
+

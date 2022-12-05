@@ -40,7 +40,6 @@ const Navbar = () => {
         setAnchorElNav(null);
         //todo improve chosen menu option handling
         if (chosenMenuOption != null) {
-            console.log(chosenMenuOption);
             navigate(chosenMenuOption);
         }
     };

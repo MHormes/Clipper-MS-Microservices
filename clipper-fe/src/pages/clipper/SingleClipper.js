@@ -3,7 +3,6 @@ import {
     Typography,
     ButtonGroup,
     Button,
-    CardActionArea,
     Card,
     CardMedia,
     CardContent,
@@ -19,6 +18,7 @@ import ClipperApi from "../../services/api/ClipperApi";
 import {useNavigate, useParams} from "react-router";
 import pic from "../../assets/clipper-aansteker-cut.jpg";
 import type {IClipper} from "../../services/model/ClipperModel";
+import DeleteModal from "../../components/modal/DeleteModal";
 
 const clipperApi = new ClipperApi();
 
@@ -105,9 +105,9 @@ const SingleClipper = () => {
                             <IconButton aria-label="edit" size="large" onClick={() => updateClipper()}>
                                 <EditIcon/>
                             </IconButton>
-                            <IconButton aria-label="delete" size="large" onClick={() => deleteClipper()}>
-                                <DeleteIcon/>
-                            </IconButton>
+                            <DeleteModal
+                            clipperProp={clipperWithId}
+                            deleteClipper={deleteClipper}/>
                         </ButtonGroup>
                     </CardActions>
                 </Card>

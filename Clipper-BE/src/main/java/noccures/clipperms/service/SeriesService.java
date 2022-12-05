@@ -1,5 +1,6 @@
 package noccures.clipperms.service;
 
+import lombok.extern.slf4j.Slf4j;
 import noccures.clipperms.data.interfaces.ISeriesDataSource;
 import noccures.clipperms.exceptions.DatabaseFailedOperationException;
 import noccures.clipperms.exceptions.ExceptionMessages;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class SeriesService implements ISeriesService {
 
     ISeriesDataSource seriesData;
@@ -29,6 +31,7 @@ public class SeriesService implements ISeriesService {
     public Series addSeries(Series seriesToAdd) throws IncorrectInputException, DatabaseFailedOperationException {
         //check if name is not empty
         if (seriesToAdd.getName().isBlank()) {
+            log.error("Series name is empty");
             throw new IncorrectInputException(ExceptionMessages.SERIES_NO_NAME);
         }
         if(seriesToAdd.getId() == null){
@@ -36,8 +39,10 @@ public class SeriesService implements ISeriesService {
         }
         var expectedResult = seriesData.addSeries(seriesToAdd);
         if (expectedResult == null) {
+            log.error("Series could not be saved to database");
             throw new DatabaseFailedOperationException(ExceptionMessages.SERIES_GET_FAILED);
         }
+        log.info("Series with id {} was successfully saved to database", expectedResult.getId());
         return expectedResult;
     }
 
@@ -55,6 +60,7 @@ public class SeriesService implements ISeriesService {
         for(int i: takenSeriesNumbers){
             possibleNumbers.remove(Integer.valueOf(i));
         }
+        log.info("Available series number for series with id {} is {}", id, possibleNumbers.get(0));
         return possibleNumbers.get(0);
     }
 
@@ -63,8 +69,10 @@ public class SeriesService implements ISeriesService {
     public Series getSeriesWithId(String id) throws DatabaseFailedOperationException {
         var seriesWithId = seriesData.getSeriesWithId(UUID.fromString(id));
         if (seriesWithId == null) {
+            log.error("Series with id {} could not be found", id);
             throw new DatabaseFailedOperationException(ExceptionMessages.SERIES_WITH_ID_NOT_FOUND + id);
         }
+        log.info("Series with id {} was successfully found", id);
         return seriesWithId;
     }
 
@@ -79,8 +87,10 @@ public class SeriesService implements ISeriesService {
         getSeriesWithId(seriesWithUpdate.getId().toString());
         var updatedSeries = seriesData.updateSeries(seriesWithUpdate);
         if (updatedSeries == null) {
+            log.error("Series with id {} could not be updated", seriesWithUpdate.getId());
             throw new DatabaseFailedOperationException(ExceptionMessages.SERIES_GET_FAILED);
         }
+        log.info("Series with id {} was successfully updated", seriesWithUpdate.getId());
         return updatedSeries;
     }
 
@@ -92,7 +102,9 @@ public class SeriesService implements ISeriesService {
 
         //return should be null after delete
         if (seriesData.deleteSeries(UUID.fromString(id)) != null) {
+            log.error("Series with id {} could not be deleted", id);
             throw new DatabaseFailedOperationException(ExceptionMessages.SERIES_PRESENT_AFTER_DELETE);
         }
+        log.info("Series with id {} was successfully deleted", id);
     }
 }

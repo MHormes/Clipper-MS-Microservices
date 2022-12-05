@@ -8,7 +8,6 @@ import noccures.clipperms.dto.clipper.ClipperDTO;
 import noccures.clipperms.exceptions.DatabaseFailedOperationException;
 import noccures.clipperms.exceptions.IncorrectInputException;
 import noccures.clipperms.model.Clipper;
-import noccures.clipperms.service.ClipperService;
 import noccures.clipperms.service.interfaces.IClipperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,8 +37,7 @@ public class ClipperController {
         Clipper addedClipperReturn;
         if (clipperDTO.getSeriesId() != null) {
             addedClipperReturn = clipperService.addClipper(clipperToAdd, clipperDTO.getSeriesId());
-            ClipperWithSeriesRequest clipperWithSeriesRequest = clipperConverter.convertModelToClipperWithSeriesRequest(addedClipperReturn);
-            return clipperWithSeriesRequest;
+            return clipperConverter.convertModelToClipperWithSeriesRequest(addedClipperReturn);
         } else {
             addedClipperReturn = clipperService.addClipper(clipperToAdd, null);
             return clipperConverter.convertModelNoSeriesToClipperNoSeries(addedClipperReturn);
@@ -52,8 +50,7 @@ public class ClipperController {
         if (clipperWithId.getSeriesId() == null) {
             return clipperConverter.convertModelNoSeriesToClipperNoSeries(clipperWithId);
         }
-        ClipperWithSeriesRequest clipperWithSeriesRequest = clipperConverter.convertModelToClipperWithSeriesRequest(clipperWithId);
-        return clipperWithSeriesRequest;
+        return clipperConverter.convertModelToClipperWithSeriesRequest(clipperWithId);
     }
 
     @GetMapping("/all")

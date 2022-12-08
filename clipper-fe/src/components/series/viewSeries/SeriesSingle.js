@@ -1,49 +1,48 @@
-import { Card, CardMedia, CardContent, Typography, CardActions, Button } from "@mui/material";
-import React from "react";
+import React, {useEffect} from "react";
 import {useNavigate} from "react-router";
 import pic from "../../../assets/clipper_boarding.jpg";
 import type {ISeries} from "../../../services/model/SeriesModel";
+import PropTypes from "prop-types";
+import SeriesCard from "../../card/SeriesCard";
 
 const debug = false;
 const SeriesSingle = (props) => {
 
     //Props gotten from series List component -> holds single series
-    const series: ISeries = props.seriesProp;
-    if (debug) console.log("SeriesSingle: series: ", series);
+    const series: ISeries = props.series;
+
+    useEffect(() => {
+        if (debug) console.log("SeriesSingle: series: ", series);
+    }, [props.series]);
+
 
     const navigate = useNavigate();
 
-    const viewFullSeries = (series) => {
-        navigate("/series/" + series.id);
+    const viewFullSeries = () => {
         console.log("Redirect user to series list: " + series.id)
+        navigate("/series/" + series.id);
     }
 
-    return (
-        <Card sx={{ maxWidth: 345 }}>
-            <CardContent>
-            <CardMedia
-                component="img"
-                height="500"
-                image={pic}
-                alt={series.name}
-            />
-                <Typography gutterBottom variant="h5" component="div">
-                    {series.name}
-                </Typography>
-                <Typography variant="body1">
-                    {series.custom ? (
-                        <span>This series currently has {series.clippers.length} clippers</span>
-                    ) : (
-                        <span>The system knows {series.clippers.length} of the 4 clippers</span>
-                    )}
-                </Typography>
-            </CardContent>
-            <CardActions>
-                    <Button size="small" onClick={() => viewFullSeries(series)}>View full series</Button>
-            </CardActions>
-        </Card>
-    );
+    const generateSeriesInfo = () => {
+        if (series.custom) {
+            return 'This series currently has ' + series.clippers.length + ' clippers'
+        }
+        return 'The system knows ' + series.clippers.length + ' of the 4 clippers';
+    }
+
+    return (<>
+            <SeriesCard
+                title={series.name ? series.name : "No-Series"}
+                series={series}
+                imageSource={pic}
+                imageAlt="seriesImage"
+                seriesInfo={generateSeriesInfo()}
+                actionSeries={viewFullSeries}/>
+        </>);
 }
 
+SeriesSingle.propTypes = {
+    series: PropTypes.object.isRequired
+}
 export default SeriesSingle;
 

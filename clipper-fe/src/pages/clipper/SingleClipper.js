@@ -1,23 +1,14 @@
 import React, {useEffect, useState} from "react";
-import {
-    Typography,
-    ButtonGroup,
-    Button,
-    Card,
-    CardMedia,
-    CardContent,
-    CardActions,
-    Grid,
-    IconButton
-} from "@mui/material";
-
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import ClipperApi from "../../services/api/ClipperApi";
 import {useNavigate, useParams} from "react-router";
-import pic from "../../assets/clipper-aansteker-cut.jpg";
+import pic from "../../assets/clipper-aansteker.jpg";
 import type {IClipper} from "../../services/model/ClipperModel";
+import CardPicture from "../../components/card/CardPicture";
+import CardTitle from "../../components/card/CardTitle";
+import CardText from "../../components/card/CardText";
+import CardButton from "../../components/card/CardButton";
+import {faHeart, faPen, faTrashCan} from "@fortawesome/free-solid-svg-icons";
+import CardIconButton from "../../components/card/CardIconButton";
 import DeleteModal from "../../components/modal/DeleteModal";
 
 const clipperApi = new ClipperApi();
@@ -44,13 +35,17 @@ const SingleClipper = () => {
         });
     }, [params])
 
-    const viewFullSeries = (series) => {
-        navigate(`/series/${series}`);
-        console.log("Redirect user to series list: " + series)
+    const viewFullSeries = () => {
+        navigate(`/series/${clipperWithId.series?.id}`);
+        console.log("Redirect user to series list: " + clipperWithId.series?.id)
     }
 
     const updateClipper = () => {
+        console.log("Update clipper: " + clipperWithId.id)
+    }
 
+    const addToFavorite = () => {
+        console.log("Add clipper to favorite: " + clipperWithId.id)
     }
 
     const deleteClipper = async () => {
@@ -58,61 +53,37 @@ const SingleClipper = () => {
         //todo create model to remove clipper
         const response = await clipperApi.deleteClipper(clipperWithId.id);
         if (debug) console.log(response);
-        if(response.status === 200){
+        if (response.status === 200) {
             console.log("Clipper with id: " + clipperWithId.id + " has been deleted!");
             //todo add timed redirect to .... (clipper list?)
+            setTimeout(() => {
+                navigate(-1);
+            }, "1000")
         }
     }
 
     if (clipperWithId != null)
         return (
-            <>
-                <Card sx={{m: 4}}>
-                    <CardContent>
-                        <Grid container spacing={2}>
-                            <Grid item xs={3} textalign="center">
-                                <Typography variant="h4" align='center' sx={{mt: 2}}>
-                                    Clipper: {clipperWithId.name}
-                                    <br/>
-                                </Typography>
-                                <Typography variant="h6" align='center' sx={{mt: 2}}>
-                                    Clipper is # {clipperWithId.seriesNumber} in series:
-                                </Typography>
-                                <Button size="large" variant="contained" textalign='center' sx={{mt: 2}} onClick={() => viewFullSeries(clipperWithId.series.id)}>
-                                    {clipperWithId.series.name}
-                                </Button>
-                                <Typography variant="subtitle2" align='center' sx={{mt: 2}}>
-                                    Clipper created by: {clipperWithId.createdById}
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={6} >
-                                <CardMedia
-                                    component="img"
-                                    image={pic}
-                                    alt={clipperWithId.name}
-                                    sx={{width: 100, height: 500}}
-                                />
-                            </Grid>
-                            <Grid item xs={3} justifyContent="right">
-                                <IconButton aria-label="add-collection" size="large">
-                                    <FavoriteIcon/>
-                                </IconButton>
-                            </Grid>
-                        </Grid>
-                    </CardContent>
-                    <CardActions>
-                        <ButtonGroup variant="contained" sx={{alignContent: 'center'}}>
-                            <IconButton aria-label="edit" size="large" onClick={() => updateClipper()}>
-                                <EditIcon/>
-                            </IconButton>
-                            <DeleteModal
-                            clipperProp={clipperWithId}
-                            deleteClipper={deleteClipper}/>
-                        </ButtonGroup>
-                    </CardActions>
-                </Card>
-            </>
-        )
+            <div className="card bg-white m-3">
+                <div className="flex items-center justify-center w-full">
+                    <CardPicture imageSource={pic} alt="singleClipperImg" centralPic={true}/>
+                </div>
+                <div className="card-body p-4">
+                    <CardTitle cardTitle={'Clipper: ' + clipperWithId.name}/>
+                    <CardText cardText={'Clipper is #' + clipperWithId.seriesNumber + ' in series:'}/>
+                    <CardText cardText={clipperWithId.series?.name}/>
+                </div>
+                <div className="card-actions flex justify-between">
+                    <CardIconButton buttonIcon={faHeart} buttonAction={addToFavorite}/>
+                    <CardIconButton buttonIcon={faPen} buttonAction={updateClipper}/>
+                    <DeleteModal deleteClipper={deleteClipper} clipperProp={clipperWithId}/>
+                    <CardButton buttonText="View full series" buttonAction={viewFullSeries}/>
+                </div>
+                <div className="p-2 text-center">
+                <CardText cardText={'Clipper created by: ' + clipperWithId.createdById} textSmall={true}/>
+                </div>
+            </div>
+        );
 }
 
 export default SingleClipper;

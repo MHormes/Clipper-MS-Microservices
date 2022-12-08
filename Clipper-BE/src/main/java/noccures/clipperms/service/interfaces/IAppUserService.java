@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface IAppUserService {
 
+
     AppUser saveUser(AppUser user);
 
     AppRole saveRole(AppRole role);

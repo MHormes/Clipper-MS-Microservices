@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import SeriesApi from "../../services/api/SeriesApi";
-import ClipperSingle from "../../components/clipper/viewClipper/ClipperSingle";
-import {Grid, Typography} from "@mui/material";
 import {useParams} from "react-router";
 import ClipperList from "../../components/clipper/viewClipper/ClipperList";
 import type {ISeries} from "../../services/model/SeriesModel";
@@ -26,12 +24,12 @@ const SeriesWithId = () => {
         return (
             <>
                 <div>
-                    <Typography variant="h2" align='center' sx={{mt: 2}}>
+                    <h1 className="text-4xl text-center m-2">
                         Series: {seriesWithId.name}
-                    </Typography>
+                    </h1>
                     <ClipperList
                         clipperListProp={seriesWithId.clippers}
-                        seriesViewProp={true}
+                        seriesView={true}
                     />
                 </div>
             </>

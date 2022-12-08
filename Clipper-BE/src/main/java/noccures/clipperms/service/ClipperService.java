@@ -15,6 +15,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+
+/**
+ * Service for Clipper. Implements the IClipperService and provides the clipper related functionality in the API.
+ */
 @Service
 @Slf4j
 public class ClipperService implements IClipperService {
@@ -28,9 +32,15 @@ public class ClipperService implements IClipperService {
         clipperData = clipperDataSource;
         this.collectedClipperService = collectedClipperService;
     }
-
-
-    //Method to add a new clipper
+    
+    /**
+     * Method to add a new clipper to the database
+     * @param clipperToAdd
+     * @param seriesId
+     * @return Clipper
+     * @throws IncorrectInputException
+     * @throws DatabaseFailedOperationException
+     */
     public Clipper addClipper(Clipper clipperToAdd, String seriesId) throws IncorrectInputException, DatabaseFailedOperationException {
         //Check if name is not empty
         if (clipperToAdd.getName().isBlank()) {
@@ -63,7 +73,12 @@ public class ClipperService implements IClipperService {
         return expectedResult;
     }
 
-    //method to get a single clipper based on id
+    /**
+     * Method to get a clipper with a specific id
+     * @param id
+     * @return Clipper
+     * @throws IncorrectInputException
+     */
     @Override
     public Clipper getClipperWithId(String id) throws IncorrectInputException {
         var clipperWithId = clipperData.getClipperWithId(UUID.fromString(id));
@@ -75,13 +90,23 @@ public class ClipperService implements IClipperService {
         return clipperWithId;
     }
 
+    /**
+     * Method to get all clippers
+     * @return List of Clipper
+     */
     @Override
     public List<Clipper> getAllClippers() {
         log.info("Getting all clippers");
         return clipperData.getAllClippers();
     }
 
-    //method to update clipper with new values based on id
+    /**
+     * Method to update a clipper based on ID
+     * @param clipperWithUpdate
+     * @return Clipper
+     * @throws IncorrectInputException
+     * @throws DatabaseFailedOperationException
+     */
     @Override
     public Clipper updateClipper(Clipper clipperWithUpdate) throws IncorrectInputException, DatabaseFailedOperationException {
         //make sure clipper with supplied id exists.
@@ -95,7 +120,12 @@ public class ClipperService implements IClipperService {
         return updatedClipper;
     }
 
-    //method to remove clipper based on id
+    /**
+     * Method to delete a clipper based on ID
+     * @param clipperId
+     * @throws IncorrectInputException
+     * @throws DatabaseFailedOperationException
+     */
     @Override
     public void deleteClipper(String clipperId) throws IncorrectInputException, DatabaseFailedOperationException {
         //ensure clipper with id exists

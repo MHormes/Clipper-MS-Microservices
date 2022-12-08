@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import type {ISeries} from "../../services/model/SeriesModel";
 import SeriesList from "../../components/series/viewSeries/SeriesList";
 import SeriesApi from "../../services/api/SeriesApi";
-import {Box, Typography} from "@mui/material";
 
 const seriesApi = new SeriesApi();
 const debug = false;
@@ -24,9 +23,9 @@ const AllSeries = () => {
         return (
             <>
                 <div>
-                    <Typography variant="h3" align='center' sx={{mt: 2}}>
+                    <h1 className="text-4xl text-center m-2">
                         All Series
-                    </Typography>
+                    </h1>
                     <SeriesList
                         seriesListProp={seriesList}/>
                 </div>

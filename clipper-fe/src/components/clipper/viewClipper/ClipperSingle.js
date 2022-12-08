@@ -1,69 +1,65 @@
-import {Card, CardMedia, CardContent, Typography, CardActions, Button} from "@mui/material";
-import React, {useEffect, useState} from "react";
+import React, {useEffect,} from "react";
+import ClipperCard from "../../card/ClipperCard";
 import {useNavigate} from "react-router";
-import pic from "../../../assets/clipper-aansteker.jpg";
-import type {IClipper} from "../../../services/model/ClipperModel";
+import pic from "../../../assets/clipper-aansteker-cut.jpg";
+import PropTypes from "prop-types";
 
-
+const debug = false;
 const ClipperSingle = (props) => {
-
     const navigate = useNavigate();
-
-    const [clipper: IClipper, setClipper] = useState();
+    const clipper = props.clipper;
 
     useEffect(() => {
-        //Props gotten from clipper List component -> holds single clipper
-        setClipper(props.clipperProp);
-    }, []);
+        if (debug) console.log(props.clipper);
+    }, [props.clipper]);
 
-    const goToClipper = (clipper) => {
-        navigate(`/clipper/${clipper}`);
-        console.log("Redirect user to page of clipper: " + clipper)
+    const goToClipper = () => {
+        console.log("Redirect user to page of clipper: " + clipper.name);
+        navigate(`/clipper/${clipper.id}`);
     }
 
-    const viewFullSeries = (series) => {
-        navigate(`/series/${series}`);
-        console.log("Redirect user to series list: " + series)
+    const viewFullSeries = () => {
+        console.log("Redirect user to series list: " + clipper.series.name);
+        navigate(`/series/${clipper.series.id}`);
     }
 
-    if (clipper != null)
+    const generateSeriesNumber = () =>{
+        if (clipper.series && !clipper.series.custom) {
+            return '# ' + props.clipper.seriesNumber + ' of 4';
+        } else {
+            return '# ' + clipper.seriesNumber + ' in custom series:';
+        }
+    }
+
+    const generateSeriesName = () =>{
+        if (clipper.series && clipper.series.name) {
+            return 'in series: ' + clipper.series.name;
+        } else {
+            return 'No-Series';
+        }
+    }
+
+    if (clipper !== null) {
         return (
-            <Card sx={{maxWidth: 345}}>
-                <CardMedia
-                    component="img"
-                    height="500"
-                    image={pic}
-                    alt={clipper.name}
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                        {clipper.name}
-                    </Typography>
-                    <Typography variant="body1">
-                        {clipper.series && !clipper.series.custom ? (
-                            <span>Number {clipper.seriesNumber} of 4</span>
-                        ) : (
-                            <span>Number {clipper.seriesNumber} in a custom series</span>
-                        )}
-                    </Typography>
-                    <Typography variant="body2">
-                        {clipper.series &&
-                            <span>From series: {clipper.series.name}</span>
-                        }
-                    </Typography>
-                </CardContent>
-                <CardActions>
-                    <Button size="small" onClick={() => goToClipper(clipper.id)}>View clipper</Button>
 
-                    { (clipper.series != null && !props.seriesViewProp) &&
-                        <Button size="small" onClick={() => viewFullSeries(clipper.series.id)}>
-                            View full series
-                        </Button>
-                    }
-                </CardActions>
-            </Card>
+        <>
+            <ClipperCard
+                title={props.clipper.name}
+                imageSource={pic}
+                imageAlt="clipperImage"
+                seriesNumber={generateSeriesNumber()}
+                seriesName={generateSeriesName()}
+                actionClipper={goToClipper}
+                actionSeries={viewFullSeries}
+                seriesView={props.seriesView}
+                />
+        </>
         );
+    }
 }
 
-export default ClipperSingle
+ClipperSingle.propTypes = {
+    clipper: PropTypes.object.isRequired
+}
+export default ClipperSingle;
 

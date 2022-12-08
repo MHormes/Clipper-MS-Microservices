@@ -1,193 +1,56 @@
-import React, {useState, MouseEvent} from "react";
-import {
-    AppBar,
-    Container,
-    Toolbar,
-    IconButton,
-    Typography,
-    Box,
-    Menu,
-    Avatar,
-    Button,
-    Tooltip,
-    MenuItem
-} from "@mui/material";
-
-
-import MenuIcon from '@mui/icons-material/Menu';
+import React from "react";
 import {useNavigate} from "react-router";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faBars} from "@fortawesome/free-solid-svg-icons";
+
 
 //todo refactor away from navbar component
-const pages = ['Clippers', 'Series', 'Login'];
-const settings = ['Profile', 'Logout'];
-
+const pages = ['Clippers', 'Series'];
 const appName = 'ClipperMS';
 
 const Navbar = () => {
     const navigate = useNavigate();
 
-    const [anchorElNav, setAnchorElNav] = useState(null);
-    const [anchorElUser, setAnchorElUser] = useState(null);
-
-    const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
-        setAnchorElNav(event.currentTarget);
-    };
-    const handleOpenUserMenu = (event: MouseEvent<HTMLElement>) => {
-        setAnchorElUser(event.currentTarget);
-    };
-
     const handleCloseNavMenu = (chosenMenuOption) => {
-        setAnchorElNav(null);
-        //todo improve chosen menu option handling
+        //todo improve chosen menu option handling & navbar closing
         if (chosenMenuOption != null) {
             navigate(chosenMenuOption);
         }
     };
 
-    const handleCloseUserMenu = (chosenSettingsOption) => {
-        setAnchorElUser(null);
-        if (chosenSettingsOption != null) {
-            console.log(chosenSettingsOption);
-            navigate(chosenSettingsOption);
-        }
-    };
-
     return (
-        // todo refactor to remove unnecessary options included in material ui
-        <AppBar position="static"
-                sx={{
-                    backgroundColor: 'black',
-                }}>
-            <Container maxWidth="xl">
-                <Toolbar disableGutters>
-                    {/*region NAVBAR BIG SCREEN*/}
-                    {/*TITLE OF NAVBAR*/}
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="a"
-                        href="/"
-                        sx={{
-                            mr: 2,
-                            display: {xs: 'none', md: 'flex'},
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        {appName}
-                    </Typography>
-                    {/*CONTAINER OF NAVBAR MENU*/}
-                    <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleOpenNavMenu}
-                            color="inherit"
-                        >
-                            <MenuIcon/>
-                        </IconButton>
-                        {/*MENU OF NAVBAR*/}
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorElNav}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'left',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'left',
-                            }}
-                            open={Boolean(anchorElNav)}
-                            onClose={handleCloseNavMenu}
-                            sx={{
-                                display: {xs: 'block', md: 'none'},
-                            }}
-                        >
-
-                            {/*MENU ITEMS OF NAVBAR MENU*/}
-                            {pages.map((page) => (
-                                <MenuItem key={page} onClick={() => handleCloseNavMenu(page)}>
-                                    <Typography textAlign="center">{page}</Typography>
-                                </MenuItem>
-                            ))}
-                        </Menu>
-                    </Box>
-                    {/*endregion*/}
-                    {/*region NAVBAR SMALL SCREEN*/}
-                    {/*TITLE OF NAVBAR*/}
-                    <Typography
-                        variant="h5"
-                        noWrap
-                        component="a"
-                        href=""
-                        sx={{
-                            mr: 2,
-                            display: {xs: 'flex', md: 'none'},
-                            flexGrow: 1,
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        {appName}
-                    </Typography>
-                    {/*MENU OF NAVBAR*/}
-                    <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
-                        {/*MENU ITEMS OF NAVBAR MENU*/}
+        // todo create a better navbar
+        <div className="navbar bg-base-100">
+            <div className="navbar-start">
+                <div className="dropdown">
+                    <label tabIndex="0" className="btn btn-ghost lg:hidden">
+                        <FontAwesomeIcon icon={faBars}/>
+                    </label>
+                    <ul tabIndex="0"
+                        className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                         {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={() => handleCloseNavMenu(page)}
-                                sx={{my: 2, color: 'white', display: 'block'}}
-                            >
-                                {page}
-                            </Button>
+                            <li key={page}>
+                                <button onClick={() => handleCloseNavMenu(page)} className="menu-item">
+                                    {page}
+                                </button>
+                            </li>
                         ))}
-                    </Box>
-                    {/*endregion*/}
-                    {/*region USER MENU*/}
-                    <Box sx={{flexGrow: 0}}>
-                        <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"/>
-                            </IconButton>
-                        </Tooltip>
-                        <Menu
-                            sx={{mt: '45px'}}
-                            id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
-                        >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>
-                                    <Typography textAlign="center">{setting}</Typography>
-                                </MenuItem>
-                            ))}
-                        </Menu>
-                    </Box>
-                    {/*endregion*/}
-                </Toolbar>
-            </Container>
-        </AppBar>
+                    </ul>
+                </div>
+                <button className="btn btn-ghost normal-case text-xl" onClick={() => navigate("/")}>{appName}</button>
+            </div>
+            <div className="navbar-center hidden lg:flex">
+                <ul className="menu menu-horizontal p-0">
+                    {pages.map((page) => (
+                        <li key={page}>
+                            <button onClick={() => handleCloseNavMenu(page)} className="menu-item">
+                                {page}
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
     );
 }
 

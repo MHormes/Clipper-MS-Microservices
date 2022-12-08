@@ -47,7 +47,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests()
                 //Allow login
-                .requestMatchers("/login").permitAll()
+                .requestMatchers("/login", "/token/refresh").permitAll()
                 //Allow all get requests on clippers series and refresh endpoints
                 .requestMatchers(HttpMethod.GET, clipperPath + "/**", seriesPath + "/**", "/token/refresh/**").permitAll()
                 //Only allow (super) admins to create clippers

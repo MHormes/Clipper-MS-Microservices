@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from "react";
 import ClipperList from "../../components/clipper/viewClipper/ClipperList";
 import ClipperApi from "../../services/api/ClipperApi";
-import type {IClipper} from "../../services/model/ClipperModel";
-import {Typography} from "@mui/material";
+import type {IClipper,} from "../../services/model/ClipperModel";
 
 const clipperApi = new ClipperApi();
 const debug = false;
@@ -16,19 +15,20 @@ const AllClippers = () => {
             setClipperList(response.data);
             if (debug) console.log(response.data);
         }
-        getAllClippers().then(r => {if (debug) console.log("Clipper data fetched!")});
+        getAllClippers().then(() => {if (debug) console.log("Clipper data fetched!")});
     }, [])
 
     if(clipperList != null)
     return (
         <>
             <div>
-                <Typography variant="h2" align='center' sx={{mt: 2}}>
+                <h1 className="text-4xl text-center m-2">
                     All Clippers
-                </Typography>
+                </h1>
                 <ClipperList
                     clipperListProp={clipperList}/>
             </div>
+
         </>
     )
 }

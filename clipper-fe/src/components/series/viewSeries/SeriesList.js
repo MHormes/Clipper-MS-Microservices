@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
-import {Grid} from "@mui/material";
 import type {ISeries} from "../../../services/model/SeriesModel";
 import SeriesSingle from "./SeriesSingle";
+import PropTypes from "prop-types";
 
 const debug = false;
 const SeriesList = (props) => {
@@ -13,27 +13,23 @@ const SeriesList = (props) => {
             setSeriesList(props.seriesListProp)
             if (debug) console.log(props.seriesListProp);
         }
+
         loadSeriesList().then(r => console.log("Series list assigned!"));
     }, [])
 
-    if (seriesList != null)
-        return (
-            <>
-                <div>
-                    <Grid container spacing={12} columns={4} sx={{m: 0}}>
-                        {seriesList.map(
-                            (series) =>
-                                (
-                                    <Grid item key={series.id}>
-                                        <SeriesSingle
-                                            key={series.id}
-                                            seriesProp={series}/>
-                                    </Grid>
-                                ))}
-                    </Grid>
-                </div>
-            </>
-        )
+    if (seriesList != null) return (<>
+        <div className="grid grid-cols-1">
+            <ul>
+                {seriesList.map((series) => (<li key={series.id}>
+                    <SeriesSingle
+                        series={series}/>
+                </li>))}
+            </ul>
+        </div>
+    </>)
 }
 
+SeriesList.propTypes = {
+    seriesListProp: PropTypes.array.isRequired
+}
 export default SeriesList

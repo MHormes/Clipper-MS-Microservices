@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import ClipperSingle from "./ClipperSingle";
-import {Grid} from "@mui/material";
 import type {IClipper} from "../../../services/model/ClipperModel";
+import PropTypes from "prop-types";
 
 const debug = false;
 const ClipperList = (props) => {
@@ -10,35 +10,38 @@ const ClipperList = (props) => {
 
     useEffect(() => {
         async function loadClipperList() {
-            setClipperList(props.clipperListProp)
+            setClipperList(props.clipperListProp);
             if (debug) console.log(props.clipperListProp);
         }
 
         loadClipperList().then(r => {
             if (debug) console.log("Clipper list assigned!")
         });
-    }, [])
+    }, [props.clipperListProp])
 
     if (clipperList != null)
         return (
             <>
-                <div>
-                    <Grid container spacing={4} columns={4} sx={{m: 0}} justifyContent="center">
+                <div className="grid grid-cols-1 overflow-y-auto">
+                    <ul>
                         {clipperList.map(
                             (clipper) =>
                                 (
-                                    <Grid item key={clipper.id}>
-                                        <ClipperSingle
-                                            key={clipper.id}
-                                            clipperProp={clipper}
-                                            seriesViewProp={props.seriesViewProp}
-                                        />
-                                    </Grid>
+                                    <li key={clipper.id}>
+                                        <ClipperSingle clipper={clipper} seriesView={props.seriesView}/>
+                                    </li>
                                 ))}
-                    </Grid>
+                    </ul>
                 </div>
             </>
         )
 }
 
-export default ClipperList
+ClipperList.propTypes = {
+    clipperListProp: PropTypes.array.isRequired
+}
+
+ClipperList.defaultProps = {
+    seriesView: false
+}
+export default ClipperList;

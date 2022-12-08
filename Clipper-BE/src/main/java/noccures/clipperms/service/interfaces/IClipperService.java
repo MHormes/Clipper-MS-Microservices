@@ -6,7 +6,9 @@ import noccures.clipperms.model.Clipper;
 
 import java.util.List;
 
-
+/**
+ * Interface for ClipperService. Holds all clipper related logic.
+ */
 public interface IClipperService {
 
     Clipper addClipper(Clipper clipperToAdd, String seriesId) throws IncorrectInputException, DatabaseFailedOperationException;

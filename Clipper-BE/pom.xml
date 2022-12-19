@@ -3,13 +3,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-<!--    <parent>-->
-<!--        <groupId>org.springframework.boot</groupId>-->
-<!--        <artifactId>spring-boot-starter-parent</artifactId>-->
-<!--        <version>3.0.0</version>-->
-<!--        <relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
-<!--    </parent>-->
-
     <groupId>noccures</groupId>
     <artifactId>clipperMS</artifactId>
     <version>0.0.2-SNAPSHOT</version>
@@ -36,7 +29,6 @@
         <sonar.version>3.9.1.2184</sonar.version>
         <java-jwt.version>4.2.1</java-jwt.version>
         <hibernate-validator.version>8.0.0.Final</hibernate-validator.version>
-
     </properties>
 
     <dependencies>
@@ -137,10 +129,9 @@
     </dependencies>
 
     <build>
-        <pluginManagement>
             <plugins>
                 <plugin>
-<!--                    Plugin to satisfy the maven compiler in spring boot >= 3 -->
+                    <!--                Plugin to satisfy the maven compiler in spring boot >= 3 -->
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven-plugin.version}</version>
                     <configuration>
@@ -150,7 +141,20 @@
                     </configuration>
                 </plugin>
             </plugins>
-        </pluginManagement>
     </build>
+
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <sonar.projectKey>clipperMS_sonar_key</sonar.projectKey>
+                <sonar.host.url>http://localhost:9000</sonar.host.url>
+                <sonar.login>sqp_9197cc42c50feeec6cec39c76e313c007657db08</sonar.login>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>

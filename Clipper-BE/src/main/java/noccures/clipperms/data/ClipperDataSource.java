@@ -50,6 +50,7 @@ public class ClipperDataSource implements IClipperDataSource {
         //assign values from incoming clipper to clipper in db
         clipperToUpdate.setName(clipperWithUpdate.getName());
         //todo implement series update
+
         //clipperToUpdate.setSeriesId(clipperWithUpdate.getSeriesId());
         clipperToUpdate.setSeriesNumber(clipperWithUpdate.getSeriesNumber());
         //save changes made to clipper

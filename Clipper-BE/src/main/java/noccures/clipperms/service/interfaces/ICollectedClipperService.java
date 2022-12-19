@@ -2,7 +2,6 @@ package noccures.clipperms.service.interfaces;
 
 import noccures.clipperms.exceptions.DatabaseFailedOperationException;
 import noccures.clipperms.exceptions.IncorrectInputException;
-import noccures.clipperms.model.Clipper;
 import noccures.clipperms.model.CollectedClipper;
 
 import java.util.List;

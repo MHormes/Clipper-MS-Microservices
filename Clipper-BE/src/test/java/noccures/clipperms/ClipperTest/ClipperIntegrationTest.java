@@ -4,7 +4,6 @@ import noccures.clipperms.data.interfaces.IClipperDataSource;
 import noccures.clipperms.exceptions.ExceptionMessages;
 import noccures.clipperms.model.AppUser;
 import noccures.clipperms.model.Clipper;
-import noccures.clipperms.service.ClipperService;
 import noccures.clipperms.service.interfaces.IAppUserService;
 import noccures.clipperms.service.interfaces.IClipperService;
 import org.junit.jupiter.api.Assertions;

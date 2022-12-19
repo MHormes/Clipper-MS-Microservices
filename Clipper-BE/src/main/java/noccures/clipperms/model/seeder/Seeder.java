@@ -1,6 +1,8 @@
 package noccures.clipperms.model.seeder;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import noccures.clipperms.model.*;
 import noccures.clipperms.service.interfaces.IAppUserService;
 import noccures.clipperms.service.interfaces.IClipperService;
@@ -18,7 +20,12 @@ import java.util.UUID;
 @Profile("development")
 @Configuration
 @AllArgsConstructor
+@Slf4j
 public class Seeder {
+
+    private static String roermond = "Roermond";
+    private static String lommel = "Lommel";
+    private static String nijmwegen = "Nijmegen";
 
     @Bean
     CommandLineRunner run(IAppUserService userService, IClipperService clipperService, ISeriesService seriesService, ICollectedClipperService collectedClipperService) {
@@ -65,13 +72,13 @@ public class Seeder {
                 clipperService.addClipper(mascotte, mascotteSeries.getId().toString());
                 clipperService.addClipper(noSeries, null);
 
-                CollectedClipper cSkate1 = new CollectedClipper(UUID.fromString("489f550a-4612-43e8-a36c-1a88925ed81e"), skate1, superAdmin, "", LocalDate.now(), "Roermond");
-                CollectedClipper cSkate2 = new CollectedClipper(UUID.fromString("5d4861b4-ead4-49f2-bd80-a069556e7aac"), skate2, superAdmin, "", LocalDate.now(), "Roermond");
-                CollectedClipper cSkate3 = new CollectedClipper(UUID.fromString("8f0b5659-b3a3-42c6-9e61-260461d507a4"), skate3, superAdmin, "", LocalDate.now(), "Roermond");
-                CollectedClipper cSkate4 = new CollectedClipper(UUID.fromString("0bd1f4ee-a230-4658-a846-7cbb4ef4e0fd"), skate4, superAdmin, "", LocalDate.now(), "Roermond");
-                CollectedClipper cMascotte1 = new CollectedClipper(UUID.fromString("45b3d63c-2bdc-48c0-9f92-5472ef1c7295"), mascotte, superAdmin, "", LocalDate.now(), "Lommel");
-                CollectedClipper cMascotte2 = new CollectedClipper(UUID.fromString("23f8248b-d3d4-4a78-9694-b847cc13ea6b"), mascotte, admin, "", LocalDate.now(), "Lommel");
-                CollectedClipper cNoSeries = new CollectedClipper(UUID.fromString("25bc8b10-a90c-4f9a-aab2-a6e0e2ebaec0"), skate1, admin, "", LocalDate.now(), "Nijmegen");
+                CollectedClipper cSkate1 = new CollectedClipper(UUID.fromString("489f550a-4612-43e8-a36c-1a88925ed81e"), skate1, superAdmin, "", LocalDate.now(), roermond);
+                CollectedClipper cSkate2 = new CollectedClipper(UUID.fromString("5d4861b4-ead4-49f2-bd80-a069556e7aac"), skate2, superAdmin, "", LocalDate.now(), roermond);
+                CollectedClipper cSkate3 = new CollectedClipper(UUID.fromString("8f0b5659-b3a3-42c6-9e61-260461d507a4"), skate3, superAdmin, "", LocalDate.now(), roermond);
+                CollectedClipper cSkate4 = new CollectedClipper(UUID.fromString("0bd1f4ee-a230-4658-a846-7cbb4ef4e0fd"), skate4, superAdmin, "", LocalDate.now(), roermond);
+                CollectedClipper cMascotte1 = new CollectedClipper(UUID.fromString("45b3d63c-2bdc-48c0-9f92-5472ef1c7295"), mascotte, superAdmin, "", LocalDate.now(), lommel);
+                CollectedClipper cMascotte2 = new CollectedClipper(UUID.fromString("23f8248b-d3d4-4a78-9694-b847cc13ea6b"), mascotte, admin, "", LocalDate.now(), lommel);
+                CollectedClipper cNoSeries = new CollectedClipper(UUID.fromString("25bc8b10-a90c-4f9a-aab2-a6e0e2ebaec0"), skate1, admin, "", LocalDate.now(), nijmwegen);
 
                 collectedClipperService.addCollectedClipper(cSkate1);
                 collectedClipperService.addCollectedClipper(cSkate2);
@@ -81,7 +88,7 @@ public class Seeder {
                 collectedClipperService.addCollectedClipper(cMascotte2);
                 collectedClipperService.addCollectedClipper(cNoSeries);
             } catch (Exception ex) {
-                System.out.println("DB already holds data. Seeder failed on: " + ex.getMessage());
+                log.error("DB already holds data. Seeder failed on: " + ex.getMessage());
             }
         };
 

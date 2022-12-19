@@ -134,7 +134,7 @@ public class ClipperService implements IClipperService {
         //todo let JPA remove collected clippers on delete???
         var collectedClippers = collectedClipperService.getCollectedClippersForClipperId(clipperId);
         log.info("Removing {} collected clippers for clipper {}", collectedClippers.size(), clipperId);
-        if(collectedClippers.size() != 0){
+        if(!collectedClippers.isEmpty()){
             for(CollectedClipper cc: collectedClippers){
                 collectedClipperService.deleteCollectedClipper(cc.getId().toString());
             }

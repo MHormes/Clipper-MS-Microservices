@@ -1,7 +1,6 @@
 package noccures.clipperms.dto.clipper;
 
 import lombok.*;
-import noccures.clipperms.dto.series.SeriesDTO;
 
 
 @Getter

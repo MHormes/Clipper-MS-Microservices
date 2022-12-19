@@ -3,7 +3,6 @@ package noccures.clipperms.data;
 import noccures.clipperms.data.interfaces.ICollectedClipperDataSource;
 import noccures.clipperms.data.repositories.ICollectedClipperRepository;
 import noccures.clipperms.model.CollectedClipper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -33,7 +32,7 @@ public class CollectedClipperDataSource implements ICollectedClipperDataSource {
 
     @Override
     public List<CollectedClipper> getCollectedClippersForClipperId(UUID clipperId) {
-        return collectedClipperRepo.getCollectedClippersByClipperId_Id(clipperId);
+        return collectedClipperRepo.getCollectedClippersByClipperIdId(clipperId);
     }
 
     @Override

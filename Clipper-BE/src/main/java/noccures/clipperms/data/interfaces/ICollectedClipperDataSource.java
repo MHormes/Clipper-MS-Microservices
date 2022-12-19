@@ -1,8 +1,6 @@
 package noccures.clipperms.data.interfaces;
 
-import noccures.clipperms.model.Clipper;
 import noccures.clipperms.model.CollectedClipper;
-import noccures.clipperms.model.Series;
 
 import java.util.List;
 import java.util.UUID;

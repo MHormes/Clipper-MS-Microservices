@@ -13,6 +13,7 @@ import noccures.clipperms.data.repositories.IAppRoleRepository;
 import noccures.clipperms.data.repositories.IAppUserRepository;
 import noccures.clipperms.model.AppRole;
 import noccures.clipperms.model.AppUser;
+import noccures.clipperms.security.SecurityConstants;
 import noccures.clipperms.service.interfaces.IAppUserService;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -142,7 +143,7 @@ public class AppUserService implements IAppUserService, UserDetailsService {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
                 String refresh_token = authorizationHeader.substring("Bearer ".length());
-                Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                Algorithm algorithm = Algorithm.HMAC256(SecurityConstants.SECRET.getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(refresh_token);
                 String username = decodedJWT.getSubject();
@@ -162,7 +163,6 @@ public class AppUserService implements IAppUserService, UserDetailsService {
             } catch (Exception ex) {
                 response.setHeader("error", ex.getMessage());
                 response.setStatus(FORBIDDEN.value());
-                //response.sendError(FORBIDDEN.value());
                 Map<String, String> error = new HashMap<>();
                 error.put("error_msg", ex.getMessage());
                 response.setContentType(APPLICATION_JSON_VALUE);

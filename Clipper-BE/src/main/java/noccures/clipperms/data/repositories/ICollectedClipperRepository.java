@@ -12,5 +12,5 @@ public interface ICollectedClipperRepository extends JpaRepository<CollectedClip
 
     CollectedClipper getCollectedClipperById(UUID id);
 
-    List<CollectedClipper> getCollectedClippersByClipperId_Id(UUID clipperId);
+    List<CollectedClipper> getCollectedClippersByClipperIdId(UUID clipperId);
 }

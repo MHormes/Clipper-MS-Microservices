@@ -35,3 +35,5 @@ build/
 .env
 
 docker
+
+Clipper-BE/src/main/java/noccures/clipperms/security/SecurityConstants.java

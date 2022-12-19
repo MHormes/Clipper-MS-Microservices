@@ -23,14 +23,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final static String clipperPath = "/api/clipper";
-    private final static String seriesPath = "/api/series";
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         final CorsConfiguration corsConfiguration = new CorsConfiguration();
@@ -45,19 +41,23 @@ public class SecurityConfig {
 
         //ACCESS CONTROL
 
+        String seriesPath = SecurityConstants.SERIES_PATH;
+        String clipperPath = SecurityConstants.CLIPPER_PATH;
+        String admin = SecurityConstants.ADMIN;
+        String superAdmin = SecurityConstants.SUPER_ADMIN;
         http.authorizeHttpRequests()
                 //Allow login
                 .requestMatchers("/login", "/token/refresh").permitAll()
                 //Allow all get requests on clippers series and refresh endpoints
                 .requestMatchers(HttpMethod.GET, clipperPath + "/**", seriesPath + "/**", "/token/refresh/**").permitAll()
                 //Only allow (super) admins to create clippers
-                .requestMatchers(HttpMethod.POST, clipperPath + "/**", seriesPath + "/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_SUPER_ADMIN")
+                .requestMatchers(HttpMethod.POST, clipperPath + "/**", seriesPath + "/**").hasAnyAuthority(admin, superAdmin)
                 //Only allow (super) admins to update clippers
-                .requestMatchers(HttpMethod.PUT, clipperPath + "/**", seriesPath + "/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_SUPER_ADMIN")
+                .requestMatchers(HttpMethod.PUT, clipperPath + "/**", seriesPath + "/**").hasAnyAuthority(admin, superAdmin)
                 //Only allow super admins to delete clippers
-                .requestMatchers(HttpMethod.DELETE, clipperPath + "/**", seriesPath + "/**").hasAuthority("ROLE_SUPER_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, clipperPath + "/**", seriesPath + "/**").hasAuthority(superAdmin)
                 //Only allow super admin to manage users.
-                .requestMatchers("/api/user/**").hasAuthority("ROLE_SUPER_ADMIN")
+                .requestMatchers("/api/user/**").hasAuthority(superAdmin)
                 //Allow Swagger UI
                 .requestMatchers("/docs/**").permitAll()
                 .anyRequest().authenticated()

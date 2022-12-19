@@ -13,7 +13,7 @@ const DeleteModal = (props) => {
 
 
     return (
-        <div className="">
+        <div>
             {/* The button to open modal */}
             <label htmlFor="deleteModal" className="btn text-white">
                 <FontAwesomeIcon icon={faTrashCan}/>

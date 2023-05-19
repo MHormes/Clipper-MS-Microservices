@@ -5,6 +5,7 @@ export interface IClipper{
     name: string;
     series: ISeries;
     seriesNumber: string;
+    image: string;
     createdById: string;
 }
 

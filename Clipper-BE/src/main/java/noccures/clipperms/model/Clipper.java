@@ -2,6 +2,7 @@ package noccures.clipperms.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -49,6 +50,10 @@ public class Clipper {
     @JoinColumn(name = "created_by")
     @JsonBackReference
     private AppUser createdBy;
+
+    @Lob
+    @Column(name = "image_data", length = 1000)
+    private byte[] imageData;
 
     public Clipper() {
 

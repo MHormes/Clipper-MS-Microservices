@@ -7,7 +7,7 @@ import CardTitle from "./CardTitle";
 
 const ClipperCard = (props) => {
     return (
-        <div className="card card-side bg-white h-28 m-3 md:m-8">
+        <div className="card card-side bg-white h-40 m-3 md:m-8 md:h-28">
             <CardPicture
                 alt={props.imageAlt}
                 imageSource={props.imageSource}
@@ -21,7 +21,7 @@ const ClipperCard = (props) => {
                 />
                 <CardText cardText={props.seriesName}/>
             </div>
-            <div>
+            <div className={""}>
                 {!props.seriesView &&
                     <CardButton
                         buttonText="View Series"

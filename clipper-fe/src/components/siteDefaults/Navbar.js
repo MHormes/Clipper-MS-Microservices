@@ -1,7 +1,8 @@
-import React from "react";
+import React, {useContext} from "react";
 import {useNavigate} from "react-router";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars} from "@fortawesome/free-solid-svg-icons";
+import {AuthContext} from "../../services/RouteAuthProvider";
 
 
 //todo refactor away from navbar component
@@ -10,6 +11,8 @@ const appName = 'ClipperMS';
 
 const Navbar = () => {
     const navigate = useNavigate();
+
+    const { onLogout } = useContext(AuthContext);
 
     const handleCloseNavMenu = (chosenMenuOption) => {
         //todo improve chosen menu option handling & navbar closing
@@ -35,6 +38,13 @@ const Navbar = () => {
                                 </button>
                             </li>
                         ))}
+                        {localStorage.getItem('token') ? (
+                            <li>
+                                <button onClick={onLogout} className="menu-item">
+                                    Logout
+                                </button>
+                            </li>
+                        ) : null}
                     </ul>
                 </div>
                 <button className="btn btn-ghost normal-case text-xl" onClick={() => navigate("/")}>{appName}</button>

@@ -11,9 +11,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ClipperNoSeriesRequest extends ClipperDTO {
 
-    String id;
-    String name;
-    String seriesId;
-    int seriesNumber;
-    String createdById;
+    private String seriesId;
+    private byte[] imageData;
+
+    public ClipperNoSeriesRequest(String id, String name, String series, int seriesNumber, String createdById, byte[] imageData) {
+        super(id, name, seriesNumber, createdById);
+        this.seriesId = series;
+        this.imageData = imageData;
+    }
 }

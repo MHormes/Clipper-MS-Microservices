@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const CardText = (props) => {
     return (
         <>
-            <p className={" " + (props.textSmall? 'text-xs' : 'text-md')}>
+            <p className={`${props.textSmall? 'text-xs' : 'text-md'}`}>
                 {props.cardText}
             </p>
         </>

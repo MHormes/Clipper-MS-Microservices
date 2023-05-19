@@ -23,9 +23,9 @@ import java.util.UUID;
 @Slf4j
 public class Seeder {
 
-    private static String roermond = "Roermond";
-    private static String lommel = "Lommel";
-    private static String nijmwegen = "Nijmegen";
+    private static final String roermond = "Roermond";
+    private static final String lommel = "Lommel";
+    private static final String nijmwegen = "Nijmegen";
 
     @Bean
     CommandLineRunner run(IAppUserService userService, IClipperService clipperService, ISeriesService seriesService, ICollectedClipperService collectedClipperService) {
@@ -58,12 +58,12 @@ public class Seeder {
                 seriesService.addSeries(mascotteSeries);
 
 
-                Clipper skate1 = new Clipper(UUID.fromString("fa1fc0fb-372b-4b4a-b998-cb7eda404af9"), "Skate Boards 1", null, 1, superAdmin);
-                Clipper skate2 = new Clipper(UUID.fromString("943914cb-f741-4dc2-ad30-5d1b9b2feaf8"), "Skate Boards 2", null, 2, superAdmin);
-                Clipper skate3 = new Clipper(UUID.fromString("e14022a3-45f9-499c-af65-dc0a580d3ab9"), "Skate Boards 3", null, 3, superAdmin);
-                Clipper skate4 = new Clipper(UUID.fromString("4d0ac2bb-9a8a-4881-8d38-f886849037c6"), "Skate Boards 4", null, 4, superAdmin);
-                Clipper mascotte = new Clipper(UUID.fromString("da683ef1-a8bc-4791-b05e-010fd38b12fc"), "Mascotte M", null, 1, admin);
-                Clipper noSeries = new Clipper(UUID.fromString("4d581847-e3e9-4d06-b116-a22b82794fc5"), "Neon leaf", null, 1, superAdmin);
+                Clipper skate1 = new Clipper(UUID.fromString("fa1fc0fb-372b-4b4a-b998-cb7eda404af9"), "Skate Boards 1", null, 1, superAdmin, ImageSeederEnum.SKATE1.getImage());
+                Clipper skate2 = new Clipper(UUID.fromString("943914cb-f741-4dc2-ad30-5d1b9b2feaf8"), "Skate Boards 2", null, 2, superAdmin, ImageSeederEnum.SKATE2.getImage());
+                Clipper skate3 = new Clipper(UUID.fromString("e14022a3-45f9-499c-af65-dc0a580d3ab9"), "Skate Boards 3", null, 3, superAdmin, ImageSeederEnum.SKATE3.getImage());
+                Clipper skate4 = new Clipper(UUID.fromString("4d0ac2bb-9a8a-4881-8d38-f886849037c6"), "Skate Boards 4", null, 4, superAdmin, ImageSeederEnum.SKATE4.getImage());
+                Clipper mascotte = new Clipper(UUID.fromString("da683ef1-a8bc-4791-b05e-010fd38b12fc"), "Mascotte M", null, 1, admin, ImageSeederEnum.MASCOTTE.getImage());
+                Clipper noSeries = new Clipper(UUID.fromString("4d581847-e3e9-4d06-b116-a22b82794fc5"), "Neon leaf", null, 1, superAdmin, ImageSeederEnum.NO_SERIES.getImage());
 
                 clipperService.addClipper(skate1, skateSeries.getId().toString());
                 clipperService.addClipper(skate2, skateSeries.getId().toString());

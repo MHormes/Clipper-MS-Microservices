@@ -1,7 +1,6 @@
 import React, {useEffect,} from "react";
 import ClipperCard from "../../card/ClipperCard";
 import {useNavigate} from "react-router";
-import pic from "../../../assets/clipper-aansteker-cut.jpg";
 import PropTypes from "prop-types";
 
 const debug = false;
@@ -45,7 +44,7 @@ const ClipperSingle = (props) => {
         <>
             <ClipperCard
                 title={props.clipper.name}
-                imageSource={pic}
+                imageSource={props.clipper.image}
                 imageAlt="clipperImage"
                 seriesNumber={generateSeriesNumber()}
                 seriesName={generateSeriesName()}

@@ -11,9 +11,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ClipperCreateRequest extends ClipperDTO{
 
-    String id;
-    String name;
-    String seriesId;
-    int seriesNumber;
-    String createdById;
+    private String seriesId;
 }

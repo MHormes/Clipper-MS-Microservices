@@ -1,4 +1,4 @@
-import apiInstance from "./apiInstance";
+import apiInstance from "./ApiInstance";
 import {AxiosResponse} from "axios";
 import type {ISeries} from "../model/SeriesModel";
 
@@ -9,6 +9,9 @@ export default class SeriesApi {
 
     constructor() {
         api = apiInstance.init();
+        if(localStorage.getItem('token')){
+            api.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+        }
     }
 
     getSeriesWithId = async (seriesId) => {

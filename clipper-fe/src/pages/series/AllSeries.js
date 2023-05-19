@@ -16,7 +16,7 @@ const AllSeries = () => {
             if (debug) console.log(response.data);
         }
 
-        getAllSeries().then(r => console.log("Series data fetched!"));
+        getAllSeries().then(r => {if(debug) console.log("Series data fetched!")});
     }, [])
 
     if (seriesList != null)

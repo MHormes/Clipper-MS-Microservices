@@ -13,9 +13,12 @@ import noccures.clipperms.dto.series.SeriesNoClipperRequest;
 @NoArgsConstructor
 public class ClipperWithSeriesRequest extends ClipperDTO {
 
-    String id;
-    String name;
-    SeriesNoClipperRequest series;
-    int seriesNumber;
-    String createdById;
+    private SeriesNoClipperRequest series;
+    private byte[] imageData;
+
+    public ClipperWithSeriesRequest(String id, String name, SeriesNoClipperRequest seriesNoClipperRequest, int seriesNumber, String createdById, byte[] imageData) {
+        super(id, name, seriesNumber, createdById);
+        this.series = seriesNoClipperRequest;
+        this.imageData = imageData;
+    }
 }

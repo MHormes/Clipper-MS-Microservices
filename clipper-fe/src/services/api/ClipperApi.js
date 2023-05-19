@@ -1,5 +1,5 @@
 import {AxiosResponse} from "axios";
-import apiInstance from "./apiInstance";
+import apiInstance from "./ApiInstance";
 import type {IClipper} from "../model/ClipperModel";
 
 const debug = false;
@@ -9,14 +9,20 @@ export default class ClipperApi {
 
     constructor() {
         api = apiInstance.init();
+        if(localStorage.getItem('token')){
+            api.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+        }
     }
-
     getAllClippers = async () => {
         return api
             .get("/clipper/all")
             .then((response: AxiosResponse<IClipper[]>) => {
                 if(debug) console.log(response.data);
                 if(response.status === 200){
+                    response.data.forEach((clipper) => {
+                        //clipper.image = this.convertImageBytesToBaseString(clipper.image);
+                        console.log(clipper.image);
+                    })
                     return response;
                 }
             })
@@ -54,5 +60,9 @@ export default class ClipperApi {
                 console.log(error);
                 return null;
             });
+    }
+
+    convertImageBytesToBaseString = (image) => {
+        return btoa(String.fromCharCode(...new Uint8Array(image)));
     }
 }

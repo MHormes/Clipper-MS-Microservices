@@ -19,17 +19,19 @@ const ClipperCard = (props) => {
                 <CardText
                     cardText={props.seriesNumber}
                 />
+                {props.seriesName !== "No-Series" &&
                 <CardText cardText={props.seriesName}/>
+                }
             </div>
             <div className={""}>
-                {!props.seriesView &&
+                <CardButton
+                    buttonText="View clipper"
+                    buttonAction={props.actionClipper}/>
+                {(!props.seriesView && props.seriesName !== "No-Series") &&
                     <CardButton
                         buttonText="View Series"
                         buttonAction={props.actionSeries}/>
                 }
-                <CardButton
-                    buttonText="View clipper"
-                    buttonAction={props.actionClipper}/>
             </div>
         </div>
     );

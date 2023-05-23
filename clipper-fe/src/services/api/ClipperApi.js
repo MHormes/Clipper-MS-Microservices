@@ -1,6 +1,6 @@
 import {AxiosResponse} from "axios";
 import apiInstance from "./ApiInstance";
-import type {IClipper} from "../model/ClipperModel";
+import type {IClipper, IClipperCreateRequest} from "../model/ClipperModel";
 
 const debug = false;
 
@@ -19,15 +19,11 @@ export default class ClipperApi {
             .then((response: AxiosResponse<IClipper[]>) => {
                 if(debug) console.log(response.data);
                 if(response.status === 200){
-                    response.data.forEach((clipper) => {
-                        //clipper.image = this.convertImageBytesToBaseString(clipper.image);
-                        console.log(clipper.image);
-                    })
                     return response;
                 }
             })
             .catch((error) => {
-                console.log(error);
+                console.log(error.message);
                 return null;
             });
     }
@@ -47,6 +43,10 @@ export default class ClipperApi {
             });
     }
 
+    createClipper = async (clipperObject: IClipperCreateRequest, image: File) => {
+
+    }
+
     deleteClipper = async (clipperId) => {
         return api
             .delete("/clipper/delete/" + clipperId)
@@ -60,9 +60,5 @@ export default class ClipperApi {
                 console.log(error);
                 return null;
             });
-    }
-
-    convertImageBytesToBaseString = (image) => {
-        return btoa(String.fromCharCode(...new Uint8Array(image)));
     }
 }

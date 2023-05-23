@@ -1,12 +1,14 @@
 import UserAuthApi from "./api/UserAuthApi";
 import {createContext, useEffect, useMemo, useState} from "react";
 import {useLocation, useNavigate} from "react-router";
+import type {IUserLoginDetails} from "./model/UserModel";
+import loginScreen from "../pages/homePage/LoginScreen";
 
 export const AuthContext = createContext(null);
 
 const userAuthApi = new UserAuthApi();
 
-const debug = false;
+const debug = true;
 const RouteAuthProvider = ({children}) => {
 
     const navigate = useNavigate();
@@ -21,14 +23,14 @@ const RouteAuthProvider = ({children}) => {
         }
     }, []);
 
-    const handleLogin = async () => {
+    const handleLogin = async (authDetails: IUserLoginDetails) => {
         console.log("Logging in")
-        const token = await userAuthApi.loginUser({username: "test", password: "test"});
+        const token = await userAuthApi.loginUser(authDetails);
 
-        setToken(token);
-        if (debug) console.log("Token has been set", token);
+        token != null ? setToken(token) : alert("Invalid username or password");
         if (token) {
             localStorage.setItem("token", token);
+            if (debug) console.log("Token has been set", token);
             const origin = location.state?.from?.pathname || '/Clippers';
             navigate(origin);
         }

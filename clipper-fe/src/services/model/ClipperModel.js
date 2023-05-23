@@ -5,10 +5,18 @@ export interface IClipper{
     name: string;
     series: ISeries;
     seriesNumber: string;
-    image: string;
+    imageData: string;
     createdById: string;
 }
 
 export interface IClipperList{
     clippers: Array<IClipper>
+}
+
+export interface IClipperCreateRequest{
+    id: string
+    name: string;
+    seriesNumber: string;
+    seriesId: string;
+    createdBy: string;
 }

@@ -1,12 +1,14 @@
 package noccures.clipperms.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import noccures.clipperms.dto.clipper.ClipperWithSeriesRequest;
+import jakarta.validation.constraints.NotNull;
+import noccures.clipperms.dto.clipper.ClipperWithSeriesResponse;
 import noccures.clipperms.dto.mapper.ClipperConverter;
 import noccures.clipperms.dto.mapper.SeriesConverter;
+import noccures.clipperms.dto.series.SeriesCreateRequest;
 import noccures.clipperms.dto.series.SeriesDTO;
-import noccures.clipperms.dto.series.SeriesNoClipperRequest;
-import noccures.clipperms.dto.series.SeriesWithClipperRequest;
+import noccures.clipperms.dto.series.SeriesNoClipperResponse;
+import noccures.clipperms.dto.series.SeriesWithClipperResponse;
 import noccures.clipperms.exceptions.DatabaseFailedOperationException;
 import noccures.clipperms.exceptions.IncorrectInputException;
 import noccures.clipperms.model.Clipper;
@@ -16,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,11 +43,13 @@ public class SeriesController {
         this.clipperConverter = clipperConverter;
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<SeriesDTO> addSeries(@RequestBody SeriesNoClipperRequest seriesDTO) throws IncorrectInputException, DatabaseFailedOperationException {
-        var seriesToAdd = seriesConverter.convertRequestNoClipperToModel(seriesDTO);
+    @PostMapping(value = "/add",  consumes = {"multipart/form-data"})
+    public ResponseEntity<SeriesDTO> addSeries(
+            @RequestPart ("series") SeriesCreateRequest seriesDTO,
+            @NotNull @RequestPart ("image") MultipartFile file) throws IncorrectInputException, DatabaseFailedOperationException, IOException {
+        var seriesToAdd = seriesConverter.convertCreateRequestNoClipperToModel(seriesDTO, file);
         var addedSeriesReturn = seriesService.addSeries(seriesToAdd);
-        return ResponseEntity.ok().body(seriesConverter.convertModelToRequestWithClipper(addedSeriesReturn));
+        return ResponseEntity.ok().body(seriesConverter.convertModelToResponseWithClipper(addedSeriesReturn));
     }
 
     @GetMapping("/{id}/available")
@@ -53,39 +59,41 @@ public class SeriesController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SeriesWithClipperRequest> getSeriesWithId(@PathVariable(value = "id") String id) throws DatabaseFailedOperationException {
+    public ResponseEntity<SeriesWithClipperResponse> getSeriesWithId(@PathVariable(value = "id") String id) throws DatabaseFailedOperationException {
         var seriesWithId = seriesService.getSeriesWithId(id);
-        SeriesWithClipperRequest seriesWithClipperRequest = seriesConverter.convertModelToRequestWithClipper(seriesWithId);
-        return addClippersWithSeriesToSeriesWithClipperRequest(seriesWithId, seriesWithClipperRequest);
+        SeriesWithClipperResponse seriesWithClipperResponse = seriesConverter.convertModelToResponseWithClipper(seriesWithId);
+        return addClippersWithSeriesToSeriesWithClipperResponse(seriesWithId, seriesWithClipperResponse);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<SeriesWithClipperRequest>> getAllSeries() {
+    public ResponseEntity<List<SeriesWithClipperResponse>> getAllSeries() {
         var seriesList = seriesService.getAllSeries();
-        List<SeriesWithClipperRequest> returnList = new ArrayList<>();
+        List<SeriesWithClipperResponse> returnList = new ArrayList<>();
         for (Series series : seriesList){
-            SeriesWithClipperRequest seriesWithClipperRequest = seriesConverter.convertModelToRequestWithClipper(series);
-            addClippersWithSeriesToSeriesWithClipperRequest(series, seriesWithClipperRequest);
-            returnList.add(seriesWithClipperRequest);
+            SeriesWithClipperResponse seriesWithClipperResponse = seriesConverter.convertModelToResponseWithClipper(series);
+            addClippersWithSeriesToSeriesWithClipperResponse(series, seriesWithClipperResponse);
+            returnList.add(seriesWithClipperResponse);
         }
         return ResponseEntity.ok().body(returnList);
     }
 
     //todo refactor assign clipperWithSeriesRequest -> move out of controller
-    private ResponseEntity<SeriesWithClipperRequest> addClippersWithSeriesToSeriesWithClipperRequest(Series series, SeriesWithClipperRequest seriesWithClipperRequest) {
-        List<ClipperWithSeriesRequest> clipperWithSeriesRequestList = new ArrayList<>();
+    private ResponseEntity<SeriesWithClipperResponse> addClippersWithSeriesToSeriesWithClipperResponse(Series series, SeriesWithClipperResponse seriesWithClipperResponse) {
+        List<ClipperWithSeriesResponse> clipperWithSeriesResponseList = new ArrayList<>();
         for (Clipper clipper : series.getClippers()) {
-            clipperWithSeriesRequestList.add(clipperConverter.convertModelToClipperWithSeriesRequest(clipper));
+            clipperWithSeriesResponseList.add(clipperConverter.convertModelToClipperWithSeriesRequest(clipper));
         }
-        seriesWithClipperRequest.setClippers(clipperWithSeriesRequestList);
-        return ResponseEntity.ok().body(seriesWithClipperRequest);
+        seriesWithClipperResponse.setClippers(clipperWithSeriesResponseList);
+        return ResponseEntity.ok().body(seriesWithClipperResponse);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<SeriesDTO> updateSeries(@RequestBody SeriesNoClipperRequest seriesDTO) throws DatabaseFailedOperationException {
-        var seriesWithUpdate = seriesConverter.convertRequestNoClipperToModel(seriesDTO);
+    public ResponseEntity<SeriesDTO> updateSeries(
+            @RequestPart SeriesCreateRequest seriesDTO,
+            @NotNull @RequestPart MultipartFile file) throws DatabaseFailedOperationException, IOException {
+        var seriesWithUpdate = seriesConverter.convertCreateRequestNoClipperToModel(seriesDTO, file);
         var updatedSeriesReturn = seriesService.updateSeries(seriesWithUpdate);
-        return ResponseEntity.ok().body(seriesConverter.convertModelToRequestWithClipper(updatedSeriesReturn));
+        return ResponseEntity.ok().body(seriesConverter.convertModelToResponseWithClipper(updatedSeriesReturn));
     }
 
     @DeleteMapping("/delete/{id}")

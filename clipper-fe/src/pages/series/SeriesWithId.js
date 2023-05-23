@@ -3,6 +3,7 @@ import SeriesApi from "../../services/api/SeriesApi";
 import {useParams} from "react-router";
 import ClipperList from "../../components/clipper/viewClipper/ClipperList";
 import type {ISeries} from "../../services/model/SeriesModel";
+import LoadingSpinner from "../../components/siteDefaults/LoadingSpinner";
 
 const seriesApi = new SeriesApi();
 const debug = false;
@@ -17,12 +18,15 @@ const SeriesWithId = () => {
             setSeriesWithId(response.data);
             if (debug) console.log(response.data);
         }
-        getSeriesWithId().then(r => {if (debug) console.log("Series data fetched!")});
+
+        getSeriesWithId().then(r => {
+            if (debug) console.log("Series data fetched!")
+        });
     }, [params])
 
-    if (seriesWithId != null)
-        return (
-            <>
+    return (
+        <>
+            {seriesWithId != null ?
                 <div>
                     <h1 className="text-4xl text-center m-2">
                         Series: {seriesWithId.name}
@@ -32,6 +36,9 @@ const SeriesWithId = () => {
                         seriesView={true}
                     />
                 </div>
+                :
+                <LoadingSpinner info={"Loading selected Series"}/>
+            }
             </>
         )
 }

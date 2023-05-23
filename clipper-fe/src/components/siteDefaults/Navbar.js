@@ -17,7 +17,7 @@ const Navbar = () => {
     const handleCloseNavMenu = (chosenMenuOption) => {
         //todo improve chosen menu option handling & navbar closing
         if (chosenMenuOption != null) {
-            navigate(chosenMenuOption);
+            navigate(chosenMenuOption.toLowerCase());
         }
     };
 

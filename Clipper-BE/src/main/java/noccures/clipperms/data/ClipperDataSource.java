@@ -1,7 +1,9 @@
 package noccures.clipperms.data;
 
+import jakarta.persistence.EntityNotFoundException;
 import noccures.clipperms.data.interfaces.IClipperDataSource;
 import noccures.clipperms.data.repositories.IClipperRepository;
+import noccures.clipperms.data.repositories.ISeriesRepository;
 import noccures.clipperms.model.Clipper;
 import noccures.clipperms.model.Series;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +18,12 @@ public class ClipperDataSource implements IClipperDataSource {
 
     IClipperRepository clipperRepo;
 
+    ISeriesRepository seriesRepo;
+
     @Autowired
-    public ClipperDataSource(IClipperRepository clipperRepository) {
+    public ClipperDataSource(IClipperRepository clipperRepository, ISeriesRepository seriesRepository) {
         clipperRepo = clipperRepository;
+        seriesRepo = seriesRepository;
     }
 
     @Override
@@ -29,7 +34,7 @@ public class ClipperDataSource implements IClipperDataSource {
 
     @Override
     public Series getExistingSeriesForNewClipper(UUID seriesId) {
-        return clipperRepo.findSeriesBySeriesId(seriesId);
+        return seriesRepo.findById(seriesId).orElseThrow(() -> new EntityNotFoundException("Series with id " + seriesId + " not found"));
     }
 
     @Override

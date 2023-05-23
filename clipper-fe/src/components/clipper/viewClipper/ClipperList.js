@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
-import ClipperSingle from "./ClipperSingle";
+import ClipperListItem from "./ClipperListItem";
 import type {IClipper} from "../../../services/model/ClipperModel";
-import PropTypes from "prop-types";
+import LoadingSpinner from "../../siteDefaults/LoadingSpinner";
 
 const debug = false;
 const ClipperList = (props) => {
@@ -19,27 +19,30 @@ const ClipperList = (props) => {
         });
     }, [props.clipperListProp])
 
-    if (clipperList != null)
         return (
             <>
                 <div className="grid grid-cols-1 overflow-y-auto">
                     <ul>
-                        {clipperList.map(
+                        {clipperList != null ?
+                        clipperList.map(
                             (clipper) =>
                                 (
                                     <li key={clipper.id}>
-                                        <ClipperSingle clipper={clipper} seriesView={props.seriesView}/>
+                                        <ClipperListItem clipper={clipper} seriesView={props.seriesView}/>
                                     </li>
-                                ))}
+                                ))
+                            :
+                            <LoadingSpinner/>
+                        }
                     </ul>
                 </div>
             </>
         )
 }
 
-ClipperList.propTypes = {
-    clipperListProp: PropTypes.array.isRequired
-}
+// ClipperList.propTypes = {
+//     clipperListProp: PropTypes.array.isRequired
+// }
 
 ClipperList.defaultProps = {
     seriesView: false

@@ -1,6 +1,5 @@
 import React, {useEffect} from "react";
 import {useNavigate} from "react-router";
-import pic from "../../../assets/clipper-aansteker.jpg";
 import type {ISeries} from "../../../services/model/SeriesModel";
 import PropTypes from "prop-types";
 import SeriesCard from "../../card/SeriesCard";
@@ -34,7 +33,7 @@ const SeriesSingle = (props) => {
             <SeriesCard
                 title={series.name ? series.name : "No-Series"}
                 series={series}
-                imageSource={pic}
+                imageSource={series.imageData}
                 imageAlt="seriesImage"
                 seriesInfo={generateSeriesInfo()}
                 actionSeries={viewFullSeries}/>

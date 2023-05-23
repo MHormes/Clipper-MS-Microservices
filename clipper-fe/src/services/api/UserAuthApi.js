@@ -16,10 +16,10 @@ export default class UserAuthApi {
 
     loginUser = async (userDetails: IUserLoginDetails) => {
         return process.env.REACT_APP_ACCESS_TOKEN_DEV;
-        //USE THIS FOR PRODUCTION;
+        // USE THIS FOR PRODUCTION;
         // return api
         //     .post("/login/", userDetails)
-        //     .then((response: AxiosResponse<String>) => {
+        //     .then((response: AxiosResponse<string>) => {
         //         if (debug) console.log(response.data);
         //         if (response.status === 200) {
         //             return response;

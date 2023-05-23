@@ -47,7 +47,7 @@ public class SecurityConfig {
         String superAdmin = SecurityConstants.SUPER_ADMIN;
         http.authorizeHttpRequests()
                 //Allow login
-                .requestMatchers("/login", "/token/refresh").permitAll()
+                .requestMatchers("api/login", "api/token/refresh").permitAll()
                 //Allow all get requests on clippers series and refresh endpoints
                 .requestMatchers(HttpMethod.GET, clipperPath + "/**", seriesPath + "/**", "/token/refresh/**").permitAll()
                 //Only allow (super) admins to create clippers
@@ -60,9 +60,8 @@ public class SecurityConfig {
                 .requestMatchers("/api/user/**").hasAuthority(superAdmin)
                 //Allow Swagger UI
                 .requestMatchers("/docs/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin();
+                .requestMatchers("/v3/**").permitAll()
+                .anyRequest().authenticated();
 
         //CUSTOM FILTERS
         http.addFilter(new CustomAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))));

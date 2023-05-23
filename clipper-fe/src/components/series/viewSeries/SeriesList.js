@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import type {ISeries} from "../../../services/model/SeriesModel";
 import SeriesSingle from "./SeriesSingle";
 import PropTypes from "prop-types";
+import LoadingSpinner from "../../siteDefaults/LoadingSpinner";
 
 const debug = false;
 const SeriesList = (props) => {
@@ -14,22 +15,25 @@ const SeriesList = (props) => {
             if (debug) console.log(props.seriesListProp);
         }
 
-        loadSeriesList().then(r => console.log("Series list assigned!"));
-    }, [])
+        loadSeriesList().then(r => {
+            if (debug) console.log("Series list assigned!")
+        });
+    }, [props.seriesListProp])
 
-    if (seriesList != null) return (<>
+    return (
         <div className="grid grid-cols-1">
             <ul>
-                {seriesList.map((series) => (<li key={series.id}>
-                    <SeriesSingle
-                        series={series}/>
-                </li>))}
+                {seriesList != null ?
+                    seriesList.map((series) => (<li key={series.id}>
+                        <SeriesSingle
+                            series={series}/>
+                    </li>))
+                    :
+                    <LoadingSpinner/>
+                }
             </ul>
         </div>
-    </>)
+    )
 }
 
-SeriesList.propTypes = {
-    seriesListProp: PropTypes.array.isRequired
-}
 export default SeriesList

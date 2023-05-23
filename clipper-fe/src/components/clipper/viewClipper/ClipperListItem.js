@@ -4,7 +4,7 @@ import {useNavigate} from "react-router";
 import PropTypes from "prop-types";
 
 const debug = false;
-const ClipperSingle = (props) => {
+const ClipperListItem = (props) => {
     const navigate = useNavigate();
     const clipper = props.clipper;
 
@@ -24,15 +24,17 @@ const ClipperSingle = (props) => {
 
     const generateSeriesNumber = () =>{
         if (clipper.series && !clipper.series.custom) {
-            return '# ' + props.clipper.seriesNumber + ' of 4';
-        } else {
+            return '# ' + clipper.seriesNumber + ' of 4 in series:';
+        } else if(clipper.series) {
             return '# ' + clipper.seriesNumber + ' in custom series:';
+        }else{
+            return 'Clipper is not part of a series';
         }
     }
 
     const generateSeriesName = () =>{
         if (clipper.series && clipper.series.name) {
-            return 'in series: ' + clipper.series.name;
+            return clipper.series.name;
         } else {
             return 'No-Series';
         }
@@ -44,7 +46,7 @@ const ClipperSingle = (props) => {
         <>
             <ClipperCard
                 title={props.clipper.name}
-                imageSource={props.clipper.image}
+                imageSource={props.clipper.imageData}
                 imageAlt="clipperImage"
                 seriesNumber={generateSeriesNumber()}
                 seriesName={generateSeriesName()}
@@ -57,8 +59,8 @@ const ClipperSingle = (props) => {
     }
 }
 
-ClipperSingle.propTypes = {
+ClipperListItem.propTypes = {
     clipper: PropTypes.object.isRequired
 }
-export default ClipperSingle;
+export default ClipperListItem;
 

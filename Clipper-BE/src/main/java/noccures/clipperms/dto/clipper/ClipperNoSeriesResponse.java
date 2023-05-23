@@ -9,12 +9,12 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClipperNoSeriesRequest extends ClipperDTO {
+public class ClipperNoSeriesResponse extends ClipperDTO {
 
     private String seriesId;
-    private byte[] imageData;
+    private String imageData;
 
-    public ClipperNoSeriesRequest(String id, String name, String series, int seriesNumber, String createdById, byte[] imageData) {
+    public ClipperNoSeriesResponse(String id, String name, String series, int seriesNumber, String createdById, String imageData) {
         super(id, name, seriesNumber, createdById);
         this.seriesId = series;
         this.imageData = imageData;

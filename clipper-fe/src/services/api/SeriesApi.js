@@ -1,6 +1,6 @@
 import apiInstance from "./ApiInstance";
 import {AxiosResponse} from "axios";
-import type {ISeries} from "../model/SeriesModel";
+import type {ISeries, ISeriesCreateRequest} from "../model/SeriesModel";
 
 const debug = false;
 
@@ -24,7 +24,7 @@ export default class SeriesApi {
                 }
             })
             .catch((error) => {
-                console.log(error);
+                console.log(error.message);
                 return null;
             });
     }
@@ -33,6 +33,30 @@ export default class SeriesApi {
         return api
             .get("/series/all")
             .then((response: AxiosResponse<ISeries[]>) => {
+                if(debug) console.log(response.data);
+                if(response.status === 200){
+                    return response;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                return null;
+            });
+    }
+
+    createSeries = async (seriesObject: ISeriesCreateRequest, image: File) => {
+        const formData = new FormData();
+        formData.append('image', image);
+        formData.append('series', JSON.stringify(seriesObject));
+
+        console.log(formData)
+        return api
+            .post("/series/add", formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data ',
+                }
+            })
+            .then((response: AxiosResponse<ISeries>) => {
                 if(debug) console.log(response.data);
                 if(response.status === 200){
                     return response;

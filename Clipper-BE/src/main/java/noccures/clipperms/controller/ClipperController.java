@@ -3,7 +3,7 @@ package noccures.clipperms.controller;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.NotNull;
 import noccures.clipperms.dto.clipper.ClipperCreateRequest;
-import noccures.clipperms.dto.clipper.ClipperWithSeriesRequest;
+import noccures.clipperms.dto.clipper.ClipperWithSeriesResponse;
 import noccures.clipperms.dto.mapper.ClipperConverter;
 import noccures.clipperms.dto.clipper.ClipperDTO;
 import noccures.clipperms.exceptions.DatabaseFailedOperationException;
@@ -64,8 +64,8 @@ public class ClipperController {
         List<Clipper> allClippers = clipperService.getAllClippers();
         for (Clipper c : allClippers) {
             if (c.getSeriesId() != null) {
-                ClipperWithSeriesRequest clipperWithSeriesRequest = clipperConverter.convertModelToClipperWithSeriesRequest(c);
-                returnList.add(clipperWithSeriesRequest);
+                ClipperWithSeriesResponse clipperWithSeriesResponse = clipperConverter.convertModelToClipperWithSeriesRequest(c);
+                returnList.add(clipperWithSeriesResponse);
             } else {
                 returnList.add(clipperConverter.convertModelNoSeriesToClipperNoSeries(c));
             }

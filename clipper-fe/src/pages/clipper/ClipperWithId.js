@@ -9,11 +9,12 @@ import {faHeart, faPen} from "@fortawesome/free-solid-svg-icons";
 import CardIconButton from "../../components/card/CardIconButton";
 import DeleteModal from "../../components/modal/DeleteModal";
 import type {IClipper} from "../../services/model/ClipperModel";
+import LoadingSpinner from "../../components/siteDefaults/LoadingSpinner";
 
 const clipperApi = new ClipperApi();
 
-const debug = true;
-const SingleClipper = () => {
+const debug = false;
+const ClipperWithId = () => {
 
     //STATE
     const [clipperWithId: IClipper, setClipperWithId] = useState();
@@ -60,28 +61,41 @@ const SingleClipper = () => {
         }
     }
 
-    if (clipperWithId != null)
-        return (
-            <div className="card bg-white m-3">
-                <div className="flex items-center justify-center w-full">
-                    <CardPicture imageSource={clipperWithId.image} alt="singleClipperImg" centralPic={true}/>
+    return (
+        <>
+            {clipperWithId != null ?
+                <div className="card bg-white m-3">
+                    <div className="flex items-center justify-center w-full">
+                        <CardPicture imageSource={clipperWithId.imageData} alt="singleClipperImg" centralPic={true}/>
+                    </div>
+                    <div className="card-body p-4">
+                        <CardTitle cardTitle={'Clipper: ' + clipperWithId.name}/>
+                        {clipperWithId.series?.id != null ?
+                            <>
+                                <CardText cardText={'Clipper is #' + clipperWithId.seriesNumber + ' in series:'}/>
+                                <CardText cardText={clipperWithId.series?.name}/>
+                            </>
+                            :
+                            <CardText cardText={'Clipper is not part of a series'}/>
+                        }
+                    </div>
+                    <div className="card-actions flex justify-between">
+                        <CardIconButton buttonIcon={faHeart} buttonAction={addToFavorite}/>
+                        <CardIconButton buttonIcon={faPen} buttonAction={updateClipper}/>
+                        <DeleteModal deleteClipper={deleteClipper} clipperProp={clipperWithId}/>
+                        {clipperWithId.series?.id != null &&
+                            <CardButton buttonText="View full series" buttonAction={viewFullSeries}/>
+                        }
+                    </div>
+                    <div className="p-2 text-center">
+                        <CardText cardText={'Clipper created by: ' + clipperWithId.createdById} textSmall={true}/>
+                    </div>
                 </div>
-                <div className="card-body p-4">
-                    <CardTitle cardTitle={'Clipper: ' + clipperWithId.name}/>
-                    <CardText cardText={'Clipper is #' + clipperWithId.seriesNumber + ' in series:'}/>
-                    <CardText cardText={clipperWithId.series?.name}/>
-                </div>
-                <div className="card-actions flex justify-between">
-                    <CardIconButton buttonIcon={faHeart} buttonAction={addToFavorite}/>
-                    <CardIconButton buttonIcon={faPen} buttonAction={updateClipper}/>
-                    <DeleteModal deleteClipper={deleteClipper} clipperProp={clipperWithId}/>
-                    <CardButton buttonText="View full series" buttonAction={viewFullSeries}/>
-                </div>
-                <div className="p-2 text-center">
-                <CardText cardText={'Clipper created by: ' + clipperWithId.createdById} textSmall={true}/>
-                </div>
-            </div>
-        );
+                :
+                <LoadingSpinner info={"Loading selected Clipper"}/>
+            }
+        </>
+    );
 }
 
-export default SingleClipper;
+export default ClipperWithId;

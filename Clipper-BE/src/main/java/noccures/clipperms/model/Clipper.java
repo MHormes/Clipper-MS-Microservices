@@ -29,6 +29,7 @@ public class Clipper {
     )
     private UUID id;
 
+    @NotNull
     @Column(
             name = "name",
             nullable = false

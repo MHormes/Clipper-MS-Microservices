@@ -2,6 +2,7 @@ package noccures.clipperms.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,18 +24,26 @@ public class Series {
             nullable = false)
     private UUID id;
 
+    @NotNull
     @Column(name = "name",
             nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "seriesId")
+    @OneToMany(mappedBy = "seriesId", fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Clipper> clippers;
 
+    @Lob
+    @NotNull
+    @Column(name = "image_data", length = 1000)
+    private byte[] imageData;
+
     @ManyToOne
+    @NotNull
     @JoinColumn(name = "created_by")
     private AppUser createdBy;
 
+    @NotNull
     @Column(name = "custom",
             nullable = false)
     private boolean custom;
@@ -50,10 +59,12 @@ public class Series {
         this.clippers = new ArrayList<>();
     }
 
-    public Series(UUID id, String name, boolean custom) {
+    public Series(UUID id, String name, byte[] imageBytes, boolean custom, AppUser createdBy) {
         this.id = id;
         this.name = name;
+        this.imageData = imageBytes;
         this.custom = custom;
+        this.createdBy = createdBy;
         this.clippers = new ArrayList<>();
     }
 

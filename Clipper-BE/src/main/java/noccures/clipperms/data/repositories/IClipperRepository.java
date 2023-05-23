@@ -12,7 +12,6 @@ import java.util.UUID;
 public interface IClipperRepository extends JpaRepository<Clipper, UUID> {
     Clipper getClipperById(UUID id);
 
-    @Query("SELECT s FROM Series s where s.id = :seriesId")
-    Series findSeriesBySeriesId(UUID seriesId);
+
 
 }

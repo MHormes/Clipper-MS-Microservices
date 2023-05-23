@@ -2,10 +2,14 @@ import React, {useEffect, useState} from "react";
 import type {ISeries} from "../../services/model/SeriesModel";
 import SeriesList from "../../components/series/viewSeries/SeriesList";
 import SeriesApi from "../../services/api/SeriesApi";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faBars, faPlus} from "@fortawesome/free-solid-svg-icons";
+import {useNavigate} from "react-router";
 
 const seriesApi = new SeriesApi();
 const debug = false;
 const AllSeries = () => {
+    const navigate = useNavigate();
 
     const [seriesList: ISeries[], setSeriesList] = useState();
 
@@ -16,21 +20,21 @@ const AllSeries = () => {
             if (debug) console.log(response.data);
         }
 
-        getAllSeries().then(r => {if(debug) console.log("Series data fetched!")});
+        getAllSeries().then(r => {
+            if (debug) console.log("Series data fetched!")
+        });
     }, [])
 
-    if (seriesList != null)
-        return (
-            <>
-                <div>
-                    <h1 className="text-4xl text-center m-2">
-                        All Series
-                    </h1>
-                    <SeriesList
-                        seriesListProp={seriesList}/>
-                </div>
-            </>
-        )
+    return (
+        <div>
+            <h1 className="text-4xl text-center m-2">
+                All Series
+            </h1>
+            <span className={"btn"} onClick={() => navigate("/series/add")}><FontAwesomeIcon icon={faPlus}/></span>
+            <SeriesList
+                seriesListProp={seriesList}/>
+        </div>
+    )
 }
 
 export default AllSeries;

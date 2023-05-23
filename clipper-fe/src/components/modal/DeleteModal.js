@@ -15,7 +15,7 @@ const DeleteModal = (props) => {
     return (
         <div>
             {/* The button to open modal */}
-            <label htmlFor="deleteModal" className="btn text-white">
+            <label htmlFor="deleteModal" className="btn text-white m-1">
                 <FontAwesomeIcon icon={faTrashCan}/>
             </label>
             <input type="checkbox" id="deleteModal" className="modal-toggle"/>

@@ -10,7 +10,7 @@ public interface ISeriesService {
 
     Series addSeries(Series seriesToAdd) throws IncorrectInputException, DatabaseFailedOperationException;
 
-    int getAvailableSeriesNumber(String id) throws DatabaseFailedOperationException;
+    List<Integer> getAvailableSeriesNumber(String id) throws DatabaseFailedOperationException;
 
     Series getSeriesWithId(String id) throws DatabaseFailedOperationException;
 

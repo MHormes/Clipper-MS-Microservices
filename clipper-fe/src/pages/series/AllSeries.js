@@ -3,7 +3,7 @@ import type {ISeries} from "../../services/model/SeriesModel";
 import SeriesList from "../../components/series/viewSeries/SeriesList";
 import SeriesApi from "../../services/api/SeriesApi";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBars, faPlus} from "@fortawesome/free-solid-svg-icons";
+import {faPlus} from "@fortawesome/free-solid-svg-icons";
 import {useNavigate} from "react-router";
 
 const seriesApi = new SeriesApi();

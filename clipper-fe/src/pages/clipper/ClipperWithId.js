@@ -7,7 +7,7 @@ import CardText from "../../components/card/CardText";
 import CardButton from "../../components/card/CardButton";
 import {faHeart, faPen} from "@fortawesome/free-solid-svg-icons";
 import CardIconButton from "../../components/card/CardIconButton";
-import DeleteModal from "../../components/modal/DeleteModal";
+import DeleteClipperModal from "../../components/modal/DeleteClipperModal";
 import type {IClipper} from "../../services/model/ClipperModel";
 import LoadingSpinner from "../../components/siteDefaults/LoadingSpinner";
 
@@ -82,13 +82,13 @@ const ClipperWithId = () => {
                     <div className="card-actions flex justify-between">
                         <CardIconButton buttonIcon={faHeart} buttonAction={addToFavorite}/>
                         <CardIconButton buttonIcon={faPen} buttonAction={updateClipper}/>
-                        <DeleteModal deleteClipper={deleteClipper} clipperProp={clipperWithId}/>
+                        <DeleteClipperModal deleteClipper={deleteClipper} clipperProp={clipperWithId}/>
                         {clipperWithId.series?.id != null &&
                             <CardButton buttonText="View full series" buttonAction={viewFullSeries}/>
                         }
                     </div>
                     <div className="p-2 text-center">
-                        <CardText cardText={'Clipper created by: ' + clipperWithId.createdById} textSmall={true}/>
+                        <CardText cardText={'Clipper created by: ' + clipperWithId.createdBy} textSmall={true}/>
                     </div>
                 </div>
                 :

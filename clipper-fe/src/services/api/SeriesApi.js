@@ -44,12 +44,32 @@ export default class SeriesApi {
             });
     }
 
+    getAvailableSeriesNumbers = async (seriesId: string) => {
+        return api
+            .get(`/series/${seriesId}/available`)
+            .then((response: AxiosResponse<number[]>) => {
+                if(debug) console.log(response.data);
+                if(response.status === 200){
+                    return response.data;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                return null;
+            });
+    }
+
     createSeries = async (seriesObject: ISeriesCreateRequest, image: File) => {
+        const seriesJson = JSON.stringify(seriesObject);
+        const seriesBlob = new Blob([seriesJson], {
+            type: 'application/json'
+        });
+
         const formData = new FormData();
         formData.append('image', image);
-        formData.append('series', JSON.stringify(seriesObject));
+        formData.append('series', seriesBlob);
 
-        console.log(formData)
+        console.log(formData);
         return api
             .post("/series/add", formData, {
                 headers: {
@@ -57,6 +77,21 @@ export default class SeriesApi {
                 }
             })
             .then((response: AxiosResponse<ISeries>) => {
+                if(debug) console.log(response.data);
+                if(response.status === 200){
+                    return response;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                return null;
+            });
+    }
+
+    deleteSeries = async (seriesId: string) => {
+        return api
+            .delete("/series/delete/" + seriesId)
+            .then((response) => {
                 if(debug) console.log(response.data);
                 if(response.status === 200){
                     return response;

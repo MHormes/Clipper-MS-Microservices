@@ -1,12 +1,9 @@
 import React, {useState} from "react";
-import CardTextBox from "../../components/card/CardTextBox";
-import CardTitle from "../../components/card/CardTitle";
-import CardButton from "../../components/card/CardButton";
 import SeriesForm from "../../components/series/changeSeries/SeriesForm";
 import type {ISeriesCreateRequest} from "../../services/model/SeriesModel";
 import SeriesApi from "../../services/api/SeriesApi";
 import LoadingSpinner from "../../components/siteDefaults/LoadingSpinner";
-import {useNavigate, useNavigation} from "react-router";
+import {useNavigate} from "react-router";
 
 const debug = false;
 const seriesApi = new SeriesApi();

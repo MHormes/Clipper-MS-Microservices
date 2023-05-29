@@ -2,7 +2,6 @@ import UserAuthApi from "./api/UserAuthApi";
 import {createContext, useEffect, useMemo, useState} from "react";
 import {useLocation, useNavigate} from "react-router";
 import type {IUserLoginDetails} from "./model/UserModel";
-import loginScreen from "../pages/homePage/LoginScreen";
 
 export const AuthContext = createContext(null);
 

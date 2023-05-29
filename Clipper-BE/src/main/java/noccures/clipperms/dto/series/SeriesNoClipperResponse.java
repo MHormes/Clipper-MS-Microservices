@@ -14,8 +14,8 @@ import lombok.Setter;
 public class SeriesNoClipperResponse extends SeriesDTO {
     String imageData;
 
-    public SeriesNoClipperResponse(String id, String name, String image, boolean custom, String createdById) {
-        super(id, name, custom, createdById);
+    public SeriesNoClipperResponse(String id, String name, String image, boolean custom, String createdBy) {
+        super(id, name, custom, createdBy);
         this.imageData = image;
     }
 }

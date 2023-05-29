@@ -48,11 +48,11 @@ public class SeriesService implements ISeriesService {
 
     //Get the available series number -> needed to update ui and prevent duplicate entrees
     @Override
-    public int getAvailableSeriesNumber(String id) throws DatabaseFailedOperationException {
+    public List<Integer> getAvailableSeriesNumber(String id) throws DatabaseFailedOperationException {
         var seriesWithId = getSeriesWithId(id);
         //Custom series -> clippers get numbers according to add order
         if (seriesWithId.isCustom()) {
-            return seriesWithId.getClippers().size() + 1;
+            return List.of(seriesWithId.getClippers().size() + 1);
         }
         //actual clipper series -> check what numbers have been added
         var takenSeriesNumbers = seriesData.getTakenSeriesNumber(UUID.fromString(id));
@@ -60,8 +60,8 @@ public class SeriesService implements ISeriesService {
         for(int i: takenSeriesNumbers){
             possibleNumbers.remove(Integer.valueOf(i));
         }
-        log.info("Available series number for series with id {} is {}", id, possibleNumbers.get(0));
-        return possibleNumbers.get(0);
+        log.info("Available series number for series with id {} is {}", id, possibleNumbers);
+        return possibleNumbers;
     }
 
     //get series with specific id

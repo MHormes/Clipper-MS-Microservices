@@ -42,7 +42,7 @@ public class ClipperController {
         Clipper addedClipperReturn;
         if (clipperDTO.getSeriesId() != null) {
             addedClipperReturn = clipperService.addClipper(clipperToAdd, clipperDTO.getSeriesId());
-            return ResponseEntity.ok().body(clipperConverter.convertModelToClipperWithSeriesRequest(addedClipperReturn));
+            return ResponseEntity.ok().body(clipperConverter.convertModelToClipperWithSeriesResponse(addedClipperReturn));
         } else {
             addedClipperReturn = clipperService.addClipper(clipperToAdd, null);
             return ResponseEntity.ok(clipperConverter.convertModelNoSeriesToClipperNoSeries(addedClipperReturn));
@@ -55,7 +55,7 @@ public class ClipperController {
         if (clipperWithId.getSeriesId() == null) {
             return ResponseEntity.ok().body(clipperConverter.convertModelNoSeriesToClipperNoSeries(clipperWithId));
         }
-        return ResponseEntity.ok().body(clipperConverter.convertModelToClipperWithSeriesRequest(clipperWithId));
+        return ResponseEntity.ok().body(clipperConverter.convertModelToClipperWithSeriesResponse(clipperWithId));
     }
 
     @GetMapping("/all")
@@ -64,7 +64,7 @@ public class ClipperController {
         List<Clipper> allClippers = clipperService.getAllClippers();
         for (Clipper c : allClippers) {
             if (c.getSeriesId() != null) {
-                ClipperWithSeriesResponse clipperWithSeriesResponse = clipperConverter.convertModelToClipperWithSeriesRequest(c);
+                ClipperWithSeriesResponse clipperWithSeriesResponse = clipperConverter.convertModelToClipperWithSeriesResponse(c);
                 returnList.add(clipperWithSeriesResponse);
             } else {
                 returnList.add(clipperConverter.convertModelNoSeriesToClipperNoSeries(c));
@@ -83,7 +83,7 @@ public class ClipperController {
         if (updatedClipperReturn.getSeriesId() == null) {
             return ResponseEntity.ok().body(clipperConverter.convertModelNoSeriesToClipperNoSeries(updatedClipperReturn));
         }
-        return ResponseEntity.ok().body(clipperConverter.convertModelToClipperWithSeriesRequest(updatedClipperReturn));
+        return ResponseEntity.ok().body(clipperConverter.convertModelToClipperWithSeriesResponse(updatedClipperReturn));
     }
 
     @DeleteMapping("/delete/{id}")

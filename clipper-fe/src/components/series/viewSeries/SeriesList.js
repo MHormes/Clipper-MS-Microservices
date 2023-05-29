@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import type {ISeries} from "../../../services/model/SeriesModel";
 import SeriesSingle from "./SeriesSingle";
-import PropTypes from "prop-types";
 import LoadingSpinner from "../../siteDefaults/LoadingSpinner";
+import PropTypes from "prop-types";
 
 const debug = false;
 const SeriesList = (props) => {
@@ -34,6 +34,10 @@ const SeriesList = (props) => {
             </ul>
         </div>
     )
+}
+
+SeriesList.propTypes = {
+    seriesListProp: PropTypes.array
 }
 
 export default SeriesList

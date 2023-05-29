@@ -7,7 +7,6 @@ import noccures.clipperms.dto.mapper.ClipperConverter;
 import noccures.clipperms.dto.mapper.SeriesConverter;
 import noccures.clipperms.dto.series.SeriesCreateRequest;
 import noccures.clipperms.dto.series.SeriesDTO;
-import noccures.clipperms.dto.series.SeriesNoClipperResponse;
 import noccures.clipperms.dto.series.SeriesWithClipperResponse;
 import noccures.clipperms.exceptions.DatabaseFailedOperationException;
 import noccures.clipperms.exceptions.IncorrectInputException;
@@ -53,7 +52,7 @@ public class SeriesController {
     }
 
     @GetMapping("/{id}/available")
-    public ResponseEntity<Integer> getAvailableSeriesNumber(@PathVariable(value = "id") String id) throws DatabaseFailedOperationException {
+    public ResponseEntity<List<Integer>> getAvailableSeriesNumber(@PathVariable(value = "id") String id) throws DatabaseFailedOperationException {
         var availableNumber = seriesService.getAvailableSeriesNumber(id);
         return ResponseEntity.ok().body(availableNumber);
     }
@@ -81,7 +80,7 @@ public class SeriesController {
     private ResponseEntity<SeriesWithClipperResponse> addClippersWithSeriesToSeriesWithClipperResponse(Series series, SeriesWithClipperResponse seriesWithClipperResponse) {
         List<ClipperWithSeriesResponse> clipperWithSeriesResponseList = new ArrayList<>();
         for (Clipper clipper : series.getClippers()) {
-            clipperWithSeriesResponseList.add(clipperConverter.convertModelToClipperWithSeriesRequest(clipper));
+            clipperWithSeriesResponseList.add(clipperConverter.convertModelToClipperWithSeriesResponse(clipper));
         }
         seriesWithClipperResponse.setClippers(clipperWithSeriesResponseList);
         return ResponseEntity.ok().body(seriesWithClipperResponse);

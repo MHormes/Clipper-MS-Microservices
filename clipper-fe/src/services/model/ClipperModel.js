@@ -6,7 +6,7 @@ export interface IClipper{
     series: ISeries;
     seriesNumber: string;
     imageData: string;
-    createdById: string;
+    createdBy: string;
 }
 
 export interface IClipperList{

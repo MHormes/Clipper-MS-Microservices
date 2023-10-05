@@ -31,9 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-.env
-
-.docker
-
-Clipper-BE/src/main/java/clipperms/clipperms/security/SecurityConstants.java

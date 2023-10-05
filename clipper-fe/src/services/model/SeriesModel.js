@@ -1,4 +1,4 @@
-import type {IClipperList} from "./ClipperModel";
+ import type {IClipperList} from "./ClipperModel";
 
 export interface ISeries{
     id: string;
@@ -10,6 +10,8 @@ export interface ISeries{
 }
 
 export interface ISeriesCreateRequest{
+    id: string
+
     name: string;
     imageData: string;
     custom: boolean;

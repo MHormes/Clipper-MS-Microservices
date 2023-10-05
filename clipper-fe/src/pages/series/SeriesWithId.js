@@ -4,8 +4,9 @@ import {useNavigate, useParams} from "react-router";
 import ClipperList from "../../components/clipper/viewClipper/ClipperList";
 import type {ISeries} from "../../services/model/SeriesModel";
 import LoadingSpinner from "../../components/siteDefaults/LoadingSpinner";
-import DeleteClipperModal from "../../components/modal/DeleteClipperModal";
 import DeleteSeriesModal from "../../components/modal/DeleteSeriesModal";
+import {faPen} from "@fortawesome/free-solid-svg-icons";
+import CardIconButton from "../../components/card/CardIconButton";
 
 const seriesApi = new SeriesApi();
 const debug = false;
@@ -27,17 +28,23 @@ const SeriesWithId = () => {
         });
     }, [params])
 
-    async function deleteSeries() {
+    const deleteSeries = async () => {
         console.log("Delete series with id: " + seriesWithId.id);
         const response = await seriesApi.deleteSeries(seriesWithId.id);
         if (debug) console.log(response);
         if (response.status === 200) {
-             if (debug) console.log("Series with id: " + seriesWithId.id + " has been deleted!");
+            if (debug) console.log("Series with id: " + seriesWithId.id + " has been deleted!");
             setTimeout(() => {
                 navigate("/series");
             }, "1000")
         }
     }
+
+    const updateSeries = () => {
+        console.log("Update series: " + seriesWithId.id)
+        navigate(`/series/update/${seriesWithId.id}`);
+    }
+
 
     return (
         <>
@@ -46,12 +53,17 @@ const SeriesWithId = () => {
                     <h1 className={"text-4xl text-center m-2"}>
                         Series: {seriesWithId.name}
                     </h1>
-                    <DeleteSeriesModal deleteSeries={deleteSeries} seriesProp={seriesWithId}/>
-                    {seriesWithId.clippers.length > 0 ?
-                    <ClipperList
-                        clipperListProp={seriesWithId.clippers}
-                        seriesView={true}
+                    <DeleteSeriesModal
+                        className={"float-right"}
+                        deleteSeries={deleteSeries}
+                        seriesProp={seriesWithId}
                     />
+                    <CardIconButton buttonIcon={faPen} buttonAction={updateSeries}/>
+                    {seriesWithId.clippers.length > 0 ?
+                        <ClipperList
+                            clipperListProp={seriesWithId.clippers}
+                            seriesView={true}
+                        />
                         :
                         <p className={"text-xl text-center m-2 mt-8"}>
                             Series holds no clippers

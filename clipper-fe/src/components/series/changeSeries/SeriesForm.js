@@ -28,6 +28,17 @@ const SeriesForm = (props) => {
         });
     }
 
+    const defineImageUrl = () => {
+        if (selectedImage) {
+            console.log("selected")
+            return URL.createObjectURL(selectedImage);
+        } else if (props.series) {
+            return `data:image/png;base64, ${props.series.imageData}`;
+        } else {
+            return "";
+        }
+    }
+
     const onToggle = e => {
         setSeriesObject({
             ...seriesObject,
@@ -60,8 +71,8 @@ const SeriesForm = (props) => {
                     fileLabel={"Series image"}
                     onChange={onImageChange}
                 />
-                {selectedImage &&
-                    <img src={URL.createObjectURL(selectedImage)} alt={"Series image preview"}/>
+                {defineImageUrl() !== "" &&
+                    <img src={defineImageUrl()} alt={"Series image preview"} className={"object-scale-down h-fit p-2"}/>
                 }
                 <CardButton
                     buttonText={props.mode}

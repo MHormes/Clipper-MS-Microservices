@@ -1,7 +1,8 @@
 import apiInstance from "./ApiInstance";
 import type {IUserLoginDetails} from "../model/UserModel";
+import {AxiosResponse} from "axios";
 
-const debug = false;
+const debug = true;
 
 let api;
 export default class UserAuthApi {
@@ -17,7 +18,7 @@ export default class UserAuthApi {
         return process.env.REACT_APP_ACCESS_TOKEN_DEV;
         // USE THIS FOR PRODUCTION;
         // return api
-        //     .post("/login/", userDetails)
+        //     .post("/login", userDetails)
         //     .then((response: AxiosResponse<string>) => {
         //         if (debug) console.log(response.data);
         //         if (response.status === 200) {

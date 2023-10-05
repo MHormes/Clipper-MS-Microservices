@@ -2,10 +2,18 @@
 Clipper management system
 ###### For technical information see end file.
 
+#### Running the system:
+In order to run clipper MS, please pull the repository and execute the 'development' run script.
+This script will use the maven-jib plugin to build images for the clipper MS and the database, as well as 
+start them up.
+The plugin usage will be replaced later in development to create a more flexible solution. 
+
 #### Clipper, series and collected clippers
 - Each AppUser has a list (collection) of CollectedClippers.
-- Collected clipper holds user specific information
-  (date and location bought, notes).
+
+[//]: # (- Collected clipper holds user specific information)
+
+[//]: # (  &#40;date and location bought, notes&#41;.)
 - Clippers only get Created, Updated and Deleted by admins
   (creator is saved in clipper as createdBy).
 - All users are capable of CRUD their own CollectedClippers

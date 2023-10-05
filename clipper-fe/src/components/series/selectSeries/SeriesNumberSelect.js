@@ -30,7 +30,7 @@ const SeriesNumberSelect = (props) => {
             {numberList != null ?
                 <select
                     className={"select w-full max-w-xs"}
-                    defaultValue={"Choose number in series"}
+                    defaultValue={props.preSelect ? props.preSelect :"Choose number in series"}
                     onChange={props.onChange}
                 >
 
@@ -50,7 +50,8 @@ const SeriesNumberSelect = (props) => {
 
 SeriesNumberSelect.propTypes = {
     numberList: PropTypes.array,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    preSelect: PropTypes.number
 };
 
 export default SeriesNumberSelect;

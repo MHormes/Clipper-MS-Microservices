@@ -15,20 +15,6 @@ const CreateClipper = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
-    const [seriesList: ISeries[], setSeriesList] = useState();
-
-    useEffect(() => {
-        async function getAllSeries() {
-            const response = await seriesApi.getAllSeries();
-            setSeriesList(response.data);
-            if (debug) console.log(response.data);
-        }
-
-        getAllSeries().then(r => {
-            if (debug) console.log("Series data fetched!")
-        });
-    }, [])
-
     const createClipper = async (clipperObject: IClipperCreateRequest, image: File) => {
         clipperObject.createdBy = "b1e7544d-b5bc-429a-83c8-8b222ae2519f";
         if(clipperObject.seriesId === ""){
@@ -58,7 +44,6 @@ const CreateClipper = () => {
                 :
                 <ClipperForm
                     formFunction={createClipper}
-                    seriesList={seriesList}
                 />
             }
         </>

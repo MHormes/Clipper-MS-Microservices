@@ -8,9 +8,9 @@ const DeleteSeriesModal = (props) => {
 
     const series: ISeries = props.seriesProp;
     return (
-        <div>
+        <div className={"text-right"}>
             {/* The button to open modal */}
-            <label htmlFor="deleteModal" className="btn text-white m-1">
+            <label htmlFor="deleteModal" className="btn text-white m-3">
                 <FontAwesomeIcon icon={faTrashCan}/>
             </label>
             <input type="checkbox" id="deleteModal" className="modal-toggle"/>

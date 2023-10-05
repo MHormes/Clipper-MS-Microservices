@@ -45,8 +45,8 @@ export default class ClipperApi {
     }
 
     createClipper = async (clipperObject: IClipperCreateRequest, image: File) => {
-        const clipperJson = JSON.stringify(clipperObject);
-        const clipperBlob = new Blob([clipperJson], {
+        const createJson = JSON.stringify(clipperObject);
+        const clipperBlob = new Blob([createJson], {
             type: 'application/json'
         });
 
@@ -57,6 +57,35 @@ export default class ClipperApi {
         console.log(formData);
         return api
             .post("/clipper/add", formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data ',
+                }
+            })
+            .then((response: AxiosResponse<IClipper>) => {
+                if(debug) console.log(response.data);
+                if(response.status === 200){
+                    return response;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                return null;
+            });
+    }
+
+    updateClipper = async (clipperObject: IClipperCreateRequest, image: File) => {
+        const updateJson = JSON.stringify(clipperObject);
+        const clipperBlob = new Blob([updateJson], {
+            type: 'application/json'
+        });
+
+        const formData = new FormData();
+        formData.append('image', image);
+        formData.append('clipper', clipperBlob);
+
+        console.log(formData);
+        return api
+            .put(`/clipper/update/${clipperObject.id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data ',
                 }

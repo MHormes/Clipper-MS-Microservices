@@ -19,14 +19,37 @@ const ClipperForm = (props) => {
     });
 
     const [selectedImage, setSelectedImage] = useState(null);
-
-    const [availableSeriesNumbers: [], setAvailableSeriesNumbers] = useState([]);
+    const [availableSeriesNumbers: number[], setAvailableSeriesNumbers] = useState([]);
 
     useEffect(() => {
+        async function assignUpdateValues() {
+            setClipperObject({
+                id: props.clipper.id,
+                name: props.clipper.name,
+                seriesNumber: props.clipper.seriesNumber,
+                seriesId: props.clipper.series.id,
+                createdBy: props.clipper.createdBy,
+            });
+            await assignAvailableSeriesNumbers(props.clipper.series.id);
+        }
+
         if (props.clipper) {
-            setClipperObject(props.clipper);
+            assignUpdateValues().then(r => {
+                console.log("Update values assigned")
+            });
         }
     }, [props.clipper]);
+
+    const defineImageUrl = () => {
+        if (selectedImage) {
+            console.log("selected")
+            return URL.createObjectURL(selectedImage);
+        } else if (props.clipper) {
+            return `data:image/png;base64, ${props.clipper.imageData}`;
+        } else {
+            return "";
+        }
+    }
 
     const onChange = e => {
         setClipperObject({
@@ -37,6 +60,7 @@ const ClipperForm = (props) => {
 
     const onImageChange = e => {
         setSelectedImage(e.target.files[0]);
+        defineImageUrl();
     }
 
     const onSeriesChange = async e => {
@@ -56,8 +80,12 @@ const ClipperForm = (props) => {
 
     const assignAvailableSeriesNumbers = async (seriesId) => {
         let availableNumbers: number[] = await seriesApi.getAvailableSeriesNumbers(seriesId);
-        setAvailableSeriesNumbers(availableNumbers);
-        console.log(availableSeriesNumbers)
+        //if we edit -> add the numbers instead of replace
+        if(props.mode === "Update"){
+            setAvailableSeriesNumbers([props.clipper.seriesNumber, ...availableNumbers]);
+        }else{
+            setAvailableSeriesNumbers(availableNumbers);
+        }
     }
 
     return (
@@ -71,21 +99,22 @@ const ClipperForm = (props) => {
                     value={clipperObject.name}
                 />
                 <SeriesSelect
-                    seriesList={props.seriesList}
                     onChange={onSeriesChange}
+                    preSelect={props.mode === "Update" && props.clipper ? props.clipper.series.id : null}
                 />
                 {clipperObject.seriesId != null && clipperObject.seriesId !== "" &&
-                <SeriesNumberSelect
-                    numberList={availableSeriesNumbers}
-                    onChange={onNumberChange}
-                />
+                    <SeriesNumberSelect
+                        numberList={availableSeriesNumbers}
+                        onChange={onNumberChange}
+                        preSelect={props.mode === "Update" && props.clipper ? props.clipper.seriesNumber : null}
+                    />
                 }
                 <CardImageUpload
                     fileLabel={"Clipper image"}
                     onChange={onImageChange}
                 />
-                {selectedImage &&
-                    <img src={URL.createObjectURL(selectedImage)} alt={"Clipper image preview"}/>
+                {defineImageUrl() !== "" &&
+                    <img src={defineImageUrl()} alt={"Clipper image preview"} className={"object-scale-down h-fit p-2"}/>
                 }
                 <CardButton
                     buttonText={props.mode}
@@ -99,8 +128,7 @@ const ClipperForm = (props) => {
 ClipperForm.propTypes = {
     mode: PropTypes.string,
     clipper: PropTypes.object,
-    formFunction: PropTypes.func.isRequired,
-    seriesList: PropTypes.array,
+    formFunction: PropTypes.func.isRequired
 };
 
 ClipperForm.defaultProps = {

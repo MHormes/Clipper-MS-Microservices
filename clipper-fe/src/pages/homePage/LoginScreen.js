@@ -20,12 +20,10 @@ const LoginScreen = () => {
     })
 
     const onChange = e => {
-        console.log(e.target.value)
         setLoginDetails({
             ...loginDetails,
             [e.target.name]: e.target.value
         });
-        console.log(loginDetails)
     }
 
     useEffect(() => {
@@ -62,7 +60,7 @@ const LoginScreen = () => {
                     onChange={onChange}
                     value={loginDetails.password}
                     fieldName={"password"}
-                />
+                    type={"password"}/>
                 <CardButton className="btn btn-primary btn-xl" buttonAction={() => handleLogin()} buttonText={"Login"}>Login</CardButton>
             </div>
         </div>

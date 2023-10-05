@@ -5,56 +5,127 @@ networks:
     name: backend
 
 services:
-#============================#
-#==========SONARQUBE=========#
-#============================#
-#  sonarqube:
-#    image: sonarqube:community
-#    container_name: sonarqube
-#    depends_on:
-#      - postgres-sonar
-#    environment:
-#      SONAR_JDBC_URL: jdbc:postgresql://postgres-sonar:5432/sonar
-#      SONAR_JDBC_USERNAME: sonar
-#      SONAR_JDBC_PASSWORD: sonar
-#    volumes:
-#      - sonarqube_data:/opt/sonarqube/data
-#      - sonarqube_extensions:/opt/sonarqube/extensions
-#      - sonarqube_logs:/opt/sonarqube/logs
-#    ports:
-#      - "9000:9000"
-#    networks:
-#      - backend
 
+  #==================CLIENT=================
 
-#============================#
-#=======POSTGRES-SONAR=======#
-#============================#
-  postgres-sonar:
-    image: postgres
-    container_name: postgres-sonar
-    environment:
-      POSTGRES_USER: sonar
-      POSTGRES_PASSWORD: sonar
-      POSTGRES_DB: sonar
-    volumes:
-      - postgresql_sonar:/var/lib/postgresql
-      - postgresql_data_sonar:/var/lib/postgresql/data
+  #==================GATEWAY================
+  gateway-service:
+    container_name: clipperms.gateway-service
+    hostname: gateway-service
+    image: ${GATEWAY_IMAGE}:${GATEWAY_IMAGE_TAG}
+
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 1
+        window: 120s
+
     ports:
-      - "5434:5432"
+      - ${GATEWAY_PORT}:8762
+
+    depends_on:
+      - eureka-service
+
     networks:
       - backend
 
-#============================#
-#========POSTGRES-DEV========#
-#============================#
-  postgres-dev:
-    image: postgres
-    container_name: postgres-dev
-    volumes:
-      - ./docker/postgres_data_dev:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: noccures
+      eureka.client.serviceUrl.defaultZone: http://eureka-service:${EUREKA_PORT}/eureka
+
+
+  #==================EUREKA================
+  eureka-service:
+    container_name: clipperms.eureka-service
+    hostname: eureka-service
+    image: ${EUREKA_IMAGE}:${EUREKA_IMAGE_TAG}
+
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 2
+        window: 120s
+
+    ports:
+      - ${EUREKA_PORT}:8761
+
+    networks:
+      - backend
+
+    environment:
+      eureka.client.serviceUrl.defaultZone: http://eureka-service:${EUREKA_PORT}/eureka
+
+
+  #==================trading================
+  trading-module:
+    container_name: clipperms.trading-module
+    hostname: trading-module
+    image: ${TRADING_IMAGE}:${TRADING_IMAGE_TAG}
+
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 1
+        window: 120s
+
+#    expose:
+#      - ${TRADING_PORT} #expose trading port to machines inside docker network
+
+    ports:
+        - ${TRADING_PORT}:${TRADING_PORT} #expose trading port to host machine
+
+    depends_on:
+      - eureka-service
+      - postgres-trad
+
+    networks:
+      - backend
+
+    environment:
+      spring.datasource.url: jdbc:postgresql://postgres-trad:5433/trading
+      eureka.client.serviceUrl.defaultZone: http://eureka-service:${EUREKA_PORT}/eureka
+
+  #==================collection================
+  collection-module:
+    container_name: clipperms.collection-module
+    hostname: collection-module
+    image: ${COLLECTION_IMAGE}:${COLLECTION_IMAGE_TAG}
+
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 1
+        window: 120s
+
+    #    expose:
+    #      - ${COLLECTION_PORT} #expose collection port to machines inside docker network
+
+    ports:
+      - ${COLLECTION_PORT}:${COLLECTION_PORT} #expose collection port to host machine
+
+    depends_on:
+      - eureka-service
+      - postgres-coll
+
+    networks:
+      - backend
+
+    environment:
+      spring.datasource.url: jdbc:postgresql://postgres-coll:5432/collection
+      eureka.client.serviceUrl.defaultZone: http://eureka-service:${EUREKA_PORT}/eureka
+
+
+#========POSTGRES-COLL========#
+  postgres-coll:
+    image: postgres
+    container_name: postgres-coll
+    volumes:
+      - ./.docker/postgres_data_dev/collection:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: collection
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
     ports:
@@ -62,18 +133,18 @@ services:
     networks:
       - backend
 
-#==================================#
-#==========POSTGRES-TESTS==========#
-#==================================#
-  postgres-tests:
+  #========POSTGRES-TRAD========#
+  postgres-trad:
     image: postgres
-    container_name: postgres-tests
+    container_name: postgres-trad
+    volumes:
+      - ./.docker/postgres_data_dev/trading:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: test
-      POSTGRES_USER: test
-      POSTGRES_PASSWORD: test
+      POSTGRES_DB: trading
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
     ports:
-      - '5433:5432'
+      - '5433:5433'
     networks:
       - backend
 
@@ -83,8 +154,3 @@ services:
 volumes:
   postgres_data:
     driver: local
-  sonarqube_data:
-  sonarqube_extensions:
-  sonarqube_logs:
-  postgresql_sonar:
-  postgresql_data_sonar:

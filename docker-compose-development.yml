@@ -1,0 +1,185 @@
+version: '3.7'
+
+networks:
+  backend:
+    name: backend
+
+services:
+
+  #==================GATEWAY================
+  gateway-service:
+    container_name: clipperms.gateway-service
+    hostname: gateway-service
+    image: ${GATEWAY_IMAGE}:${GATEWAY_IMAGE_TAG}
+
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 1
+        window: 120s
+
+    ports:
+      - ${GATEWAY_PORT}:8762
+
+    depends_on:
+      - eureka-service
+
+    networks:
+      - backend
+
+    environment:
+      eureka.client.serviceUrl.defaultZone: http://eureka-service:${EUREKA_PORT}/eureka
+
+
+  #==================EUREKA================
+  eureka-service:
+    container_name: clipperms.eureka-service
+    hostname: eureka-service
+    image: ${EUREKA_IMAGE}:${EUREKA_IMAGE_TAG}
+
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 2
+        window: 120s
+
+    ports:
+      - ${EUREKA_PORT}:8761
+
+    networks:
+      - backend
+
+    environment:
+      eureka.client.serviceUrl.defaultZone: http://eureka-service:${EUREKA_PORT}/eureka
+
+
+  #==================trading================
+  trading-module:
+    container_name: clipperms.trading-module
+    hostname: trading-module
+    image: ${TRADING_IMAGE}:${TRADING_IMAGE_TAG}
+
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 1
+        window: 120s
+
+    #    expose:
+    #      - ${TRADING_PORT} #expose trading port to machines inside docker network
+
+    ports:
+      - ${TRADING_PORT}:${TRADING_PORT} #expose trading port to host machine
+
+    depends_on:
+      - eureka-service
+      - postgres-dev
+
+    networks:
+      - backend
+
+  #==================collection================
+  collection-module:
+    container_name: clipperms.collection-module
+    hostname: collection-module
+    image: ${COLLECTION_IMAGE}:${COLLECTION_IMAGE_TAG}
+
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 1
+        window: 120s
+
+    #    expose:
+    #      - ${COLLECTION_PORT} #expose collection port to machines inside docker network
+
+    ports:
+      - ${COLLECTION_PORT}:${COLLECTION_PORT} #expose collection port to host machine
+
+    depends_on:
+      - eureka-service
+      - postgres-dev
+
+    networks:
+      - backend
+
+    environment:
+      spring.datasource.url: jdbc:postgresql://postgres-dev:5432/clipperms
+
+  #========POSTGRES-DEV========#
+  postgres-dev:
+    image: postgres
+    container_name: postgres-dev
+    volumes:
+      - ./.docker/postgres_data_dev:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: clipperms
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - '5432:5432'
+    networks:
+      - backend
+
+  #==========POSTGRES-TESTS==========#
+  postgres-tests:
+    image: postgres
+    container_name: postgres-tests
+    environment:
+      POSTGRES_DB: test
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+    ports:
+      - '5433:5433'
+    networks:
+      - backend
+
+
+  #==========SONARQUBE=========#
+  sonarqube:
+    image: sonarqube:community
+    container_name: sonarqube
+    depends_on:
+      - postgres-sonar
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://postgres-sonar:5432/sonar
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: sonar
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+    ports:
+      - "9000:9000"
+    networks:
+      - backend
+
+
+  #=======POSTGRES-SONAR=======#
+  postgres-sonar:
+    image: postgres
+    container_name: postgres-sonar
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonar
+      POSTGRES_DB: sonar
+    volumes:
+      - postgresql_sonar:/var/lib/postgresql
+      - postgresql_data_sonar:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+    networks:
+      - backend
+
+#==================================#
+#==========VOLUME-MAPPING==========#
+#==================================#
+volumes:
+  postgres_data:
+    driver: local
+
+

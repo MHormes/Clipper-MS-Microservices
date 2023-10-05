@@ -2,23 +2,25 @@ import React, {useEffect, useState} from "react";
 import type {ISeries} from "../../../services/model/SeriesModel";
 import PropTypes from "prop-types";
 import LoadingSpinner from "../../siteDefaults/LoadingSpinner";
+import SeriesApi from "../../../services/api/SeriesApi";
 
 const debug = false;
+const seriesApi = new SeriesApi();
 const SeriesSelect = (props) => {
-
 
     const [seriesList: ISeries[], setSeriesList] = useState();
 
     useEffect(() => {
-        async function loadSeriesList() {
-            setSeriesList(props.seriesList)
-            if (debug) console.log(props.seriesList);
+        async function getAllSeries() {
+            const response = await seriesApi.getAllSeries();
+            setSeriesList(response.data);
+            if (debug) console.log(response.data);
         }
 
-        loadSeriesList().then(r => {
-            if (debug) console.log("Series list assigned!")
+        getAllSeries().then(r => {
+            if (debug) console.log("Series data fetched!")
         });
-    }, [props.seriesList])
+    }, [])
 
     return (
         <div>
@@ -30,7 +32,7 @@ const SeriesSelect = (props) => {
             {seriesList != null ?
                 <select
                     className={"select w-full max-w-xs"}
-                    defaultValue={"Choose series"}
+                    defaultValue={props.preSelect ? props.preSelect : "Choose series"}
                     onChange={props.onChange}
                 >
 
@@ -49,8 +51,8 @@ const SeriesSelect = (props) => {
 }
 
 SeriesSelect.propTypes = {
-    seriesList: PropTypes.array,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    preSelect: PropTypes.string
 };
 
 export default SeriesSelect;

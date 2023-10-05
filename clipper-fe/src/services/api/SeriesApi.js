@@ -88,6 +88,35 @@ export default class SeriesApi {
             });
     }
 
+    updateSeries = async (seriesObject: ISeriesCreateRequest, image: File) => {
+        const seriesJson = JSON.stringify(seriesObject);
+        const seriesBlob = new Blob([seriesJson], {
+            type: 'application/json'
+        });
+
+        const formData = new FormData();
+        formData.append('image', image);
+        formData.append('series', seriesBlob);
+
+        console.log(formData);
+        return api
+            .put(`/series/update/${seriesObject.id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data ',
+                }
+            })
+            .then((response: AxiosResponse<ISeries>) => {
+                if(debug) console.log(response.data);
+                if(response.status === 200){
+                    return response;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                return null;
+            });
+    }
+
     deleteSeries = async (seriesId: string) => {
         return api
             .delete("/series/delete/" + seriesId)

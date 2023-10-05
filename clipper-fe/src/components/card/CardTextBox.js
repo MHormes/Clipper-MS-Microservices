@@ -9,7 +9,7 @@ const CardTextBox = (props) => {
                     {props.boxLabel}
                 </span>
             </label>
-            <input type="text"
+            <input type={props.type ? props.type : "text"}
                    name={props.fieldName}
                    value={props.value}
                    onChange={props.onChange}
@@ -25,7 +25,8 @@ CardTextBox.propTypes = {
     boxLabel: PropTypes.string.isRequired,
     fieldName: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-    value: PropTypes.string.isRequired
+    value: PropTypes.string.isRequired,
+    type: PropTypes.string
 };
 
 export default CardTextBox

@@ -11,6 +11,7 @@ import RouteAuthProvider from "./services/RouteAuthProvider";
 import ProtectedRoute from "./services/ProtectedRoute";
 import CreateSeries from "./pages/series/CreateSeries";
 import CreateClipper from "./pages/clipper/CreateClipper";
+import UpdateSeries from "./pages/series/UpdateSeries";
 
 const MainContainer = () => {
     return (
@@ -43,7 +44,7 @@ const MainContainer = () => {
                         </ProtectedRoute>
                     }/>
 
-                    <Route path="/clipperUpdate/:id" element={
+                    <Route path="/clipper/update/:id" element={
                         <ProtectedRoute>
                             <UpdateClipper
                             />
@@ -66,6 +67,13 @@ const MainContainer = () => {
                     <Route path="/series/add" element={
                         <ProtectedRoute>
                             <CreateSeries
+                            />
+                        </ProtectedRoute>
+                    }/>
+
+                    <Route path="/series/update/:id" element={
+                        <ProtectedRoute>
+                            <UpdateSeries
                             />
                         </ProtectedRoute>
                     }/>

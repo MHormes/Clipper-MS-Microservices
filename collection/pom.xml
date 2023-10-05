@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>clipperms</groupId>
+        <artifactId>clipperms</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>collection</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <name>Collection Module</name>
+    <description>Collection module of the Clipper MS system</description>
+
+    <dependencies>
+<!--        ######-->
+<!--        SPRING-->
+<!--        ######-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+
+<!--        #####-->
+<!--        MAVEN-->
+<!--        #####-->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>${maven-plugin.version}</version>
+        </dependency>
+
+<!--        ###########-->
+<!--        PERSISTENCE-->
+<!--        ###########-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+
+<!--        ####-->
+<!--        TEST-->
+<!--        ####-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+        </dependency>
+
+<!--        #############-->
+<!--        DOCUMENTATION-->
+<!--        #############-->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        </dependency>
+
+<!--        ##-->
+<!--        QA-->
+<!--        ##-->
+        <dependency>
+            <groupId>org.sonarsource.scanner.maven</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+            <plugins>
+                <plugin>
+    <!--                Plugin to satisfy the maven compiler in spring boot >= 3 -->
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-plugin.version}</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.google.cloud.tools</groupId>
+                    <artifactId>jib-maven-plugin</artifactId>
+                    <version>${jib-maven.version}</version>
+                    <configuration>
+                        <from>
+                            <image>openjdk:18-jdk-slim</image>
+                        </from>
+                        <to>
+                            <image>collection-module</image>
+                        </to>
+                    </configuration>
+                </plugin>
+            </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <sonar.projectKey>clipperMS_sonar_key</sonar.projectKey>
+                <sonar.host.url>http://localhost:9000</sonar.host.url>
+                <sonar.login>sqp_9197cc42c50feeec6cec39c76e313c007657db08</sonar.login>
+            </properties>
+        </profile>
+    </profiles>
+
+</project>

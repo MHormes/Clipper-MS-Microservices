@@ -1,0 +1,51 @@
+name: Collection module development-CI
+
+on:
+# Execute this pipeline when pushing to dev branch for path collection:
+  push:
+    branches:
+      - "dev"
+    paths:
+      - 'collection/**'
+
+# Execute this pipeline from other workflows (deployment):
+  workflow_call:
+
+jobs:
+    compile:
+      name: Compile collection module 🛠️
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout branch 🛎️
+          uses: actions/checkout@v3
+
+        - name: Set up JDK 18 🏗️
+          uses: actions/setup-java@v3
+          with:
+            java-version: 18
+            distribution: 'temurin'
+            cache: maven
+
+        - name: Compile code with maven 🛠️
+          working-directory: ./collection
+          run: mvn compile
+
+    test:
+      name: Run tests in collection module 🧪
+      needs: compile
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Checkout branch 🛎️
+          uses: actions/checkout@v3
+
+        - name: Set up JDK 18 🏗️
+          uses: actions/setup-java@v3
+          with:
+            java-version: 18
+            distribution: 'temurin'
+            cache: maven
+
+        - name: Run tests with maven 🧪
+          working-directory: ./collection
+          run: mvn test

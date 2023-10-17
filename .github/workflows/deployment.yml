@@ -1,0 +1,26 @@
+name: Deployment-CI/CD
+
+on:
+  # Execute this pipeline when we make a pull request to the main branch:
+  pull_request:
+    branches:
+      - "main"
+    types: [closed]
+
+jobs:
+  # Run the collection CI pipeline
+  collection-CI:
+    name: collection-CI 🚀
+    uses: ./.github/workflows/collectionCI.yml
+
+  # Run the trading CI pipeline
+  trading-CI:
+    name: trading-CI 🚀
+    #needs: trading-CI  -- if running synchronously
+    uses: ./.github/workflows/tradingCI.yml
+
+  # Run the client CI pipeline
+  client-CI:
+    name: client-CI 🚀
+    #needs: transport-CI
+    uses: ./.github/workflows/clientCI.yml

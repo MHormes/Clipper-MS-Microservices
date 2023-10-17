@@ -36,6 +36,7 @@ public class Clipper {
     )
     private String name;
 
+    //todo rename to series
     @ManyToOne()
     @JoinColumn(name = "series_id")
     @JsonBackReference

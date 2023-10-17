@@ -61,7 +61,7 @@ class ClipperServiceUnitTest {
             expectedResult = clipperService.addClipper(clipperToAdd, "a9c516e4-1f15-473a-bf9b-ec750a4ed691");
         }catch(Exception ex){
             System.out.println(ex.getMessage());
-            Assertions.assertEquals(ExceptionMessages.SERIES_WITH_ID_NOT_FOUND + "a9c516e4-1f15-473a-bf9b-ec750a4ed691", ex.getMessage());
+            Assertions.assertEquals(ExceptionMessages.SERIES_WITH_ID_NOT_FOUND + "a9c516e4-1f15-473a-bf9b-ec750a4ed691 not found", ex.getMessage());
         }
 
         //Check no clipper value gets returned from add

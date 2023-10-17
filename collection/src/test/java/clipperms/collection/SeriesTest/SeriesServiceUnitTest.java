@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -26,34 +27,35 @@ class SeriesServiceUnitTest {
     @Mock
     ISeriesDataSource seriesDataSource;
 
+    @Autowired
     ISeriesService seriesService;
 
-    private final String clipperId1 = "9f612c11-192e-450b-903d-f4c2608d14ad";
+    private final String seriesId1 = "9f612c11-192e-450b-903d-f4c2608d14ad";
 
-    private final String clipperId2 = "0367e7c2-8772-4fda-b603-9d5c68e0357c";
+    private final String seriesId2 = "0367e7c2-8772-4fda-b603-9d5c68e0357c";
 
-    private final String clipperId3 = "c9f3ac2f-ce33-42ec-bbb2-4b6945051406";
+    private final String seriesId3 = "c9f3ac2f-ce33-42ec-bbb2-4b6945051406";
 
     @BeforeEach
     void setUp() {
         seriesService = new SeriesService(seriesDataSource);
         //simulate expected database response when id does not exist -> return null
-        when(seriesDataSource.getSeriesWithId(UUID.fromString(clipperId1))).thenReturn(null);
+        when(seriesDataSource.getSeriesWithId(UUID.fromString(seriesId1))).thenReturn(null);
         //simulate series return with random amount of clippers inside -> amount of clippers can be exchanged,
         //as long as they get changed in the test methods 2.
-        when(seriesDataSource.getSeriesWithId(UUID.fromString(clipperId2))).thenReturn(new Series(UUID.fromString(clipperId2), "custom series", new ArrayList<>(List.of(new Clipper(), new Clipper())),true));
+        when(seriesDataSource.getSeriesWithId(UUID.fromString(seriesId2))).thenReturn(new Series(UUID.fromString(seriesId2), "custom series", new ArrayList<>(List.of(new Clipper(), new Clipper())),true));
         //simulate random number return on get taken series numbers -> numbers can be exchanged,
         // as long as they get changed in the test method 2.
-        when(seriesDataSource.getTakenSeriesNumber(UUID.fromString(clipperId3))).thenReturn(new int[]{1, 3});
+        when(seriesDataSource.getTakenSeriesNumber(UUID.fromString(seriesId3))).thenReturn(new int[]{1, 3});
         //simulate expected database response when id should exist -> return series
-        when(seriesDataSource.getSeriesWithId(UUID.fromString(clipperId3))).thenReturn(new Series("actual series", false));
+        when(seriesDataSource.getSeriesWithId(UUID.fromString(seriesId3))).thenReturn(new Series("actual series", false, null));
     }
 
 
     //Test if add method throws exception when series has empty name.
     @Test()
     void addNewSeriesEmptyNameTest() {
-        Series seriesToAdd = new Series("", false);
+        Series seriesToAdd = new Series("", false, null);
 
         Series expectedResult = null;
         try {
@@ -75,7 +77,8 @@ class SeriesServiceUnitTest {
         //Can use a fake series id since data source is mocked.
         int expectedNumber = 0;
         try{
-//            expectedNumber = seriesService.getAvailableSeriesNumber(clipperId2);
+            var intList = seriesService.getAvailableSeriesNumber(seriesId2);
+            expectedNumber = intList.get(0);
         }catch(Exception ex){
             System.out.println(ex.getMessage());
         }
@@ -88,7 +91,8 @@ class SeriesServiceUnitTest {
         //Can use a fake series id since data source is mocked.
         int expectedNumber = 0;
         try{
-//            expectedNumber = seriesService.getAvailableSeriesNumber(clipperId3);
+            var intList = seriesService.getAvailableSeriesNumber(seriesId3);
+            expectedNumber = intList.get(0);
         }catch(Exception ex){
             System.out.println(ex.getMessage());
         }
@@ -100,10 +104,10 @@ class SeriesServiceUnitTest {
     void getSeriesWithIdNonExisting() {
         Series expectedResult = null;
         try {
-            expectedResult = seriesService.getSeriesWithId(clipperId1);
+            expectedResult = seriesService.getSeriesWithId(seriesId1);
         } catch (Exception ex) {
             System.out.println(ex);
-            Assertions.assertEquals(ExceptionMessages.SERIES_WITH_ID_NOT_FOUND + clipperId1, ex.getMessage());
+            Assertions.assertEquals(ExceptionMessages.SERIES_WITH_ID_NOT_FOUND + seriesId1, ex.getMessage());
         }
 
         //Check that no series value gets returned when exception is thrown.
@@ -114,15 +118,15 @@ class SeriesServiceUnitTest {
     @Test
     void updateSeriesNonExisting() {
         //Create series as if it comes from FE. Assign non-existing id for test -> will be assigned in FE normally
-        Series seriesWithUpdate = new Series("updated series", false);
-        seriesWithUpdate.setId(UUID.fromString(clipperId1));
+        Series seriesWithUpdate = new Series("updated series", false, null);
+        seriesWithUpdate.setId(UUID.fromString(seriesId1));
 
         Series expectedResult = null;
         try {
             expectedResult = seriesService.updateSeries(seriesWithUpdate);
         } catch (Exception ex) {
             System.out.println(ex);
-            Assertions.assertEquals(ExceptionMessages.SERIES_WITH_ID_NOT_FOUND + clipperId1, ex.getMessage());
+            Assertions.assertEquals(ExceptionMessages.SERIES_WITH_ID_NOT_FOUND + seriesId1, ex.getMessage());
         }
 
         //Check that no series value gets returned when exception is thrown.
@@ -133,10 +137,10 @@ class SeriesServiceUnitTest {
     @Test
     void deleteSeriesNonExisting() {
         try {
-            seriesService.deleteSeries(clipperId1);
+            seriesService.deleteSeries(seriesId1);
         } catch (Exception ex) {
             System.out.println(ex);
-            Assertions.assertEquals(ExceptionMessages.SERIES_WITH_ID_NOT_FOUND + clipperId1, ex.getMessage());
+            Assertions.assertEquals(ExceptionMessages.SERIES_WITH_ID_NOT_FOUND + seriesId1, ex.getMessage());
         }
     }
 }

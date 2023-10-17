@@ -102,7 +102,8 @@ class ClipperIntegrationTest {
         //Make new clipper instance to get db return
         Clipper databaseUpdateReturn = new Clipper();
         try {
-//            databaseUpdateReturn = clipperService.updateClipper(clipperWithUpdate);
+
+            databaseUpdateReturn = clipperService.updateClipper(clipperWithUpdate, null);
         } catch (Exception ex) {
             System.out.println(ex);
         }

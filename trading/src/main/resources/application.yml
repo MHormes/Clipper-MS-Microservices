@@ -18,6 +18,8 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
         ddl-auto: update
+  application:
+    name: Trading-module
 
 org.slf4j.simpleLogger.defaultLogLevel: error
 

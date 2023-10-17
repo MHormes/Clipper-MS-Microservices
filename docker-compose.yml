@@ -123,7 +123,7 @@ services:
     image: postgres
     container_name: postgres-coll
     volumes:
-      - ./.docker/postgres_data_dev/collection:/var/lib/postgresql/data
+      - .docker/postgres_data_dev/collection:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: collection
       POSTGRES_USER: admin
@@ -138,7 +138,7 @@ services:
     image: postgres
     container_name: postgres-trad
     volumes:
-      - ./.docker/postgres_data_dev/trading:/var/lib/postgresql/data
+      - .docker/postgres_data_dev/trading:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: trading
       POSTGRES_USER: admin

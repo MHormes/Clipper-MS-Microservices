@@ -14,7 +14,7 @@ const SeriesWithId = () => {
 
     const params = useParams();
     const navigate = useNavigate();
-    const [seriesWithId: ISeries, setSeriesWithId] = useState();
+    const [seriesWithId, setSeriesWithId] = useState({} as ISeries);
 
     useEffect(() => {
         async function getSeriesWithId() {
@@ -36,7 +36,7 @@ const SeriesWithId = () => {
             if (debug) console.log("Series with id: " + seriesWithId.id + " has been deleted!");
             setTimeout(() => {
                 navigate("/series");
-            }, "1000")
+            }, 1000)
         }
     }
 
@@ -54,7 +54,6 @@ const SeriesWithId = () => {
                         Series: {seriesWithId.name}
                     </h1>
                     <DeleteSeriesModal
-                        className={"float-right"}
                         deleteSeries={deleteSeries}
                         seriesProp={seriesWithId}
                     />

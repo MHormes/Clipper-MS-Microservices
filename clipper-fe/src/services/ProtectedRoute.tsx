@@ -1,6 +1,7 @@
 import {AuthContext} from "./RouteAuthProvider";
 import {useContext} from "react";
 import {Navigate, useLocation} from "react-router";
+import React from "react";
 
 const debug = false;
 const ProtectedRoute = ({ children }) => {

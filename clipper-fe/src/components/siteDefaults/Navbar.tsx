@@ -26,10 +26,10 @@ const Navbar = () => {
         <div className="navbar bg-base-100">
             <div className="navbar-start">
                 <div className="dropdown">
-                    <label tabIndex="0" className="btn btn-ghost lg:hidden">
+                    <label tabIndex={0} className="btn btn-ghost lg:hidden">
                         <FontAwesomeIcon icon={faBars}/>
                     </label>
-                    <ul tabIndex="0"
+                    <ul tabIndex={0}
                         className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                         {pages.map((page) => (
                             <li key={page}>

@@ -61,7 +61,10 @@ const LoginScreen = () => {
                     value={loginDetails.password}
                     fieldName={"password"}
                     type={"password"}/>
-                <CardButton className="btn btn-primary btn-xl" buttonAction={() => handleLogin()} buttonText={"Login"}>Login</CardButton>
+                <CardButton
+                    buttonAction={() => handleLogin()}
+                    buttonText={"Login"}
+                />
             </div>
         </div>
     )

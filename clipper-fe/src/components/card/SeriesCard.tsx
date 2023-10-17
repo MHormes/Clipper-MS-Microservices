@@ -3,6 +3,7 @@ import CardPicture from "./CardPicture";
 import CardTitle from "./CardTitle";
 import CardText from "./CardText";
 import CardButton from "./CardButton";
+import React from "react";
 
 const SeriesCard = (props) => {
 

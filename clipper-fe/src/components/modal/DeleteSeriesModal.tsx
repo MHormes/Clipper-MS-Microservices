@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrashCan} from "@fortawesome/free-solid-svg-icons";
+// @ts-ignore
 import PropTypes from "prop-types";
 import type {ISeries} from "../../services/model/SeriesModel";
 

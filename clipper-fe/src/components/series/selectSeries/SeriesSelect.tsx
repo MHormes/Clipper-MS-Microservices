@@ -8,7 +8,7 @@ const debug = false;
 const seriesApi = new SeriesApi();
 const SeriesSelect = (props) => {
 
-    const [seriesList: ISeries[], setSeriesList] = useState();
+    const [seriesList, setSeriesList] = useState([] as ISeries[]);
 
     useEffect(() => {
         async function getAllSeries() {

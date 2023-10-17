@@ -19,7 +19,7 @@ const ClipperForm = (props) => {
     });
 
     const [selectedImage, setSelectedImage] = useState(null);
-    const [availableSeriesNumbers: number[], setAvailableSeriesNumbers] = useState([]);
+    const [availableSeriesNumbers, setAvailableSeriesNumbers] = useState([] as number[]);
 
     useEffect(() => {
         async function assignUpdateValues() {

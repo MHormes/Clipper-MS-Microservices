@@ -11,7 +11,7 @@ const debug = false;
 const AllClippers = () => {
 
     const navigate = useNavigate();
-    const [clipperList: IClipper[], setClipperList] = useState();
+    const [clipperList, setClipperList] = useState([] as IClipper[]);
 
     useEffect(() => {
         async function getAllClippers() {

@@ -37,3 +37,5 @@ build/
 .docker
 
 Clipper-BE/src/main/java/clipperms/clipperms/security/SecurityConstants.java
+
+clipper-fe/package-lock.json

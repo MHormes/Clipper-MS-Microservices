@@ -1,4 +1,4 @@
-name: Collection module development-CI
+name: Collection module CI
 
 on:
 # Execute this pipeline when pushing to dev branch for path collection:

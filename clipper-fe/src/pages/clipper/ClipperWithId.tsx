@@ -17,7 +17,7 @@ const debug = false;
 const ClipperWithId = () => {
 
     //STATE
-    const [clipperWithId: IClipper, setClipperWithId] = useState();
+    const [clipperWithId, setClipperWithId] = useState({} as IClipper);
 
     //REACT USAGES
     const params = useParams();
@@ -57,7 +57,7 @@ const ClipperWithId = () => {
             console.log("Clipper with id: " + clipperWithId.id + " has been deleted!");
             setTimeout(() => {
                 navigate(-1);
-            }, "1000")
+            }, 1000);
         }
     }
 

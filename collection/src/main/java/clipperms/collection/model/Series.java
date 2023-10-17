@@ -34,7 +34,6 @@ public class Series {
     private List<Clipper> clippers;
 
     @Lob
-    @NotNull
     @Column(name = "image_data", length = 1000)
     private byte[] imageData;
 
@@ -43,7 +42,6 @@ public class Series {
     @JoinColumn(name = "created_by")
     private AppUser createdBy;
 
-    @NotNull
     @Column(name = "custom",
             nullable = false)
     private boolean custom;
@@ -53,10 +51,11 @@ public class Series {
 
     }
 
-    public Series(String name, boolean custom) {
+    public Series(String name, boolean custom, AppUser createdBy) {
         this.name = name;
         this.custom = custom;
         this.clippers = new ArrayList<>();
+        this.createdBy = createdBy;
     }
 
     public Series(UUID id, String name, byte[] imageBytes, boolean custom, AppUser createdBy) {

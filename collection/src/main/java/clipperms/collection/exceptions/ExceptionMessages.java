@@ -23,6 +23,6 @@ public class ExceptionMessages {
     //SERIES EXCEPTIONS
     public static final String SERIES_NO_NAME = "Name cannot be empty";
     public static final String SERIES_GET_FAILED = "Database failed GET after post/put request";
-    public static final String SERIES_WITH_ID_NOT_FOUND = "Series with given id not found. id: ";
+    public static final String SERIES_WITH_ID_NOT_FOUND = "Series with id ";
     public static final String SERIES_PRESENT_AFTER_DELETE = "series still found in system after delete";
 }

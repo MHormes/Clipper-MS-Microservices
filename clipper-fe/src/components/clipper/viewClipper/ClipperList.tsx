@@ -2,11 +2,12 @@ import React, {useEffect, useState} from "react";
 import ClipperListItem from "./ClipperListItem";
 import type {IClipper} from "../../../services/model/ClipperModel";
 import LoadingSpinner from "../../siteDefaults/LoadingSpinner";
+import PropTypes, {bool} from "prop-types";
 
 const debug = false;
 const ClipperList = (props) => {
 
-    const [clipperList: IClipper[], setClipperList] = useState();
+    const [clipperList, setClipperList] = useState([] as IClipper[]);
 
     useEffect(() => {
         async function loadClipperList() {
@@ -40,9 +41,10 @@ const ClipperList = (props) => {
         )
 }
 
-// ClipperList.propTypes = {
-//     clipperListProp: PropTypes.array.isRequired
-// }
+ClipperList.propTypes = {
+    seriesView: bool,
+    clipperListProp: PropTypes.array
+}
 
 ClipperList.defaultProps = {
     seriesView: false

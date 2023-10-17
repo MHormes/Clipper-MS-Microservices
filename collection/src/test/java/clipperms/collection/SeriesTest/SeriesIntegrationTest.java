@@ -1,8 +1,10 @@
 package clipperms.collection.SeriesTest;
 
 import clipperms.collection.data.interfaces.ISeriesDataSource;
+import clipperms.collection.model.AppUser;
 import clipperms.collection.model.Series;
 import clipperms.collection.service.SeriesService;
+import clipperms.collection.service.interfaces.IAppUserService;
 import clipperms.collection.service.interfaces.ISeriesService;
 import clipperms.collection.exceptions.ExceptionMessages;
 import org.junit.jupiter.api.Assertions;
@@ -12,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.ArrayList;
+import java.util.UUID;
+
 @ActiveProfiles("test")
 @SpringBootTest
 class SeriesIntegrationTest {
@@ -20,18 +25,25 @@ class SeriesIntegrationTest {
     @Autowired
     ISeriesDataSource seriesDataSource;
 
+    @Autowired
     ISeriesService seriesService;
+
+    @Autowired
+    IAppUserService appUserService;
+
+    AppUser creator;
 
     @BeforeEach
     void setUp() {
-        seriesService = new SeriesService(seriesDataSource);
+        this.creator = new AppUser(UUID.randomUUID() ,"Maarten", "MHormes", "Hormes123", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        appUserService.saveUser(creator);
     }
 
     //Test adding new series. Asserts based on inputted name and name returned by db after add
     @Test
     void addNewSeriesSuccessfulTest() {
         //Create series to add
-        Series seriesToAdd = new Series("Love letter", false);
+        Series seriesToAdd = new Series("Love letter", false, creator);
 
         //Make new series instance to get db return
         Series databaseReturn = new Series();
@@ -49,7 +61,7 @@ class SeriesIntegrationTest {
     @Test
     void getSeriesWithIdSuccessfulTest() {
         //Create series to add and get after adding (no series added means no series to get)
-        Series seriesToAdd = new Series("Weed Letters",  false);
+        Series seriesToAdd = new Series("Weed Letters",  false, creator);
         //Make new series instance to get db return
         Series databaseAddReturn = new Series();
         try {
@@ -74,7 +86,7 @@ class SeriesIntegrationTest {
     @Test
     void updateSeriesSuccessful(){
         //Create series to add
-        Series seriesToAdd = new Series("Hippie mandala", false);
+        Series seriesToAdd = new Series("Hippie mandala", false, creator);
 
         //Make new series instance to get db return
         Series databaseAddReturn = new Series();
@@ -84,27 +96,26 @@ class SeriesIntegrationTest {
             System.out.println(ex);
         }
 
-        //create series with update values. Set id manually -> normally gets taken from FE
-        Series seriesWithUpdate = new Series("new name", true);
-        seriesWithUpdate.setId(databaseAddReturn.getId());
+        //create series with update values. Set id manually -> normally gets taken from FE (not included in create return)
+        databaseAddReturn.setName("new name");
 
         //Make new series instance to get db return
         Series databaseUpdateReturn = new Series();
         try {
-            databaseUpdateReturn = seriesService.updateSeries(seriesWithUpdate);
+            databaseUpdateReturn = seriesService.updateSeries(databaseAddReturn);
         } catch (Exception ex) {
             System.out.println(ex);
         }
 
         //Assert if seriesWithUpdate value is the same as return after update
-        Assertions.assertEquals(seriesWithUpdate.getName(), databaseUpdateReturn.getName());
+        Assertions.assertEquals(databaseAddReturn.getName(), databaseUpdateReturn.getName());
     }
 
     //Test delete series. Assertion based on getting series with id after its being deleted -> not found? -> successful delete :)
     @Test
     void deleteSeriesSuccessful(){
         //Create series to add and delete
-        Series seriesToAdd = new Series("60's drawings", false);
+        Series seriesToAdd = new Series("60's drawings", false, creator);
 
         //Make new series instance to get db return
         Series databaseAddReturn = new Series();

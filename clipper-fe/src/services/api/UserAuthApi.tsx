@@ -5,6 +5,7 @@ import {AxiosResponse} from "axios";
 const debug = true;
 
 let api;
+let prefix = "/collection/api"
 export default class UserAuthApi {
 
     constructor() {
@@ -18,7 +19,7 @@ export default class UserAuthApi {
         return process.env.REACT_APP_ACCESS_TOKEN_DEV;
         // USE THIS FOR PRODUCTION;
         // return api
-        //     .post("/login", userDetails)
+        //     .post(prefix + "/login", userDetails)
         //     .then((response: AxiosResponse<string>) => {
         //         if (debug) console.log(response.data);
         //         if (response.status === 200) {

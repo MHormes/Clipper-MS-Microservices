@@ -11,7 +11,7 @@ const debug = false;
 const AllSeries = () => {
     const navigate = useNavigate();
 
-    const [seriesList: ISeries[], setSeriesList] = useState();
+    const [seriesList, setSeriesList] = useState([] as ISeries[]);
 
     useEffect(() => {
         async function getAllSeries() {

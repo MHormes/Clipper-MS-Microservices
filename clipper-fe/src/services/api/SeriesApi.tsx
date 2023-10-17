@@ -1,12 +1,12 @@
-import {AxiosResponse} from "axios";
 import apiInstance from "./ApiInstance";
-import type {IClipper, IClipperCreateRequest} from "../model/ClipperModel";
-import type {ISeries} from "../model/SeriesModel";
+import {AxiosResponse} from "axios";
+import type {ISeries, ISeriesCreateRequest} from "../model/SeriesModel";
 
 const debug = false;
 
 let api;
-export default class ClipperApi {
+let prefix = "/collection/api"
+export default class SeriesApi {
 
     constructor() {
         api = apiInstance.init();
@@ -14,10 +14,11 @@ export default class ClipperApi {
             api.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
         }
     }
-    getAllClippers = async () => {
+
+    getSeriesWithId = async (seriesId) => {
         return api
-            .get("/clipper/all")
-            .then((response: AxiosResponse<IClipper[]>) => {
+            .get(prefix + "/series/" + seriesId)
+            .then((response: AxiosResponse<ISeries>) => {
                 if(debug) console.log(response.data);
                 if(response.status === 200){
                     return response;
@@ -29,10 +30,10 @@ export default class ClipperApi {
             });
     }
 
-    getClipperWithId = async (clipperId) => {
+    getAllSeries = async () => {
         return api
-            .get("/clipper/" + clipperId)
-            .then((response: AxiosResponse<IClipper>) => {
+            .get(prefix + "/series/all")
+            .then((response: AxiosResponse<ISeries[]>) => {
                 if(debug) console.log(response.data);
                 if(response.status === 200){
                     return response;
@@ -44,24 +45,39 @@ export default class ClipperApi {
             });
     }
 
-    createClipper = async (clipperObject: IClipperCreateRequest, image: File) => {
-        const createJson = JSON.stringify(clipperObject);
-        const clipperBlob = new Blob([createJson], {
+    getAvailableSeriesNumbers = async (seriesId: string) => {
+        return api
+            .get(prefix + `/series/${seriesId}/available`)
+            .then((response: AxiosResponse<number[]>) => {
+                if(debug) console.log(response.data);
+                if(response.status === 200){
+                    return response.data;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                return null;
+            });
+    }
+
+    createSeries = async (seriesObject: ISeriesCreateRequest, image: File) => {
+        const seriesJson = JSON.stringify(seriesObject);
+        const seriesBlob = new Blob([seriesJson], {
             type: 'application/json'
         });
 
         const formData = new FormData();
         formData.append('image', image);
-        formData.append('clipper', clipperBlob);
+        formData.append('series', seriesBlob);
 
         console.log(formData);
         return api
-            .post("/clipper/add", formData, {
+            .post(prefix + "/series/add", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data ',
                 }
             })
-            .then((response: AxiosResponse<IClipper>) => {
+            .then((response: AxiosResponse<ISeries>) => {
                 if(debug) console.log(response.data);
                 if(response.status === 200){
                     return response;
@@ -73,24 +89,24 @@ export default class ClipperApi {
             });
     }
 
-    updateClipper = async (clipperObject: IClipperCreateRequest, image: File) => {
-        const updateJson = JSON.stringify(clipperObject);
-        const clipperBlob = new Blob([updateJson], {
+    updateSeries = async (seriesObject: ISeriesCreateRequest, image: File) => {
+        const seriesJson = JSON.stringify(seriesObject);
+        const seriesBlob = new Blob([seriesJson], {
             type: 'application/json'
         });
 
         const formData = new FormData();
         formData.append('image', image);
-        formData.append('clipper', clipperBlob);
+        formData.append('series', seriesBlob);
 
         console.log(formData);
         return api
-            .put(`/clipper/update/${clipperObject.id}`, formData, {
+            .put(prefix + `/series/update/${seriesObject.id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data ',
                 }
             })
-            .then((response: AxiosResponse<IClipper>) => {
+            .then((response: AxiosResponse<ISeries>) => {
                 if(debug) console.log(response.data);
                 if(response.status === 200){
                     return response;
@@ -102,11 +118,11 @@ export default class ClipperApi {
             });
     }
 
-    deleteClipper = async (clipperId: string) => {
+    deleteSeries = async (seriesId: string) => {
         return api
-            .delete("/clipper/delete/" + clipperId)
+            .delete(prefix + "/series/delete/" + seriesId)
             .then((response) => {
-                if(debug) console.log(response);
+                if(debug) console.log(response.data);
                 if(response.status === 200){
                     return response;
                 }

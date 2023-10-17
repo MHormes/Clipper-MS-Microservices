@@ -7,7 +7,7 @@ const debug = false;
 const SeriesNumberSelect = (props) => {
 
 
-    const [numberList: number[], setNumberList] = useState();
+    const [numberList, setNumberList] = useState([] as number[]);
 
     useEffect(() => {
         async function loadNumberList() {

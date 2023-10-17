@@ -1,7 +1,7 @@
 import React, {useEffect,} from "react";
 import ClipperCard from "../../card/ClipperCard";
 import {useNavigate} from "react-router";
-import PropTypes from "prop-types";
+import PropTypes, {bool} from "prop-types";
 
 const debug = false;
 const ClipperListItem = (props) => {
@@ -60,7 +60,8 @@ const ClipperListItem = (props) => {
 }
 
 ClipperListItem.propTypes = {
-    clipper: PropTypes.object.isRequired
+    clipper: PropTypes.object.isRequired,
+    seriesView: bool
 }
 export default ClipperListItem;
 

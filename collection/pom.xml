@@ -79,6 +79,12 @@
             <artifactId>java-jwt</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
 <!--        #############-->
 <!--        DOCUMENTATION-->
 <!--        #############-->
@@ -120,6 +126,17 @@
                         <to>
                             <image>collection-module</image>
                         </to>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven.surefire.version}</version>
+                    <configuration>
+                        <includes>
+                            <include>**/*Test.java</include>
+                            <include>**/*Tests.java</include>
+                        </includes>
                     </configuration>
                 </plugin>
             </plugins>

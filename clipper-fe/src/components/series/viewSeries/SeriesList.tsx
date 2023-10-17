@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 const debug = false;
 const SeriesList = (props) => {
 
-    const [seriesList: ISeries[], setSeriesList] = useState();
+    const [seriesList, setSeriesList] = useState([] as ISeries[]);
 
     useEffect(() => {
         async function loadSeriesList() {

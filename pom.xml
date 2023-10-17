@@ -27,6 +27,8 @@
         <spring-cloud.version>4.0.3</spring-cloud.version>
         <!-- Hibernate -->
         <hibernate-validator.version>8.0.0.Final</hibernate-validator.version>
+        <!-- H2 -->
+        <h2.version>2.2.224</h2.version>
         <!-- Maven -->
         <maven-plugin.version>3.10.1</maven-plugin.version>
         <maven.surefire.version>3.1.0</maven.surefire.version>
@@ -140,6 +142,13 @@
                 <artifactId>hibernate-validator</artifactId>
                 <version>${hibernate-validator.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.version}</version>
+                <scope>runtime</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -192,18 +201,6 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                </configuration>
-            </plugin>
-<!--            temporarly ignores tests-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven.surefire.version}</version>
-                <configuration>
-                    <includes>
-                        <include>TestFail.java</include>
-                    </includes>
-                    <testFailureIgnore>true</testFailureIgnore>
                 </configuration>
             </plugin>
         </plugins>

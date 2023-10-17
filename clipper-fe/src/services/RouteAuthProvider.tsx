@@ -1,5 +1,5 @@
 import UserAuthApi from "./api/UserAuthApi";
-import {createContext, useEffect, useMemo, useState} from "react";
+import React, {createContext, useEffect, useMemo, useState} from "react";
 import {useLocation, useNavigate} from "react-router";
 import type {IUserLoginDetails} from "./model/UserModel";
 
@@ -13,9 +13,9 @@ const RouteAuthProvider = ({children}) => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [token, setToken] = useState();
+    const [token, setToken] = useState("" as string);
 
-    useEffect( () => {
+    useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
             setToken(token);
@@ -40,11 +40,13 @@ const RouteAuthProvider = ({children}) => {
         localStorage.removeItem("token");
     };
 
+
     const value = useMemo(() => ({
         tokenValue: token,
         onLogin: handleLogin,
         onLogout: handleLogout,
-    }));
+    }), [token]);
+
 
     return (
         <AuthContext.Provider value={value}>

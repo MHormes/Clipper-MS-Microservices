@@ -9,6 +9,6 @@ public class SecurityConstants {
     public static final String SUPER_ADMIN = "ROLE_SUPER_ADMIN";
 
     //PATHS
-    public final static String CLIPPER_PATH = "/api/clipper";
-    public final static String SERIES_PATH = "/api/series";
+    public final static String CLIPPER_PATH = "/clipper";
+    public final static String SERIES_PATH = "/series";
 }

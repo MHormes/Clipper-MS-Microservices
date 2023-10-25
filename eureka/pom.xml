@@ -59,7 +59,7 @@
 				<version>${jib-maven.version}</version>
 				<configuration>
 					<from>
-						<image>openjdk:18-jdk-slim</image>
+						<image>bellsoft/liberica-runtime-container:jdk-all-slim</image>
 					</from>
 					<to>
 						<image>eureka-service</image>

@@ -5,32 +5,35 @@ server:
   servlet:
     context-path: /collection/api
 
-
-#Postgres database runs in docker
+#SPRING
 spring:
+  application:
+    name: Collection-module
+
   datasource:
     url: jdbc:postgresql://localhost:5432/collection
     username: admin
     password: admin
+
   jpa:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
         ddl-auto: update
-  application:
-    name: Collection-module
 
-org.slf4j.simpleLogger.defaultLogLevel: error
+  kafka:
+    bootstrap-servers: localhost:9093
+    key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
-logging.level.org.springframework.jdbc.core: DEBUG
-
-# swagger-ui custom path
+#SPRINGDOC OPENAPI
 springdoc:
   swagger-ui:
     path: /docs/swagger-ui.html
     disable-swagger-default-url: true
 
+#EUREKA
 eureka:
   client:
     register-with-eureka: true
@@ -40,4 +43,7 @@ eureka:
     instance:
     preferIpAddress: true
 
+#LOGGING
+org.slf4j.simpleLogger.defaultLogLevel: error
+logging.level.org.springframework.jdbc.core: DEBUG
 

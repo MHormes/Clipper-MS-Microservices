@@ -44,6 +44,8 @@
         <java-jwt.version>4.2.1</java-jwt.version>
         <!-- Sonar -->
         <sonar.version>3.9.1.2184</sonar.version>
+        <!-- Kafka -->
+        <kafka.version>3.0.12</kafka.version>
     </properties>
 
     <dependencyManagement>
@@ -96,16 +98,6 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
                 <version>${spring-cloud.version}</version>
-<!--                <exclusions>-->
-<!--                    <exclusion>-->
-<!--                        <groupId>com.fasterxml.jackson.core</groupId>-->
-<!--                        <artifactId>jackson-databind</artifactId>-->
-<!--                    </exclusion>-->
-<!--                    <exclusion>-->
-<!--                        <groupId>com.fasterxml.jackson.core</groupId>-->
-<!--                        <artifactId>jackson-annotations</artifactId>-->
-<!--                    </exclusion>-->
-<!--                </exclusions>-->
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -149,6 +141,18 @@
                 <version>${h2.version}</version>
                 <scope>runtime</scope>
             </dependency>
+
+            <dependency>
+                <groupId>org.springframework.kafka</groupId>
+                <artifactId>spring-kafka</artifactId>
+                <version>${kafka.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -182,7 +186,7 @@
                 <version>${jib-maven.version}</version>
                 <configuration>
                     <from>
-                        <image>openjdk:18-jdk-slim</image>
+                        <image>bellsoft/liberica-runtime-container:jdk-all-slim</image>
                     </from>
                     <to>
                         <image>clipper-ms</image>

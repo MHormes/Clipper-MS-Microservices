@@ -24,3 +24,21 @@ jobs:
     name: client-CI 🚀
     #needs: transport-CI
     uses: ./.github/workflows/clientCI.yml
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install docker-compose
+
+      - name: Build and run containers
+        run: |
+          docker build -t client:latest -f ./clipper-fe/Dockerfile .
+          docker-compose -f ./docker-compose.yml up -d
+

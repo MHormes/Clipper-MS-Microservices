@@ -1,0 +1,22 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include DEVICONS/java.puml
+!include FONTAWESOME/users.puml
+
+Person(user, "User", "User of Clipper MS", $sprite="users")
+Person(admin, "admin", "Admin of Clipper MS", $sprite="users")
+Container(sys, "Clipper MS", "collection & trading system", "The complete Clipper MS system", $sprite="java")
+
+System_Ext(ai, "Matching AI", "AI model used to match trade-able clippers to a wishlist")
+System_Ext(log, "Google SSO", "SSO service used to authenticate users via an OAuth2.0 grant flow")
+
+Rel(user, sys, "Uses")
+Rel(admin, sys, "Uses")
+Rel(sys, ai, "Uses")
+Rel(sys, log, "Uses")
+
+SHOW_FLOATING_LEGEND()
+@enduml

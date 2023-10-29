@@ -18,4 +18,5 @@ public class CollectionApplication {
 	PasswordEncoder passwordEncoder(){
 		return new BCryptPasswordEncoder();
 	}
+
 }

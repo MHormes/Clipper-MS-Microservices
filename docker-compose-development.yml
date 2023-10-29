@@ -55,6 +55,57 @@ services:
       eureka.client.serviceUrl.defaultZone: http://eureka-service:${EUREKA_PORT}/eureka
 
 
+  #==================KEYCLOAK================
+  keycloak-service:
+    image: quay.io/keycloak/keycloak:22.0.1
+    container_name: clipperms.keycloak-service
+    hostname: keycloak-service
+    environment:
+      KC_DB: postgres
+      KC_STORAGE: jpa
+      KC_DB_URL: jdbc:postgresql://postgres-keycloak:5432/keycloak
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD: admin
+
+      KC_TRANSACTION_XA_ENABLED: false
+
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KEYCLOAK_LOGLEVEL: INFO
+
+      #      DEBUG: true  #set debug mode to debug custom keycloak providers while running keycloak in docker
+      #      DEBUG_PORT: "*:8787"
+
+    ports:
+      - "8180:8180"
+    #      - "8787:8787" # open debug port
+
+    depends_on:
+      - postgres-keycloak
+
+    command:
+      - start-dev --http-port=8180 #--log-level=DEBUG #start keycloak in dev mode with port 8180
+
+    volumes:
+      - .docker/keycloak_dev/json/export:/opt/keycloak/data #map the export folder of the linux machine to my windows folder
+
+    networks:
+      - backend
+
+
+
+  #==================RABBITMQ================
+  rabbitmq-service:
+    container_name: clipperms.rabbitmq-service
+    hostname: rabbitmq-service
+    image: rabbitmq:management
+    ports:
+      - ${RABBIT_PORT}:${RABBIT_PORT}
+      - "15672:15672"
+
+    networks:
+      - backend
+
   #==================trading================
   trading-module:
     container_name: clipperms.trading-module
@@ -76,10 +127,17 @@ services:
 
     depends_on:
       - eureka-service
-      - postgres-dev
+      - postgres-trad
 
     networks:
       - backend
+
+    environment:
+      spring.datasource.url: jdbc:postgresql://postgres-trad:5432/trading
+      eureka.client.serviceUrl.defaultZone: http://eureka-service:${EUREKA_PORT}/eureka
+      spring.rabbitmq.host: rabbitmq-service
+      spring.rabbitmq.port: ${RABBIT_PORT}
+
 
   #==================collection================
   collection-module:
@@ -102,22 +160,26 @@ services:
 
     depends_on:
       - eureka-service
-      - postgres-dev
+      - postgres-coll
 
     networks:
       - backend
 
     environment:
-      spring.datasource.url: jdbc:postgresql://postgres-dev:5432/clipperms
+      spring.datasource.url: jdbc:postgresql://postgres-coll:5432/collection
+      eureka.client.serviceUrl.defaultZone: http://eureka-service:${EUREKA_PORT}/eureka
+      spring.rabbitmq.host: rabbitmq-service
+      spring.rabbitmq.port: ${RABBIT_PORT}
 
-  #========POSTGRES-DEV========#
-  postgres-dev:
+
+  #========POSTGRES-COLL========#
+  postgres-coll:
     image: postgres
-    container_name: postgres-dev
+    container_name: postgres-coll
     volumes:
-      - ./.docker/postgres_data_dev:/var/lib/postgresql/data
+      - .docker/postgres_data_dev/collection:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: clipperms
+      POSTGRES_DB: collection
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
     ports:
@@ -125,55 +187,36 @@ services:
     networks:
       - backend
 
-  #==========POSTGRES-TESTS==========#
-  postgres-tests:
+  #========POSTGRES-TRAD========#
+  postgres-trad:
     image: postgres
-    container_name: postgres-tests
+    container_name: postgres-trad
+    volumes:
+      - .docker/postgres_data_dev/trading:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: test
-      POSTGRES_USER: test
-      POSTGRES_PASSWORD: test
+      POSTGRES_DB: trading
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
     ports:
-      - '5433:5433'
+      - '5433:5432'
     networks:
       - backend
 
-
-  #==========SONARQUBE=========#
-  sonarqube:
-    image: sonarqube:community
-    container_name: sonarqube
-    depends_on:
-      - postgres-sonar
-    environment:
-      SONAR_JDBC_URL: jdbc:postgresql://postgres-sonar:5432/sonar
-      SONAR_JDBC_USERNAME: sonar
-      SONAR_JDBC_PASSWORD: sonar
-    volumes:
-      - sonarqube_data:/opt/sonarqube/data
-      - sonarqube_extensions:/opt/sonarqube/extensions
-      - sonarqube_logs:/opt/sonarqube/logs
-    ports:
-      - "9000:9000"
-    networks:
-      - backend
-
-
-  #=======POSTGRES-SONAR=======#
-  postgres-sonar:
+  #=======POSTGRES-KEYCLOAK=======#
+  postgres-keycloak:
     image: postgres
-    container_name: postgres-sonar
+    container_name: postgres-keycloak
     environment:
-      POSTGRES_USER: sonar
-      POSTGRES_PASSWORD: sonar
-      POSTGRES_DB: sonar
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: keycloak
     volumes:
-      - postgresql_sonar:/var/lib/postgresql
-      - postgresql_data_sonar:/var/lib/postgresql/data
+      - .docker/postgresql_data_keycloak:/var/lib/postgresql/data
     ports:
       - "5434:5432"
     networks:
       - backend
+
 
 #==================================#
 #==========VOLUME-MAPPING==========#
@@ -181,5 +224,3 @@ services:
 volumes:
   postgres_data:
     driver: local
-
-

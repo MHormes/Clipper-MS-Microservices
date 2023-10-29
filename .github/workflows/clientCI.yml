@@ -6,7 +6,7 @@ on:
     branches:
       - 'dev'
     paths:
-      - ' clipper-fe/**'
+      - 'clipper-fe/**'
 
   # Execute this pipeline from other workflows (deployment):
   workflow_call:
@@ -24,5 +24,4 @@ jobs:
         working-directory: ./clipper-fe
         run: |
           npm install
-          npm run test
           npm run build

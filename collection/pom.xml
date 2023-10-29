@@ -101,6 +101,15 @@
             <artifactId>sonar-maven-plugin</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-messaging</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-rabbit</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -121,7 +130,7 @@
                     <version>${jib-maven.version}</version>
                     <configuration>
                         <from>
-                            <image>openjdk:18-jdk-slim</image>
+                            <image>bellsoft/liberica-runtime-container:jdk-all-slim</image>
                         </from>
                         <to>
                             <image>collection-module</image>
@@ -141,19 +150,4 @@
                 </plugin>
             </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>sonar</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <sonar.projectKey>clipperMS_sonar_key</sonar.projectKey>
-                <sonar.host.url>http://localhost:9000</sonar.host.url>
-                <sonar.login>sqp_9197cc42c50feeec6cec39c76e313c007657db08</sonar.login>
-            </properties>
-        </profile>
-    </profiles>
-
 </project>

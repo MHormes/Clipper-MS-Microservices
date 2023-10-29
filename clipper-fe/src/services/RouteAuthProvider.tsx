@@ -16,7 +16,9 @@ const RouteAuthProvider = ({children}) => {
     const [token, setToken] = useState("" as string);
 
     useEffect(() => {
+        console.log("RouteAuthProvider Mounted/Updated");
         const token = localStorage.getItem("token");
+        console.log("Token state: ", token);
         if (token) {
             setToken(token);
         }

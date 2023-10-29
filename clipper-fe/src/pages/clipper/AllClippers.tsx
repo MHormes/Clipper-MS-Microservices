@@ -16,8 +16,12 @@ const AllClippers = () => {
     useEffect(() => {
         async function getAllClippers() {
             const response = await clipperApi.getAllClippers();
-            setClipperList(response.data);
-            if (debug) console.log(response.data);
+            if(response !== null) {
+                setClipperList(response.data);
+                if (debug) console.log(response.data);
+            }else{
+                console.log("Error fetching clippers")
+            }
         }
 
         getAllClippers().then(() => {

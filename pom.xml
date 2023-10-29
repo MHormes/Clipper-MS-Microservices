@@ -15,7 +15,6 @@
         <module>collection</module>
         <module>gateway</module>
         <module>trading</module>
-<!--        <module>eureka</module>-->
     </modules>
 
     <properties>
@@ -25,6 +24,8 @@
         <!-- Springboot Version -->
         <spring-boot.version>3.0.11</spring-boot.version>
         <spring-cloud.version>4.0.3</spring-cloud.version>
+        <spring-messaging.version>6.0.12</spring-messaging.version>
+        <spring-rabbitmq.version>3.0.9</spring-rabbitmq.version>
         <!-- Hibernate -->
         <hibernate-validator.version>8.0.0.Final</hibernate-validator.version>
         <!-- H2 -->
@@ -44,6 +45,7 @@
         <java-jwt.version>4.2.1</java-jwt.version>
         <!-- Sonar -->
         <sonar.version>3.9.1.2184</sonar.version>
+
     </properties>
 
     <dependencyManagement>
@@ -96,16 +98,6 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
                 <version>${spring-cloud.version}</version>
-<!--                <exclusions>-->
-<!--                    <exclusion>-->
-<!--                        <groupId>com.fasterxml.jackson.core</groupId>-->
-<!--                        <artifactId>jackson-databind</artifactId>-->
-<!--                    </exclusion>-->
-<!--                    <exclusion>-->
-<!--                        <groupId>com.fasterxml.jackson.core</groupId>-->
-<!--                        <artifactId>jackson-annotations</artifactId>-->
-<!--                    </exclusion>-->
-<!--                </exclusions>-->
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -149,6 +141,24 @@
                 <version>${h2.version}</version>
                 <scope>runtime</scope>
             </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-messaging</artifactId>
+                <version>${spring-messaging.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.amqp</groupId>
+                <artifactId>spring-rabbit</artifactId>
+                <version>${spring-rabbitmq.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -182,7 +192,7 @@
                 <version>${jib-maven.version}</version>
                 <configuration>
                     <from>
-                        <image>openjdk:18-jdk-slim</image>
+                        <image>bellsoft/liberica-runtime-container:jdk-all-slim</image>
                     </from>
                     <to>
                         <image>clipper-ms</image>

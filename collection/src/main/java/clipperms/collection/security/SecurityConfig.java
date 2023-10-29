@@ -35,11 +35,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         final CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("*"));
-        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        corsConfiguration.setAllowedHeaders(List.of("*"));
-        //todo create CSRF configuration
-        http.csrf().disable().cors().configurationSource(request -> corsConfiguration);
+//        corsConfiguration.setAllowedOrigins(List.of("*"));
+//        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+//        corsConfiguration.setAllowedHeaders(List.of("*"));
+        //CSRF AND CORS ARE CONFIGURED IN GATEWAY
+        http.csrf().disable().cors().disable();
 
         //STATELESS session configuration
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -52,7 +52,7 @@ public class SecurityConfig {
         String superAdmin = SecurityConstants.SUPER_ADMIN;
         http.authorizeHttpRequests()
                 //Allow login
-                .requestMatchers("/api/login", "/api/token/refresh").permitAll()
+                .requestMatchers("/login", "/token/refresh").permitAll()
                 //Allow all get requests on clippers series and refresh endpoints
                 .requestMatchers(HttpMethod.GET, clipperPath + "/**", seriesPath + "/**", "/token/refresh/**").permitAll()
                 //Only allow (super) admins to create clippers
@@ -66,6 +66,8 @@ public class SecurityConfig {
                 //Allow Swagger UI
                 .requestMatchers("/docs/**").permitAll()
                 .requestMatchers("/v3/**").permitAll()
+                //test urls
+                .requestMatchers("/test/**").permitAll()
                 .anyRequest().authenticated();
 
         //CUSTOM FILTERS

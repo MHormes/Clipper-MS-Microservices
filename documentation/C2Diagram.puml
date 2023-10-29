@@ -1,0 +1,49 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include DEVICONS/java.puml
+!include FONTAWESOME/users.puml
+
+Person(user, "User", "User of Clipper MS", $sprite="users")
+Person(admin, "admin", "Admin of Clipper MS", $sprite="users")
+
+Container(fe, "FE (Client)", "React.js", "The user-interface of Clipper MS", $sprite="react")
+Container(gate, "Gateway", "Spring cloud gateway", "Gateway to redirect traffic to correct module", $sprite="spring")
+Container(eur, "Discovery service", "Spring netflix eureka", "The service responsible for keeping track of modules and helping gateway redirect traffic", $sprite="spring")
+Container(trad, "Trading module", "Spring boot microservice", "Module responsible for trading", $sprite="spring")
+Container(coll, "Coll module", "Spring boot microservice", "Module responsible for collecting", $sprite="spring")
+Container(rabbitMQ, "Message bus", "RabbitMQ", "Module responsible for communicating between modules", $sprite="rabbit")
+Container(keycloak, "Keycloak", "Keycloak", "Module responsible for user Authentication", $sprite="java")
+
+ContainerDb(dbTrad, "Trading Database", "Postgres", "Holds all trading information", $sprite="postgresql")
+ContainerDb(dbColl, "Collection Database", "Postgres", "Holds all collection information", $sprite="postgresql")
+ContainerDb(dbKeycloak, "Keycloak Database", "Postgres", "Holds all keycloak information", $sprite="postgresql")
+
+System_Ext(ai, "Matching AI", "AI model used to match trade-able clippers to a wishlist")
+System_Ext(log, "Google SSO", "SSO service used to authenticate users via an OAuth2.0 grant flow")
+
+Rel(user, fe, "Uses")
+Rel(admin, fe, "Uses")
+
+Rel(fe, gate, "HTTPS request")
+Rel(gate, eur, "Gains information from, via HTTP call")
+
+Rel(fe, keycloak, "Handles login via OAuth2.0 grant flow (Authorization code + PKCE)")
+Rel(trad, keycloak, "Validates user auth using")
+Rel(coll, keycloak, "Validates user auth using")
+
+Rel(gate, trad, "HTTPS request redirects to")
+Rel(gate, coll, "HTTPS request redirects to")
+Rel(trad, rabbitMQ, "Publish and subscribe to events")
+Rel(coll, rabbitMQ, "Publish and subscribe to events")
+
+Rel(trad, dbTrad, "Reads from and writes to using JDBC (SQL) & Hibernate (ORM)")
+Rel(coll, dbColl, "Reads from and writes to using JDBC (SQL) & Hibernate (ORM)")
+Rel(keycloak, dbKeycloak, "Reads from and writes to")
+
+Rel(trad, ai, "API call - research needed")
+
+SHOW_FLOATING_LEGEND()
+@enduml

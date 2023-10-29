@@ -6,6 +6,7 @@ import React from "react";
 const debug = false;
 const ProtectedRoute = ({ children }) => {
 
+    console.log("ProtectedRoute Triggered");
     const location = useLocation();
 
     const { tokenValue } = useContext(AuthContext);

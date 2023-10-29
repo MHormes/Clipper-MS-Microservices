@@ -6,7 +6,7 @@ on:
     branches:
       - 'dev'
     paths:
-      - ' clipper-fe/**'
+      - 'clipper-fe/**'
 
   # Execute this pipeline from other workflows (deployment):
   workflow_call:

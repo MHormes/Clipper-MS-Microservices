@@ -14,8 +14,7 @@ Container(gate, "Gateway", "Spring cloud gateway", "Gateway to redirect traffic 
 Container(eur, "Discovery service", "Spring netflix eureka", "The service responsible for keeping track of modules and helping gateway redirect traffic", $sprite="spring")
 Container(trad, "Trading module", "Spring boot microservice", "Module responsible for trading", $sprite="spring")
 Container(coll, "Coll module", "Spring boot microservice", "Module responsible for collecting", $sprite="spring")
-Container(kafka, "Message bus", "Apache Kafka", "Module responsible for communicating between modules", $sprite="kafka")
-Container(zoo, "ZooKeeper", "Zookeeper", "Handles config for apache kafka", $sprite="zookeeper")
+Container(rabbitMQ, "Message bus", "RabbitMQ", "Module responsible for communicating between modules", $sprite="rabbit")
 Container(keycloak, "Keycloak", "Keycloak", "Module responsible for user Authentication", $sprite="java")
 
 ContainerDb(dbTrad, "Trading Database", "Postgres", "Holds all trading information", $sprite="postgresql")
@@ -37,9 +36,8 @@ Rel(coll, keycloak, "Validates user auth using")
 
 Rel(gate, trad, "HTTPS request redirects to")
 Rel(gate, coll, "HTTPS request redirects to")
-Rel(trad, kafka, "Publish and subscribe to events")
-Rel(coll, kafka, "Publish and subscribe to events")
-Rel(kafka, zoo, "Get config from")
+Rel(trad, rabbitMQ, "Publish and subscribe to events")
+Rel(coll, rabbitMQ, "Publish and subscribe to events")
 
 Rel(trad, dbTrad, "Reads from and writes to using JDBC (SQL) & Hibernate (ORM)")
 Rel(coll, dbColl, "Reads from and writes to using JDBC (SQL) & Hibernate (ORM)")

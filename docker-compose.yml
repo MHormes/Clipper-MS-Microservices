@@ -114,46 +114,17 @@ services:
       - backend
 
 
-  #==================KAFKA================
-  kafka-service:
-    image: confluentinc/cp-kafka:latest
-    container_name: clipperms.kafka-service
-    hostname: kafka-service
-
-    depends_on:
-      - zookeeper-service
-
+  #==================RABBITMQ================
+  rabbitmq-service:
+    container_name: clipperms.rabbitmq-service
+    hostname: rabbitmq-service
+    image: rabbitmq:management
     ports:
-      - "9093:9092"
-
-    environment:
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper-service:2181
-      KAFKA_LISTENERS: PLAINTEXT://:9092,PLAINTEXT_EXTERNAL://:9093
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_EXTERNAL:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-service:9092,PLAINTEXT_EXTERNAL://localhost:9093
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-
-    volumes:
-      - .config/kafka/server.properties:/etc/kafka/server.properties
+      - ${RABBIT_PORT}:${RABBIT_PORT}
+      - "15672:15672"
 
     networks:
       - backend
-
-  #=======ZOOKEEPER=======#
-  zookeeper-service:
-    image: confluentinc/cp-zookeeper:latest
-    container_name: clipperms.zookeeper-service
-    hostname: zookeeper-service
-
-    ports:
-      - "2181:2181"
-
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-
-    networks:
-      - backend
-
 
   #==================trading================
   trading-module:
@@ -168,11 +139,11 @@ services:
         max_attempts: 1
         window: 120s
 
-#    expose:
-#      - ${TRADING_PORT} #expose trading port to machines inside docker network
+    #    expose:
+    #      - ${TRADING_PORT} #expose trading port to machines inside docker network
 
     ports:
-        - ${TRADING_PORT}:${TRADING_PORT} #expose trading port to host machine
+      - ${TRADING_PORT}:${TRADING_PORT} #expose trading port to host machine
 
     depends_on:
       - eureka-service
@@ -184,7 +155,9 @@ services:
     environment:
       spring.datasource.url: jdbc:postgresql://postgres-trad:5432/trading
       eureka.client.serviceUrl.defaultZone: http://eureka-service:${EUREKA_PORT}/eureka
-      spring.kafka+.bootstrap-servers: http://kafka-service:9092
+      spring.rabbitmq.host: rabbitmq-service
+      spring.rabbitmq.port: ${RABBIT_PORT}
+
 
   #==================collection================
   collection-module:
@@ -215,9 +188,11 @@ services:
     environment:
       spring.datasource.url: jdbc:postgresql://postgres-coll:5432/collection
       eureka.client.serviceUrl.defaultZone: http://eureka-service:${EUREKA_PORT}/eureka
-      spring.kafka.bootstrap-servers: http://kafka-service:9092
+      spring.rabbitmq.host: rabbitmq-service
+      spring.rabbitmq.port: ${RABBIT_PORT}
 
-#========POSTGRES-COLL========#
+
+  #========POSTGRES-COLL========#
   postgres-coll:
     image: postgres
     container_name: postgres-coll

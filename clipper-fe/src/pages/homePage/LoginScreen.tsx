@@ -33,39 +33,32 @@ const LoginScreen = () => {
     const [tradingCall, setTradingCall] = useState<string>("");
 
     useEffect(() => {
+        console.log("Component Mounted");
+
         //WALKING SKELETON TEST CALL - REMOVE LATER
         const api = apiInstance.init();
-        //Request kafka endpoint so send a message on the message bus
+        //Request message endpoint so send a message on the message bus
         // this message is returned with the api call and displayed on the screen
         api
-            .get("/collection/api/test/kafka")
+            .get("/collection/api/test/message")
             .then(async (response: AxiosResponse) => {
-                console.log(response.data);
+                console.log("From coll: " + response.data);
                 if (response.status === 200) {
                     setCollectionCall(response.data);
-                    //Call the trading module and check the kafka message bus for any messages
-                    // api call returns the message which will be displayed on the screen
-                    await tradingCall();
+                    // Flag is set, now initiate the second API call
+                    return api.get("/trading/api/test/message");
+                }
+                return Promise.reject("Failed to fetch from collection API");
+            })
+            .then((response: AxiosResponse) => {
+                console.log("From trad: " + response.data);
+                if (response.status === 200) {
+                    setTradingCall(response.data);
                 }
             })
             .catch((error) => {
                 console.log(error.message);
             });
-
-        async function tradingCall() {
-            api
-                .get("/trading/api/test/kafka")
-                .then((response: AxiosResponse) => {
-                    console.log(response.data);
-                    if(response.status === 200){
-                        setTradingCall(response.data);
-                    }
-                })
-                .catch((error) => {
-                    console.log(error.message);
-                });
-        }
-
 
         //todo check token validity
         if (tokenValue) {
@@ -73,7 +66,7 @@ const LoginScreen = () => {
             const origin = location.state?.from?.pathname || '/Clippers';
             navigate(origin);
         }
-    }, [navigate]);
+    }, []);
 
     async function handleLogin() {
         let data = {

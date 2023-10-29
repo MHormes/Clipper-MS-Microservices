@@ -1,7 +1,5 @@
 package clipperms.collection;
 
-import clipperms.collection.messaging.CollectionMessageProducer;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -20,4 +18,5 @@ public class CollectionApplication {
 	PasswordEncoder passwordEncoder(){
 		return new BCryptPasswordEncoder();
 	}
+
 }

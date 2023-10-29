@@ -22,11 +22,6 @@ spring:
         format_sql: true
         ddl-auto: update
 
-  kafka:
-    bootstrap-servers: localhost:9093
-    key-serializer: org.apache.kafka.common.serialization.StringSerializer
-    value-serializer: org.apache.kafka.common.serialization.StringSerializer
-
 #SPRINGDOC OPENAPI
 springdoc:
   swagger-ui:

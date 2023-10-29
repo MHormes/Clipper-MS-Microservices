@@ -22,10 +22,11 @@ spring:
         format_sql: true
         ddl-auto: update
 
-  kafka:
-    bootstrap-servers: localhost:9093
-    key-serializer: org.apache.kafka.common.serialization.StringSerializer
-    value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
 #SPRINGDOC OPENAPI
 springdoc:
@@ -44,5 +45,9 @@ eureka:
     preferIpAddress: true
 
 #LOGGING
+logging:
+  level:
+    org.springframework:
+      amqp: DEBUG
+      jdbc.core: DEBUG
 org.slf4j.simpleLogger.defaultLogLevel: error
-logging.level.org.springframework.jdbc.core: DEBUG

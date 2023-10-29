@@ -1,6 +1,12 @@
 # Clipper-MS
 Clipper management system
-###### For technical information see end file.
+
+[![Deployment-CI/CD](https://github.com/MHormes/Clipper-MS/actions/workflows/deployment.yml/badge.svg)](https://github.com/MHormes/Clipper-MS/actions/workflows/deployment.yml)
+
+[![Collection module CI](https://github.com/MHormes/Clipper-MS/actions/workflows/collectionCI.yml/badge.svg?branch=dev)](https://github.com/MHormes/Clipper-MS/actions/workflows/collectionCI.yml)
+[![Trading module CI](https://github.com/MHormes/Clipper-MS/actions/workflows/tradingCI.yml/badge.svg)](https://github.com/MHormes/Clipper-MS/actions/workflows/tradingCI.yml)
+[![Client CI](https://github.com/MHormes/Clipper-MS/actions/workflows/clientCI.yml/badge.svg)](https://github.com/MHormes/Clipper-MS/actions/workflows/clientCI.yml)
+
 
 #### Running the system:
 In order to run clipper MS, please pull the repository and execute the 'development' run script.

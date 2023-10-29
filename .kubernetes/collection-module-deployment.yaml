@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: collection-module
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: collection-module
+  template:
+    metadata:
+      labels:
+        app: collection-module
+    spec:
+      containers:
+        - name: collection-module
+          image: collection-module:v0.1
+          env:
+            - name: spring.datasource.url
+              value: jdbc:postgresql://postgres-coll:5432/collection
+            - name: spring.rabbitmq.host
+              value: rabbitmq-service
+            - name: spring.rabbitmq.port
+              value: "5672"
+          ports:
+            - containerPort: 8071
+          resources: {}

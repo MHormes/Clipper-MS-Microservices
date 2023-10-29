@@ -1,4 +1,5 @@
 # Clipper-MS
+
 Clipper management system
 
 [![Deployment-CI/CD](https://github.com/MHormes/Clipper-MS/actions/workflows/deployment.yml/badge.svg)](https://github.com/MHormes/Clipper-MS/actions/workflows/deployment.yml)
@@ -7,19 +8,16 @@ Clipper management system
 [![Trading module CI](https://github.com/MHormes/Clipper-MS/actions/workflows/tradingCI.yml/badge.svg)](https://github.com/MHormes/Clipper-MS/actions/workflows/tradingCI.yml)
 [![Client CI](https://github.com/MHormes/Clipper-MS/actions/workflows/clientCI.yml/badge.svg)](https://github.com/MHormes/Clipper-MS/actions/workflows/clientCI.yml)
 
-
 #### Running the system:
-In order to run clipper MS, please pull the repository and execute the 'development' run script.
-This script will use the maven-jib plugin to build images for the clipper MS and the database, as well as 
-start them up.
-The plugin usage will be replaced later in development to create a more flexible solution. 
+
+Currently the architecture of the system is being updated in order to run the system in a kubernetes stack. Building images can be done using the configured mvn jib plugin. These images can be used to deploy the kubernetes deployments, services and the igress in order to run the system on a local kubernetes implementation (like k3d).
+
+Once the rebuild of the architecture is proven to work locally, the solution will be moved the Fontys kubernetes stack.
 
 #### Clipper, series and collected clippers
+
 - Each AppUser has a list (collection) of CollectedClippers.
 
-[//]: # (- Collected clipper holds user specific information)
-
-[//]: # (  &#40;date and location bought, notes&#41;.)
 - Clippers only get Created, Updated and Deleted by admins
   (creator is saved in clipper as createdBy).
 - All users are capable of CRUD their own CollectedClippers
@@ -30,35 +28,35 @@ The plugin usage will be replaced later in development to create a more flexible
 - Users can create lists to group their collected clippers on their profile
   -> user specific.
 
-  
 ## BE
 
 ### Documentation
+
 ###### A general structure is defined to ensure proper in-code documentation.
+
 - Swagger-UI is used to generate openAPI documentation for the API.
 
-[//]: # (- Classes and methods are documented using JavaDoc.)
-
-[//]: # (- Method documentation should include a description of the method, the parameters, and the return value.)
-
 ### Logging
-###### Back end logging is handled using SLF4J. 
+
+###### Back end logging is handled using SLF4J.
+
 - Logic layer methods should log main operations at the INFO level.
 - Model conversion is logged at the INFO level.
 - Exceptions should be logged at the ERROR level including reference to 'thrower'.
-
 
 <br/>
 
 ## FE
 
-
-
-
 ###### Group format:
-Id \
-UserId \
-Name \
-Description \
+
+Id 
+UserId 
+Name 
+Description 
 Clippers
 
+[//]: #
+[//]: #
+[//]: #
+[//]: #

@@ -13,7 +13,6 @@
 
     <modules>
         <module>collection</module>
-        <module>gateway</module>
         <module>trading</module>
     </modules>
 

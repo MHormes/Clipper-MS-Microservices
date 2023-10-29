@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trading-module
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trading-module
+  template:
+    metadata:
+      labels:
+        app: trading-module
+    spec:
+      containers:
+        - name: trading-module
+          image: trading-module:v0.1
+          env:
+            - name: spring.datasource.url
+              value: jdbc:postgresql://localhost:5432/trading
+            - name: spring.rabbitmq.host
+              value: rabbitmq-service
+            - name: spring.rabbitmq.port
+              value: "5672"
+          ports:
+            - containerPort: 8070
+          resources: {}

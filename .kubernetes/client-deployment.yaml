@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+        - image: client:v0.1
+          name: client
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "1"
+              memory: "1073741824"
+            requests:
+              cpu: 500m
+              memory: "536870912"
+      hostname: client
+      restartPolicy: Always

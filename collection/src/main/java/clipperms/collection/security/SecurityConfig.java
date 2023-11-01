@@ -38,7 +38,6 @@ public class SecurityConfig {
 //        corsConfiguration.setAllowedOrigins(List.of("*"));
 //        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 //        corsConfiguration.setAllowedHeaders(List.of("*"));
-        //CSRF AND CORS ARE CONFIGURED IN GATEWAY
         http.csrf().disable().cors().disable();
 
         //STATELESS session configuration

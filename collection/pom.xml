@@ -33,11 +33,6 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
-
 <!--        #####-->
 <!--        MAVEN-->
 <!--        #####-->
@@ -112,6 +107,12 @@
         </dependency>
     </dependencies>
 
+    <properties>
+        <!--		Set default values, overwrite when running any maven command that uses them-->
+        <docker_username>foo</docker_username>
+        <docker_password>foo</docker_password>
+    </properties>
+
     <build>
             <plugins>
                 <plugin>
@@ -133,7 +134,12 @@
                             <image>bellsoft/liberica-runtime-container:jdk-all-slim</image>
                         </from>
                         <to>
-                            <image>localhost:5001/collection-module:v0.1</image>
+                            <image>docker.io/mhormes/collection-module:v0.1</image>
+                            <credHelper>docker-credential-wincred</credHelper>
+                            <auth>
+                                <username>${docker_username}</username>
+                                <password>${docker_password}</password>
+                            </auth>
                         </to>
                     </configuration>
                 </plugin>

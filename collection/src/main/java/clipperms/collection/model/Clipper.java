@@ -36,11 +36,10 @@ public class Clipper {
     )
     private String name;
 
-    //todo rename to series
     @ManyToOne()
     @JoinColumn(name = "series_id")
     @JsonBackReference
-    private Series seriesId;
+    private Series series;
 
     @Column(
             name = "series_number",
@@ -61,9 +60,9 @@ public class Clipper {
 
     }
 
-    public Clipper(String name, Series seriesId, int seriesNumber, AppUser creator) {
+    public Clipper(String name, Series series, int seriesNumber, AppUser creator) {
         this.name = name;
-        this.seriesId = seriesId;
+        this.series = series;
         this.seriesNumber = seriesNumber;
         this.createdBy = creator;
     }
@@ -73,7 +72,7 @@ public class Clipper {
         return "Clipper{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", seriesId=" + seriesId +
+                ", seriesId=" + series +
                 ", seriesNumber=" + seriesNumber +
                 '}';
     }

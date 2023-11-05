@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: trading-module
+spec:
+  ports:
+    - name: "http"
+      port: 8070
+      targetPort: 8070
+  selector:
+    app: trading-module
+  type: LoadBalancer

@@ -26,11 +26,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
@@ -45,8 +40,13 @@
 			<groupId>org.springframework.amqp</groupId>
 			<artifactId>spring-rabbit</artifactId>
 		</dependency>
-
 	</dependencies>
+
+	<properties>
+<!--		Set default values, overwrite when running any maven command that uses them-->
+		<docker_username>foo</docker_username>
+		<docker_password>foo</docker_password>
+	</properties>
 
 	<build>
 		<plugins>
@@ -63,8 +63,14 @@
 						<image>bellsoft/liberica-runtime-container:jdk-all-slim</image>
 					</from>
 					<to>
-						<image>trading-module</image>
+						<image>docker.io/mhormes/trading-module:v0.1</image>
+						<credHelper>docker-credential-wincred</credHelper>
+						<auth>
+							<username>${docker_username}</username>
+							<password>${docker_password}</password>
+						</auth>
 					</to>
+
 				</configuration>
 			</plugin>
 		</plugins>

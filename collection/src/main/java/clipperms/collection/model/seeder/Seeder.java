@@ -5,7 +5,6 @@ import clipperms.collection.service.interfaces.IAppUserService;
 import clipperms.collection.service.interfaces.IClipperService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import clipperms.collection.model.*;
 import clipperms.collection.service.interfaces.ICollectedClipperService;
 import clipperms.collection.service.interfaces.ISeriesService;
 import org.springframework.boot.CommandLineRunner;

@@ -25,20 +25,33 @@ jobs:
     #needs: transport-CI
     uses: ./.github/workflows/clientCI.yml
 
-  build:
+  # Build the docker images for all modules
+  image-build:
+    if: github.event.pull_request.merged == true
+    name: Build & Push Images🚀 🐋
+    needs: [collection-CI, trading-CI, client-CI]
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout branch 🛎️
+        uses: actions/checkout@v3
 
-      - name: Set up Docker Compose
-        run: |
-          sudo apt-get update
-          sudo apt-get -y install docker-compose
+      - name: Set up JDK 18 🏗️
+        uses: actions/setup-java@v3
+        with:
+          java-version: 18
+          distribution: 'temurin'
+          cache: maven
 
-      - name: Build and run containers
+      - name: Create Docker images with JIB  🐋️
+        run: mvn -T 2C compile package jib:build -e
+
+      - name: Create Docker image for client
+        working-directory: ./clipper-fe
         run: |
           docker build -t client:latest -f ./clipper-fe/Dockerfile .
-          docker-compose -f ./docker-compose.yml up -d
+          docker push client:latest
 
+  #deploy the images to a kubernetes stack
+  deploy:
+    needs: image-build

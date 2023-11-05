@@ -13,7 +13,6 @@
 
     <modules>
         <module>collection</module>
-        <module>gateway</module>
         <module>trading</module>
     </modules>
 
@@ -23,7 +22,6 @@
         <java.version>17</java.version>
         <!-- Springboot Version -->
         <spring-boot.version>3.0.11</spring-boot.version>
-        <spring-cloud.version>4.0.3</spring-cloud.version>
         <spring-messaging.version>6.0.12</spring-messaging.version>
         <spring-rabbitmq.version>3.0.9</spring-rabbitmq.version>
         <!-- Hibernate -->
@@ -92,23 +90,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-security</artifactId>
                 <version>${spring-boot.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-                <version>${spring-cloud.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
-                <version>${spring-cloud.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-gateway</artifactId>
-                <version>${spring-cloud.version}</version>
             </dependency>
 
             <dependency>

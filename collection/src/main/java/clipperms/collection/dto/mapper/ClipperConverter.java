@@ -37,12 +37,12 @@ public class ClipperConverter {
     //convert a Clipper model to a ClipperWithSeriesRequest
     public ClipperWithSeriesResponse convertModelToClipperWithSeriesResponse(Clipper clipper){
         log.info("Converting clipper model to clipperWithSeriesRequest: {}", clipper);
-        return new ClipperWithSeriesResponse(clipper.getId().toString(), clipper.getName(), seriesConverter.convertModelToResponseNoClipper(clipper.getSeriesId()), clipper.getSeriesNumber(), clipper.getCreatedBy().getId().toString(), Base64.getEncoder().encodeToString(clipper.getImageData()));
+        return new ClipperWithSeriesResponse(clipper.getId().toString(), clipper.getName(), seriesConverter.convertModelToResponseNoClipper(clipper.getSeries()), clipper.getSeriesNumber(), clipper.getCreatedBy().getId().toString(), Base64.getEncoder().encodeToString(clipper.getImageData()));
     }
 
     public ClipperNoSeriesResponse convertModelToClipperNoSeriesRequest(Clipper clipper){
         log.info("Converting clipper model to clipperNoSeriesRequest: {}", clipper);
-        return new ClipperNoSeriesResponse(clipper.getId().toString(), clipper.getName(), clipper.getSeriesId().getName(), clipper.getSeriesNumber(), clipper.getCreatedBy().getId().toString(), Base64.getEncoder().encodeToString(clipper.getImageData()));
+        return new ClipperNoSeriesResponse(clipper.getId().toString(), clipper.getName(), clipper.getSeries().getName(), clipper.getSeriesNumber(), clipper.getCreatedBy().getId().toString(), Base64.getEncoder().encodeToString(clipper.getImageData()));
     }
 
     public ClipperNoSeriesResponse convertModelNoSeriesToClipperNoSeries(Clipper clipper){

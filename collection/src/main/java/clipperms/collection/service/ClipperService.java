@@ -57,7 +57,7 @@ public class ClipperService implements IClipperService {
                 throw new IncorrectInputException(ExceptionMessages.SERIES_WITH_ID_NOT_FOUND + seriesId);
             } else {
                 //Add series reference to clipper
-                clipperToAdd.setSeriesId(seriesObject);
+                clipperToAdd.setSeries(seriesObject);
             }
         }
         if (clipperToAdd.getId() == null) {
@@ -121,7 +121,7 @@ public class ClipperService implements IClipperService {
                 throw new IncorrectInputException(ExceptionMessages.SERIES_WITH_ID_NOT_FOUND + seriesId);
             } else {
                 //Add series reference to clipper
-                clipperWithUpdate.setSeriesId(seriesObject);
+                clipperWithUpdate.setSeries(seriesObject);
             }
         }
 

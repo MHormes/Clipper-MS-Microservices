@@ -37,7 +37,7 @@ public class ClipperController {
     @GetMapping("/{id}")
     public ResponseEntity<ClipperDTO> getClipperWithId(@PathVariable(value = "id") String id) throws IncorrectInputException {
         var clipperWithId = clipperService.getClipperWithId(id);
-        if (clipperWithId.getSeriesId() == null) {
+        if (clipperWithId.getSeries() == null) {
             return ResponseEntity.ok().body(clipperConverter.convertModelNoSeriesToClipperNoSeries(clipperWithId));
         }
         return ResponseEntity.ok().body(clipperConverter.convertModelToClipperWithSeriesResponse(clipperWithId));
@@ -48,7 +48,7 @@ public class ClipperController {
         List<ClipperDTO> returnList = new ArrayList<>();
         List<Clipper> allClippers = clipperService.getAllClippers();
         for (Clipper c : allClippers) {
-            if (c.getSeriesId() != null) {
+            if (c.getSeries() != null) {
                 ClipperWithSeriesResponse clipperWithSeriesResponse = clipperConverter.convertModelToClipperWithSeriesResponse(c);
                 returnList.add(clipperWithSeriesResponse);
             } else {
@@ -80,7 +80,7 @@ public class ClipperController {
             @NotNull @RequestPart ("image") MultipartFile imageFile) throws IncorrectInputException, DatabaseFailedOperationException, IOException {
         var clipperWithUpdate = clipperConverter.convertClipperCreateToModel(clipperDTO, imageFile);
         var updatedClipperReturn = clipperService.updateClipper(clipperWithUpdate, clipperDTO.getSeriesId());
-        if (updatedClipperReturn.getSeriesId() == null) {
+        if (updatedClipperReturn.getSeries() == null) {
             return ResponseEntity.ok().body(clipperConverter.convertModelNoSeriesToClipperNoSeries(updatedClipperReturn));
         }
         return ResponseEntity.ok().body(clipperConverter.convertModelToClipperWithSeriesResponse(updatedClipperReturn));

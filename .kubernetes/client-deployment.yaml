@@ -14,7 +14,7 @@ spec:
         app: client
     spec:
       containers:
-        - image: client:v0.1
+        - image: mhormes/client:v0.1
           name: client
           ports:
             - containerPort: 80

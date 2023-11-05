@@ -12,6 +12,6 @@ public interface ISeriesRepository extends JpaRepository<Series, UUID> {
 
     Series getSeriesById(UUID id);
 
-    @Query("SELECT c.seriesNumber from Series s inner join Clipper c on s.id = c.seriesId.id where s.id = :id")
+    @Query("SELECT c.seriesNumber from Series s inner join Clipper c on s.id = c.series.id where s.id = :id")
     int[] getAvailableSeriesNumbers(UUID id);
 }

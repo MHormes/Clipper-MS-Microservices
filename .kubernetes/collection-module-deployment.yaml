@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: collection-module
-          image: collection-module:v0.1
+          image: mhormes/collection-module:v0.1
           env:
             - name: spring.datasource.url
               value: jdbc:postgresql://postgres-coll:5432/collection

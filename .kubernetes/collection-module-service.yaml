@@ -9,3 +9,4 @@ spec:
       targetPort: 8071
   selector:
     app: collection-module
+  type: LoadBalancer

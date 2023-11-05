@@ -1,0 +1,71 @@
+version: '3.7'
+
+networks:
+  backend:
+    name: backend
+
+services:
+  #==================RABBITMQ================
+  rabbitmq-service:
+    container_name: clipperms.rabbitmq-service
+    hostname: rabbitmq-service
+    image: rabbitmq:management
+    ports:
+      - ${RABBIT_PORT}:${RABBIT_PORT}
+      - "15672:15672"
+
+    networks:
+      - backend
+
+  #========POSTGRES-COLL========#
+  postgres-coll:
+    image: postgres
+    container_name: postgres-coll
+    volumes:
+      - .docker/postgres_data_dev/collection:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: collection
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - '5432:5432'
+    networks:
+      - backend
+
+  #========POSTGRES-TRAD========#
+  postgres-trad:
+    image: postgres
+    container_name: postgres-trad
+    volumes:
+      - .docker/postgres_data_dev/trading:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: trading
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - '5433:5432'
+    networks:
+      - backend
+
+  #=======POSTGRES-KEYCLOAK=======#
+  postgres-keycloak:
+    image: postgres
+    container_name: postgres-keycloak
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: keycloak
+    volumes:
+      - .docker/postgresql_data_keycloak:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+    networks:
+      - backend
+
+
+#==================================#
+#==========VOLUME-MAPPING==========#
+#==================================#
+volumes:
+  postgres_data:
+    driver: local

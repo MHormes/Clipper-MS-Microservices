@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: trading-module
-          image: trading-module:v0.1
+          image: mhormes/trading-module:v0.1
           env:
             - name: spring.datasource.url
               value: jdbc:postgresql://localhost:5432/trading

@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   name: clipperms-ingress
 spec:
+  ingressClassName: nginx
   rules:
     - host: clipper-ms.com
       http:

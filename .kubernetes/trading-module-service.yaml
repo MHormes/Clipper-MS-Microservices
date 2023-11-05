@@ -9,3 +9,4 @@ spec:
       targetPort: 8070
   selector:
     app: trading-module
+  type: LoadBalancer

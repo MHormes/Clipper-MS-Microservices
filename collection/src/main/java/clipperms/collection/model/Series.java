@@ -29,7 +29,7 @@ public class Series {
             nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "seriesId", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "series", fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Clipper> clippers;
 

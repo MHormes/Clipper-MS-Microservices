@@ -5,6 +5,27 @@ networks:
     name: backend
 
 services:
+  #================SONARQUBE=================
+  sonarqube:
+    image: sonarqube:9.9.1-community
+    container_name: prod.tools.sonarqube
+    environment:
+      SONAR_JDBC_URL: jdbc:sqlserver://postgres-sonar:5435;databaseName=sonar;encrypt=false;
+      SONAR_JDBC_USERNAME: admin
+      SONAR_JDBC_PASSWORD: admin
+    ports:
+      - ${SONAR_PORT}:9000
+    networks:
+      - backend
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 4096M
+        reservations:
+          cpus: "1"
+          memory: 2048M
+
   #==================RABBITMQ================
   rabbitmq-service:
     container_name: clipperms.rabbitmq-service
@@ -56,12 +77,26 @@ services:
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: keycloak
     volumes:
-      - .docker/postgresql_data_keycloak:/var/lib/postgresql/data
+      - .docker/postgresql_data_dev/keycloak:/var/lib/postgresql/data
     ports:
       - "5434:5432"
     networks:
       - backend
 
+  #=======POSTGRES-KEYCLOAK=======#
+  postgres-sonarqube:
+    image: postgres
+    container_name: postgres-sonar
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: sonar
+    volumes:
+      - .docker/postgresql_data_dev/sonar:/var/lib/postgresql/data
+    ports:
+      - "5435:5432"
+    networks:
+      - backend
 
 #==================================#
 #==========VOLUME-MAPPING==========#

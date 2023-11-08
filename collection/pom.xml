@@ -15,9 +15,7 @@
     <description>Collection module of the Clipper MS system</description>
 
     <dependencies>
-<!--        ######-->
 <!--        SPRING-->
-<!--        ######-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -33,18 +31,14 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-<!--        #####-->
 <!--        MAVEN-->
-<!--        #####-->
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
             <version>${maven-plugin.version}</version>
         </dependency>
 
-<!--        ###########-->
 <!--        PERSISTENCE-->
-<!--        ###########-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -60,9 +54,7 @@
             <artifactId>hibernate-validator</artifactId>
         </dependency>
 
-<!--        ####-->
 <!--        TEST-->
-<!--        ####-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -80,22 +72,19 @@
             <scope>runtime</scope>
         </dependency>
 
-<!--        #############-->
 <!--        DOCUMENTATION-->
-<!--        #############-->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
 
-<!--        ##-->
 <!--        QA-->
-<!--        ##-->
         <dependency>
             <groupId>org.sonarsource.scanner.maven</groupId>
             <artifactId>sonar-maven-plugin</artifactId>
         </dependency>
 
+<!--        Messaging-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-messaging</artifactId>
@@ -111,6 +100,10 @@
         <!--		Set default values, overwrite when running any maven command that uses them-->
         <docker_username>foo</docker_username>
         <docker_password>foo</docker_password>
+
+<!--        Sonarcloud values-->
+        <sonar.organization>mhormes</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
     <build>

@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>clipperms</groupId>
 		<artifactId>clipperms</artifactId>
-		<version>${revision}</version>
+		<version>0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>trading</artifactId>
@@ -15,6 +15,7 @@
 	<description>Trading module of the Clipper MS system</description>
 
 	<dependencies>
+<!--		Spring-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
@@ -31,6 +32,7 @@
 			<scope>test</scope>
 		</dependency>
 
+<!--		Messaging-->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-messaging</artifactId>
@@ -40,12 +42,18 @@
 			<groupId>org.springframework.amqp</groupId>
 			<artifactId>spring-rabbit</artifactId>
 		</dependency>
+
+<!--		QA-->
 	</dependencies>
 
 	<properties>
 <!--		Set default values, overwrite when running any maven command that uses them-->
 		<docker_username>foo</docker_username>
 		<docker_password>foo</docker_password>
+
+		<!--        Sonarcloud values-->
+		<sonar.organization>mhormes</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 
 	<build>
@@ -70,10 +78,23 @@
 							<password>${docker_password}</password>
 						</auth>
 					</to>
-
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>sonar</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<sonar.projectKey>ClipperMS-Trading</sonar.projectKey>
+				<sonar.host.url>http://localhost:9000</sonar.host.url>
+				<sonar.login>admin</sonar.login>
+				<sonar.password>admin</sonar.password>
+			</properties>
+		</profile>
+	</profiles>
 </project>

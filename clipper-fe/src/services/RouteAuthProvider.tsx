@@ -37,7 +37,7 @@ const RouteAuthProvider = ({children}) => {
         } else {
             alert("Invalid username or password");
         }
-    }, [userAuthApi, setToken, debug, location.state, navigate]);
+    }, [setToken, location.state, navigate]);
 
 
     const handleLogout = useCallback(() => {

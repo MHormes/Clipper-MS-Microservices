@@ -5,7 +5,7 @@ import type {ISeries, ISeriesCreateRequest} from "../model/SeriesModel";
 const debug = false;
 
 let api;
-let prefix = "/collection/api"
+let prefix = ":8071/collection/api"
 export default class SeriesApi {
 
     constructor() {

@@ -5,27 +5,6 @@ networks:
     name: backend
 
 services:
-  #================SONARQUBE=================
-  sonarqube:
-    image: sonarqube:9.9.1-community
-    container_name: prod.tools.sonarqube
-    environment:
-      SONAR_JDBC_URL: jdbc:sqlserver://postgres-sonar:5435;databaseName=sonar;encrypt=false;
-      SONAR_JDBC_USERNAME: admin
-      SONAR_JDBC_PASSWORD: admin
-    ports:
-      - ${SONAR_PORT}:9000
-    networks:
-      - backend
-    deploy:
-      resources:
-        limits:
-          cpus: "2"
-          memory: 4096M
-        reservations:
-          cpus: "1"
-          memory: 2048M
-
   #==================RABBITMQ================
   rabbitmq-service:
     container_name: clipperms.rabbitmq-service
@@ -38,69 +17,83 @@ services:
     networks:
       - backend
 
-  #========POSTGRES-COLL========#
-  postgres-coll:
-    image: postgres
-    container_name: postgres-coll
-    volumes:
-      - .docker/postgres_data_dev/collection:/var/lib/postgresql/data
+  #==================MSSQL===================
+  database-dev:
+    container_name: clipperms.mssql-database
+    hostname: database-dev
+
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 1
+        window: 120s
+
     environment:
-      POSTGRES_DB: collection
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
+      ACCEPT_EULA: Y
+      SA_PASSWORD: ${DATABASE_DEV_PASSWORD}
+      MSSQL_USER: ${DATABASE_DEV_USERNAME}
+      MSSQL_PASSWORD: ${DATABASE_DEV_PASSWORD}
+
+    volumes:
+      - ${DATABASE_DEV_VOLUME}:/var/opt/mssql/data
+
     ports:
-      - '5432:5432'
+      - "1433:1433"
+
     networks:
       - backend
 
-  #========POSTGRES-TRAD========#
-  postgres-trad:
-    image: postgres
-    container_name: postgres-trad
-    volumes:
-      - .docker/postgres_data_dev/trading:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: trading
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-    ports:
-      - '5433:5432'
-    networks:
-      - backend
-
-  #=======POSTGRES-KEYCLOAK=======#
-  postgres-keycloak:
-    image: postgres
-    container_name: postgres-keycloak
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: keycloak
-    volumes:
-      - .docker/postgresql_data_dev/keycloak:/var/lib/postgresql/data
-    ports:
-      - "5434:5432"
-    networks:
-      - backend
-
-  #=======POSTGRES-KEYCLOAK=======#
-  postgres-sonarqube:
-    image: postgres
-    container_name: postgres-sonar
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: sonar
-    volumes:
-      - .docker/postgresql_data_dev/sonar:/var/lib/postgresql/data
-    ports:
-      - "5435:5432"
-    networks:
-      - backend
-
-#==================================#
-#==========VOLUME-MAPPING==========#
-#==================================#
-volumes:
-  postgres_data:
-    driver: local
+#  #========POSTGRES-COLL========#
+#  postgres-coll:
+#    image: postgres
+#    container_name: postgres-coll
+#    volumes:
+#      - .docker/postgres_data_dev/collection:/var/lib/postgresql/data
+#    environment:
+#      POSTGRES_DB: collection
+#      POSTGRES_USER: admin
+#      POSTGRES_PASSWORD: admin
+#    ports:
+#      - '5432:5432'
+#    networks:
+#      - backend
+#
+#  #========POSTGRES-TRAD========#
+#  postgres-trad:
+#    image: postgres
+#    container_name: postgres-trad
+#    volumes:
+#      - .docker/postgres_data_dev/trading:/var/lib/postgresql/data
+#    environment:
+#      POSTGRES_DB: trading
+#      POSTGRES_USER: admin
+#      POSTGRES_PASSWORD: admin
+#    ports:
+#      - '5433:5432'
+#    networks:
+#      - backend
+#
+#  #=======POSTGRES-KEYCLOAK=======#
+#  postgres-keycloak:
+#    image: postgres
+#    container_name: postgres-keycloak
+#    environment:
+#      POSTGRES_USER: admin
+#      POSTGRES_PASSWORD: admin
+#      POSTGRES_DB: keycloak
+#    volumes:
+#      - .docker/postgresql_data_dev/keycloak:/var/lib/postgresql/data
+#    ports:
+#      - "5434:5432"
+#    networks:
+#      - backend
+#
+#
+#
+##==================================#
+##==========VOLUME-MAPPING==========#
+##==================================#
+#volumes:
+#  postgres_data:
+#    driver: local

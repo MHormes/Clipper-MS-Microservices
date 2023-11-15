@@ -35,8 +35,8 @@
         <jib-maven.version>3.3.2</jib-maven.version>
         <!-- lombok -->
         <lombok.version>1.18.30</lombok.version>
-        <!-- Postgresql -->
-        <postgresql.version>42.6.0</postgresql.version>
+        <!-- Mssql -->
+        <mssql.version>12.4.2.jre11</mssql.version>
         <!-- Spring doc-->
         <springdoc.version>2.2.0</springdoc.version>
         <!-- Java JWT -->
@@ -81,9 +81,9 @@
                 <version>${spring-boot.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>${postgresql.version}</version>
+                <groupId>com.microsoft.sqlserver</groupId>
+                <artifactId>mssql-jdbc</artifactId>
+                <version>${mssql.version}</version>
             </dependency>
 
             <dependency>

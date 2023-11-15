@@ -11,7 +11,8 @@ spring:
     name: Trading-module
 
   datasource:
-    url: jdbc:postgresql://localhost:5433/trading
+    url: jdbc:sqlserver://localhost:1433;databaseName=trading;trustServerCertificate=true
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
     username: admin
     password: admin
 

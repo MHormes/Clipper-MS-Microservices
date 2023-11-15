@@ -77,7 +77,7 @@ public class ClipperController {
     public ResponseEntity<ClipperDTO> updateClipper(
             @PathVariable(value = "id") String id,
             @RequestPart ("clipper") ClipperCreateRequest clipperDTO,
-            @NotNull @RequestPart ("image") MultipartFile imageFile) throws IncorrectInputException, DatabaseFailedOperationException, IOException {
+            @RequestPart ("image") MultipartFile imageFile) throws IncorrectInputException, DatabaseFailedOperationException, IOException {
         var clipperWithUpdate = clipperConverter.convertClipperCreateToModel(clipperDTO, imageFile);
         var updatedClipperReturn = clipperService.updateClipper(clipperWithUpdate, clipperDTO.getSeriesId());
         if (updatedClipperReturn.getSeries() == null) {

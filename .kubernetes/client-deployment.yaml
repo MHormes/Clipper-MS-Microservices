@@ -16,6 +16,7 @@ spec:
       containers:
         - image: mhormes/client:v0.1
           name: client
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           resources:
@@ -27,3 +28,4 @@ spec:
               memory: "536870912"
       hostname: client
       restartPolicy: Always
+

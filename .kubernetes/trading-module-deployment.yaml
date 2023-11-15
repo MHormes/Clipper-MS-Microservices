@@ -14,10 +14,11 @@ spec:
     spec:
       containers:
         - name: trading-module
-          image: mhormes/trading-module:v0.1
+          image: mhormes/trading-module:v0.2
+          imagePullPolicy: Always
           env:
             - name: spring.datasource.url
-              value: jdbc:postgresql://localhost:5432/trading
+              value: jdbc:sqlserver://clipperms.database.windows.net:1433;database=trading;user=clipper-admin@clipperms;password={password};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
             - name: spring.rabbitmq.host
               value: rabbitmq-service
             - name: spring.rabbitmq.port

@@ -3,9 +3,9 @@ package clipperms.collection.data;
 import clipperms.collection.data.interfaces.IClipperDataSource;
 import clipperms.collection.data.repositories.IClipperRepository;
 import clipperms.collection.data.repositories.ISeriesRepository;
-import jakarta.persistence.EntityNotFoundException;
 import clipperms.collection.model.Clipper;
 import clipperms.collection.model.Series;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -56,7 +56,11 @@ public class ClipperDataSource implements IClipperDataSource {
         clipperToUpdate.setName(clipperWithUpdate.getName());
         clipperToUpdate.setSeries(clipperWithUpdate.getSeries());
         clipperToUpdate.setSeriesNumber(clipperWithUpdate.getSeriesNumber());
-        clipperToUpdate.setImageData(clipperWithUpdate.getImageData());
+
+        //image data is null if picture is the same -> no need to update, means no need to send over the web
+        if (clipperWithUpdate.getImageData() != null) {
+            clipperToUpdate.setImageData(clipperWithUpdate.getImageData());
+        }
         clipperToUpdate.setCreatedBy(clipperWithUpdate.getCreatedBy());
         //save changes made to clipper
         clipperRepo.save(clipperToUpdate);

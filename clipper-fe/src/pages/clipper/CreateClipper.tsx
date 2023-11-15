@@ -1,15 +1,13 @@
 import LoadingSpinner from "../../components/siteDefaults/LoadingSpinner";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import ClipperForm from "../../components/clipper/changeClipper/ClipperForm";
 import type {IClipperCreateRequest} from "../../services/model/ClipperModel";
 import ClipperApi from "../../services/api/ClipperApi";
 import {useNavigate} from "react-router";
-import type {ISeries} from "../../services/model/SeriesModel";
-import SeriesApi from "../../services/api/SeriesApi";
 
 const debug = true;
 const clipperApi = new ClipperApi();
-const seriesApi = new SeriesApi();
+// const seriesApi = new SeriesApi();
 const CreateClipper = () => {
 
     const navigate = useNavigate();

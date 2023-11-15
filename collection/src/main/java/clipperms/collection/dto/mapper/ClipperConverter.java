@@ -31,7 +31,11 @@ public class ClipperConverter {
     //Convert a clipperCreateRequest to clipper model -> assign null for series id. It gets taken from DTO in controller.create method -> service class creates references if dto.getSeriesId != null
     public Clipper convertClipperCreateToModel(ClipperCreateRequest clipperDTO, MultipartFile imageFile) throws IOException {
         log.info("Converting clipperCreateRequest to clipper model: {}", clipperDTO);
-        return new Clipper((clipperDTO.getId() != null && !clipperDTO .getId().equals("") ? UUID.fromString(clipperDTO.getId()) : null), clipperDTO.getName(), null, clipperDTO.getSeriesNumber(), appUserRepo.findById(UUID.fromString(clipperDTO.getCreatedBy())).orElseThrow(() -> new EntityNotFoundException("User with supplied id not found")), imageFile.getBytes());
+        if(imageFile != null){
+            return new Clipper((clipperDTO.getId() != null && !clipperDTO .getId().equals("") ? UUID.fromString(clipperDTO.getId()) : null), clipperDTO.getName(), null, clipperDTO.getSeriesNumber(), appUserRepo.findById(UUID.fromString(clipperDTO.getCreatedBy())).orElseThrow(() -> new EntityNotFoundException("User with supplied id not found")), imageFile.getBytes());
+        }else{
+            return new Clipper((clipperDTO.getId() != null && !clipperDTO .getId().equals("") ? UUID.fromString(clipperDTO.getId()) : null), clipperDTO.getName(), null, clipperDTO.getSeriesNumber(), appUserRepo.findById(UUID.fromString(clipperDTO.getCreatedBy())).orElseThrow(() -> new EntityNotFoundException("User with supplied id not found")), null);
+        }
     }
 
     //convert a Clipper model to a ClipperWithSeriesRequest

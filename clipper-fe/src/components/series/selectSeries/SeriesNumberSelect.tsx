@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
-import type {ISeries} from "../../../services/model/SeriesModel";
-import PropTypes, {number} from "prop-types";
+import PropTypes from "prop-types";
 import LoadingSpinner from "../../siteDefaults/LoadingSpinner";
 
 const debug = false;

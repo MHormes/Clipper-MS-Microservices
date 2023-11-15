@@ -17,55 +17,83 @@ services:
     networks:
       - backend
 
-  #========POSTGRES-COLL========#
-  postgres-coll:
-    image: postgres
-    container_name: postgres-coll
-    volumes:
-      - .docker/postgres_data_dev/collection:/var/lib/postgresql/data
+  #==================MSSQL===================
+  database-dev:
+    container_name: clipperms.mssql-database
+    hostname: database-dev
+
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 1
+        window: 120s
+
     environment:
-      POSTGRES_DB: collection
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
+      ACCEPT_EULA: Y
+      SA_PASSWORD: ${DATABASE_DEV_PASSWORD}
+      MSSQL_USER: ${DATABASE_DEV_USERNAME}
+      MSSQL_PASSWORD: ${DATABASE_DEV_PASSWORD}
+
+    volumes:
+      - ${DATABASE_DEV_VOLUME}:/var/opt/mssql/data
+
     ports:
-      - '5432:5432'
+      - "1433:1433"
+
     networks:
       - backend
 
-  #========POSTGRES-TRAD========#
-  postgres-trad:
-    image: postgres
-    container_name: postgres-trad
-    volumes:
-      - .docker/postgres_data_dev/trading:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: trading
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-    ports:
-      - '5433:5432'
-    networks:
-      - backend
-
-  #=======POSTGRES-KEYCLOAK=======#
-  postgres-keycloak:
-    image: postgres
-    container_name: postgres-keycloak
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: keycloak
-    volumes:
-      - .docker/postgresql_data_keycloak:/var/lib/postgresql/data
-    ports:
-      - "5434:5432"
-    networks:
-      - backend
-
-
-#==================================#
-#==========VOLUME-MAPPING==========#
-#==================================#
-volumes:
-  postgres_data:
-    driver: local
+#  #========POSTGRES-COLL========#
+#  postgres-coll:
+#    image: postgres
+#    container_name: postgres-coll
+#    volumes:
+#      - .docker/postgres_data_dev/collection:/var/lib/postgresql/data
+#    environment:
+#      POSTGRES_DB: collection
+#      POSTGRES_USER: admin
+#      POSTGRES_PASSWORD: admin
+#    ports:
+#      - '5432:5432'
+#    networks:
+#      - backend
+#
+#  #========POSTGRES-TRAD========#
+#  postgres-trad:
+#    image: postgres
+#    container_name: postgres-trad
+#    volumes:
+#      - .docker/postgres_data_dev/trading:/var/lib/postgresql/data
+#    environment:
+#      POSTGRES_DB: trading
+#      POSTGRES_USER: admin
+#      POSTGRES_PASSWORD: admin
+#    ports:
+#      - '5433:5432'
+#    networks:
+#      - backend
+#
+#  #=======POSTGRES-KEYCLOAK=======#
+#  postgres-keycloak:
+#    image: postgres
+#    container_name: postgres-keycloak
+#    environment:
+#      POSTGRES_USER: admin
+#      POSTGRES_PASSWORD: admin
+#      POSTGRES_DB: keycloak
+#    volumes:
+#      - .docker/postgresql_data_dev/keycloak:/var/lib/postgresql/data
+#    ports:
+#      - "5434:5432"
+#    networks:
+#      - backend
+#
+#
+#
+##==================================#
+##==========VOLUME-MAPPING==========#
+##==================================#
+#volumes:
+#  postgres_data:
+#    driver: local

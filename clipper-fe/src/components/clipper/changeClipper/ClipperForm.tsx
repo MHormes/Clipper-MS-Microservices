@@ -1,7 +1,7 @@
 import CardTextBox from "../../card/CardTextBox";
 import CardImageUpload from "../../card/CardImageUpload";
 import CardButton from "../../card/CardButton";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import SeriesSelect from "../../series/selectSeries/SeriesSelect";
 import SeriesApi from "../../../services/api/SeriesApi";
@@ -21,6 +21,15 @@ const ClipperForm = (props) => {
     const [selectedImage, setSelectedImage] = useState(null);
     const [availableSeriesNumbers, setAvailableSeriesNumbers] = useState([] as number[]);
 
+    const assignAvailableSeriesNumbers = useCallback(async (seriesId: string) => {
+        let availableNumbers: number[] = await seriesApi.getAvailableSeriesNumbers(seriesId);
+        if(props.mode === "Update"){
+            setAvailableSeriesNumbers([props.clipper.seriesNumber, ...availableNumbers]);
+        }else{
+            setAvailableSeriesNumbers(availableNumbers);
+        }
+    }, [props.clipper.seriesNumber, props.mode]); // Add any dependencies the function relies on
+
     useEffect(() => {
         async function assignUpdateValues() {
             setClipperObject({
@@ -38,7 +47,7 @@ const ClipperForm = (props) => {
                 console.log("Update values assigned")
             });
         }
-    }, [props.clipper]);
+    }, [props.clipper, assignAvailableSeriesNumbers]);
 
     const defineImageUrl = () => {
         if (selectedImage) {
@@ -78,16 +87,6 @@ const ClipperForm = (props) => {
         });
     }
 
-    const assignAvailableSeriesNumbers = async (seriesId) => {
-        let availableNumbers: number[] = await seriesApi.getAvailableSeriesNumbers(seriesId);
-        //if we edit -> add the numbers instead of replace
-        if(props.mode === "Update"){
-            setAvailableSeriesNumbers([props.clipper.seriesNumber, ...availableNumbers]);
-        }else{
-            setAvailableSeriesNumbers(availableNumbers);
-        }
-    }
-
     return (
         <div className={"card bg-base-300 m-3"}>
             <div className={"card-body"}>
@@ -114,7 +113,7 @@ const ClipperForm = (props) => {
                     onChange={onImageChange}
                 />
                 {defineImageUrl() !== "" &&
-                    <img src={defineImageUrl()} alt={"Clipper image preview"} className={"object-scale-down h-fit p-2"}/>
+                    <img src={defineImageUrl()} alt={"Clipper preview"} className={"object-scale-down h-fit p-2"}/>
                 }
                 <CardButton
                     buttonText={props.mode}

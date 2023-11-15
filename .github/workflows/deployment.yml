@@ -43,15 +43,14 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Create Docker images with JIB  🐋️
-        run: mvn -T 2C compile package jib:build -e
+      - name: Login To docker 🐋️
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Create Docker image for client
+      - name: Create Docker images with JIB  🐋️
+        run: mvn -T 2C compile package jib:build -Ddocker_username=${{ secrets.DOCKER_USERNAME }} -Ddocker_password=${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Create Docker image for client 🐋️
         working-directory: ./clipper-fe
         run: |
           docker build -t client:latest -f ./clipper-fe/Dockerfile .
           docker push client:latest
-
-  #deploy the images to a kubernetes stack
-  deploy:
-    needs: image-build

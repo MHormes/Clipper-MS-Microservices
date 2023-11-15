@@ -11,18 +11,24 @@ spring:
     name: Collection-module
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/collection
+    url: jdbc:sqlserver://localhost:1433;databaseName=collection;trustServerCertificate=true
     username: admin
     password: admin
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
-      dialect: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: update
+      dialect: org.hibernate.dialect.SQLServer2012Dialect
     show-sql: true
     properties:
         format_sql: true
-        ddl-auto: update
 
 #SPRINGDOC OPENAPI
 springdoc:

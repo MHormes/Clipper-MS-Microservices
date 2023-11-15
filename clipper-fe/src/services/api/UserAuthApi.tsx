@@ -1,11 +1,10 @@
 import apiInstance from "./ApiInstance";
 import type {IUserLoginDetails} from "../model/UserModel";
-import {AxiosResponse} from "axios";
 
-const debug = true;
+// const debug = true;
 
 let api;
-let prefix = "/collection/api"
+// let prefix = "/collection/api"
 export default class UserAuthApi {
 
     constructor() {

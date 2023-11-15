@@ -10,11 +10,12 @@
 	</parent>
 
 	<artifactId>trading</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1-SNAPSHOT</version>
 	<name>Trading Module</name>
 	<description>Trading module of the Clipper MS system</description>
 
 	<dependencies>
+<!--		Spring-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
@@ -31,6 +32,13 @@
 			<scope>test</scope>
 		</dependency>
 
+<!--        DOCUMENTATION-->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+		</dependency>
+
+<!--		Messaging-->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-messaging</artifactId>
@@ -40,12 +48,19 @@
 			<groupId>org.springframework.amqp</groupId>
 			<artifactId>spring-rabbit</artifactId>
 		</dependency>
+
+<!--		QA-->
 	</dependencies>
 
 	<properties>
 <!--		Set default values, overwrite when running any maven command that uses them-->
 		<docker_username>foo</docker_username>
 		<docker_password>foo</docker_password>
+
+		<!--        Sonarcloud values-->
+		<sonar.organization>mhormes</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+
 	</properties>
 
 	<build>
@@ -63,17 +78,15 @@
 						<image>bellsoft/liberica-runtime-container:jdk-all-slim</image>
 					</from>
 					<to>
-						<image>docker.io/mhormes/trading-module:v0.1</image>
+						<image>docker.io/mhormes/trading-module:v0.2</image>
 						<credHelper>docker-credential-wincred</credHelper>
 						<auth>
 							<username>${docker_username}</username>
 							<password>${docker_password}</password>
 						</auth>
 					</to>
-
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

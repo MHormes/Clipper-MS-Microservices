@@ -66,7 +66,7 @@ const LoginScreen = () => {
             const origin = location.state?.from?.pathname || '/Clippers';
             navigate(origin);
         }
-    }, []);
+    }, [navigate, tokenValue, location.state?.from?.pathname]);
 
     async function handleLogin() {
         let data = {

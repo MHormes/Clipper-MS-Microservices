@@ -47,7 +47,7 @@ const RouteAuthProvider = ({children}) => {
         tokenValue: token,
         onLogin: handleLogin,
         onLogout: handleLogout,
-    }), [token]);
+    }), [token, handleLogout, handleLogin]);
 
 
     return (

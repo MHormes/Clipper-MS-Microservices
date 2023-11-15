@@ -1,4 +1,4 @@
- import type {IClipperList} from "./ClipperModel";
+import type {IClipperList} from "./ClipperModel";
 
 export interface ISeries{
     id: string;

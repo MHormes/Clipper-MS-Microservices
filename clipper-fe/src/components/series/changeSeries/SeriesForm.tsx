@@ -72,7 +72,7 @@ const SeriesForm = (props) => {
                     onChange={onImageChange}
                 />
                 {defineImageUrl() !== "" &&
-                    <img src={defineImageUrl()} alt={"Series image preview"} className={"object-scale-down h-fit p-2"}/>
+                    <img src={defineImageUrl()} alt={"Series preview"} className={"object-scale-down h-fit p-2"}/>
                 }
                 <CardButton
                     buttonText={props.mode}

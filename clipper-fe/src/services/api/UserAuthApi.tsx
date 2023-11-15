@@ -1,6 +1,5 @@
 import apiInstance from "./ApiInstance";
 import type {IUserLoginDetails} from "../model/UserModel";
-import {AxiosResponse} from "axios";
 
 const debug = true;
 

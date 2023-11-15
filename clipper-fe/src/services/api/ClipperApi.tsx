@@ -1,7 +1,6 @@
 import {AxiosResponse} from "axios";
 import apiInstance from "./ApiInstance";
 import type {IClipper, IClipperCreateRequest} from "../model/ClipperModel";
-import type {ISeries} from "../model/SeriesModel";
 
 const debug = false;
 

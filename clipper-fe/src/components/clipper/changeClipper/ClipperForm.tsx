@@ -78,7 +78,7 @@ const ClipperForm = (props) => {
         });
     }
 
-    const assignAvailableSeriesNumbers = async (seriesId) => {
+    const assignAvailableSeriesNumbers = async (seriesId: string) => {
         let availableNumbers: number[] = await seriesApi.getAvailableSeriesNumbers(seriesId);
         //if we edit -> add the numbers instead of replace
         if(props.mode === "Update"){
@@ -114,7 +114,7 @@ const ClipperForm = (props) => {
                     onChange={onImageChange}
                 />
                 {defineImageUrl() !== "" &&
-                    <img src={defineImageUrl()} alt={"Clipper image preview"} className={"object-scale-down h-fit p-2"}/>
+                    <img src={defineImageUrl()} alt={"Clipper preview"} className={"object-scale-down h-fit p-2"}/>
                 }
                 <CardButton
                     buttonText={props.mode}

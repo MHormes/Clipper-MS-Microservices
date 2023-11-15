@@ -1,5 +1,5 @@
 import UserAuthApi from "./api/UserAuthApi";
-import React, {createContext, useEffect, useMemo, useState} from "react";
+import React, {createContext, useCallback, useEffect, useMemo, useState} from "react";
 import {useLocation, useNavigate} from "react-router";
 import type {IUserLoginDetails} from "./model/UserModel";
 
@@ -24,24 +24,26 @@ const RouteAuthProvider = ({children}) => {
         }
     }, []);
 
-    const handleLogin = async (authDetails: IUserLoginDetails) => {
-        console.log("Logging in")
+    const handleLogin = useCallback(async (authDetails: IUserLoginDetails) => {
+        console.log("Logging in");
         const token = await userAuthApi.loginUser(authDetails);
 
-        token != null ? setToken(token) : alert("Invalid username or password");
-        if (token) {
+        if (token != null) {
+            setToken(token);
             localStorage.setItem("token", token);
             if (debug) console.log("Token has been set", token);
             const origin = location.state?.from?.pathname || '/Clippers';
             navigate(origin);
+        } else {
+            alert("Invalid username or password");
         }
-    };
+    }, [userAuthApi, setToken, debug, location.state, navigate]);
 
-    const handleLogout = () => {
+
+    const handleLogout = useCallback(() => {
         setToken(null);
         localStorage.removeItem("token");
-    };
-
+    }, [setToken]);
 
     const value = useMemo(() => ({
         tokenValue: token,

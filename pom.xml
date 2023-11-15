@@ -41,8 +41,6 @@
         <springdoc.version>2.2.0</springdoc.version>
         <!-- Java JWT -->
         <java-jwt.version>4.2.1</java-jwt.version>
-        <!-- Sonar -->
-        <sonar.version>3.9.1.2184</sonar.version>
 
     </properties>
 
@@ -103,13 +101,6 @@
                 <artifactId>java-jwt</artifactId>
                 <version>${java-jwt.version}</version>
             </dependency>
-
-            <dependency>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>${sonar.version}</version>
-            </dependency>
-
             <dependency>
                 <groupId>org.hibernate.validator</groupId>
                 <artifactId>hibernate-validator</artifactId>

@@ -77,12 +77,6 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
 
-<!--        QA-->
-        <dependency>
-            <groupId>org.sonarsource.scanner.maven</groupId>
-            <artifactId>sonar-maven-plugin</artifactId>
-        </dependency>
-
 <!--        Messaging-->
         <dependency>
             <groupId>org.springframework</groupId>

@@ -12,7 +12,7 @@ const SeriesSingle = (props) => {
 
     useEffect(() => {
         if (debug) console.log("SeriesSingle: series: ", series);
-    }, [props.series]);
+    }, [props.series, series]);
 
 
     const navigate = useNavigate();

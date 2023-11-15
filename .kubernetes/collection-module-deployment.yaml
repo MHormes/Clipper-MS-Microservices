@@ -14,10 +14,11 @@ spec:
     spec:
       containers:
         - name: collection-module
-          image: mhormes/collection-module:v0.1
+          image: mhormes/collection-module:v0.2
+          imagePullPolicy: Always
           env:
             - name: spring.datasource.url
-              value: jdbc:postgresql://postgres-coll:5432/collection
+              value: jdbc:sqlserver://clipperms.database.windows.net:1433;database=collection;user=clipper-admin@clipperms;password={password};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
             - name: spring.rabbitmq.host
               value: rabbitmq-service
             - name: spring.rabbitmq.port

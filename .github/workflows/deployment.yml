@@ -1,11 +1,14 @@
 name: Deployment-CI/CD
 
 on:
-  # Execute this pipeline when we make a pull request to the main branch:
-  pull_request:
+  push:
     branches:
-      - "main"
-    types: [closed]
+      - 'main'
+  # Execute this pipeline when we make a pull request to the main branch:
+#  pull_request:
+#    branches:
+#      - "main"
+#    types: [closed]
 
 jobs:
   # Run the collection CI pipeline

@@ -50,7 +50,7 @@ jobs:
       - name: Create FE env file
         working-directory: ./clipper-fe
         run: |
-          echo "${{ secrets.ENV_FILE_FE }}" | base64 --decode > .env
+          echo "${{ secrets.ENV_FILE_FE }}" > .env
 
       - name: Create Docker image for client 🐋️
         working-directory: ./clipper-fe

@@ -16,13 +16,11 @@ jobs:
   # Run the trading CI pipeline
   trading-CI:
     name: trading-CI 🚀
-    #needs: trading-CI  -- if running synchronously
     uses: ./.github/workflows/tradingCI.yml
 
   # Run the client CI pipeline
   client-CI:
     name: client-CI 🚀
-    #needs: transport-CI
     uses: ./.github/workflows/clientCI.yml
 
   # Build the docker images for all modules

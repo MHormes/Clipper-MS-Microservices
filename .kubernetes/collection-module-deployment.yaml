@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: collection-module
-          image: mhormes/collection-module:v0.2
+          image: mhormes/collection-module:latest
           imagePullPolicy: Always
           env:
             - name: spring.datasource.url

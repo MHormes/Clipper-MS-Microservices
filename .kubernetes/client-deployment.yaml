@@ -14,7 +14,7 @@ spec:
         app: client
     spec:
       containers:
-        - image: mhormes/client:v0.1
+        - image: mhormes/client:latest
           name: client
           imagePullPolicy: Always
           ports:

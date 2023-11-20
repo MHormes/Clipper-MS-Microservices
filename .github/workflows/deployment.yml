@@ -47,6 +47,11 @@ jobs:
       - name: Create Docker images with JIB  🐋️
         run: mvn -T 2C compile package jib:build -Ddocker_username=${{ secrets.DOCKER_USERNAME }} -Ddocker_password=${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Create FE env file
+        working-directory: ./clipper-fe
+        run: |
+          echo "${{ secrets.ENV_FILE_FE }}" | base64 --decode > .env
+
       - name: Create Docker image for client 🐋️
         working-directory: ./clipper-fe
         run: |

@@ -52,8 +52,11 @@ jobs:
         run: |
           echo "${{ secrets.ENV_FILE_FE }}" > .env
 
+      - name: Login To docker 🐋️
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
       - name: Create Docker image for client 🐋️
         working-directory: ./clipper-fe
         run: |
           docker build -t client:latest -f Dockerfile .
-          docker push client:latest
+          docker push mhormes/client:latest

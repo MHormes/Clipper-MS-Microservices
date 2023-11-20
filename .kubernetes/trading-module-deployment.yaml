@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: trading-module
-          image: mhormes/trading-module:v0.2
+          image: mhormes/trading-module:latest
           imagePullPolicy: Always
           env:
             - name: spring.datasource.url

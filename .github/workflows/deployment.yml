@@ -28,7 +28,6 @@ jobs:
 
   # Build the docker images for all modules
   image-build:
-    if: github.event.pull_request.merged == true
     name: Build & Push Images🚀 🐋
     needs: [collection-CI, trading-CI, client-CI]
     runs-on: ubuntu-latest

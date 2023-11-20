@@ -50,5 +50,5 @@ jobs:
       - name: Create Docker image for client 🐋️
         working-directory: ./clipper-fe
         run: |
-          docker build -t client:latest -f ./clipper-fe/Dockerfile .
+          docker build -t client:latest -f Dockerfile .
           docker push client:latest

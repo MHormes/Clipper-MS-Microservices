@@ -35,7 +35,7 @@ const AllClippers = () => {
             <h1 className="text-4xl text-center m-2">
                 All Clippers
             </h1>
-            <span className={"btn"} onClick={() => navigate("/clipper/add")}><FontAwesomeIcon icon={faPlus}/></span>
+            <span className={"btn"} onKeyDown={() => navigate("/clipper/add")} onClick={() => navigate("/clipper/add")}><FontAwesomeIcon icon={faPlus}/></span>
             <ClipperList
                 clipperListProp={clipperList}/>
 

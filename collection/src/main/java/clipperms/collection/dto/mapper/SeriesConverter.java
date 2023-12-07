@@ -1,13 +1,13 @@
 package clipperms.collection.dto.mapper;
 
+import clipperms.collection.data.repositories.IAppUserRepository;
 import clipperms.collection.dto.series.SeriesCreateRequest;
 import clipperms.collection.dto.series.SeriesNoClipperResponse;
+import clipperms.collection.dto.series.SeriesWithClipperResponse;
+import clipperms.collection.model.Series;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import clipperms.collection.data.repositories.IAppUserRepository;
-import clipperms.collection.dto.series.SeriesWithClipperResponse;
-import clipperms.collection.model.Series;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 

@@ -3,8 +3,6 @@ package clipperms.collection.service.interfaces;
 import clipperms.collection.model.AppRole;
 import clipperms.collection.model.AppUser;
 
-import java.util.List;
-
 public interface IAppUserService {
 
 

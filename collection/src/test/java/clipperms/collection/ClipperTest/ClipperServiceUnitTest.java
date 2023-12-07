@@ -1,9 +1,9 @@
 package clipperms.collection.ClipperTest;
 
 import clipperms.collection.data.interfaces.IClipperDataSource;
+import clipperms.collection.exceptions.ExceptionMessages;
 import clipperms.collection.model.Clipper;
 import clipperms.collection.service.interfaces.IClipperService;
-import clipperms.collection.exceptions.ExceptionMessages;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

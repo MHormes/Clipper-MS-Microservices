@@ -20,7 +20,7 @@ const DeleteClipperModal = (props) => {
                     <p className="py-4">This action cannot be undone! All collected clippers using this will be deleted
                         subsequently.</p>
                     <div className="modal-action">
-                        <label htmlFor="deleteModal" className="btn" onClick={() => props.deleteClipper()}>Yes</label>
+                        <label htmlFor="deleteModal" className="btn" onKeyDown={() => props.deleteClipper()} onClick={() => props.deleteClipper()}>Yes</label>
                         <label htmlFor="deleteModal" className="btn">No!</label>
                     </div>
                 </label>

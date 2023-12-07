@@ -21,7 +21,7 @@ const DeleteSeriesModal = (props) => {
                     <p className="py-4">This action cannot be undone! All clippers belonging to this series (and all collected clippers) will be deleted
                         subsequently.</p>
                     <div className="modal-action">
-                        <label htmlFor="deleteModal" className="btn" onClick={() => props.deleteSeries()}>Yes</label>
+                        <label htmlFor="deleteModal" className="btn" onKeyDown={() => props.deleteSeries()} onClick={() => props.deleteSeries()}>Yes</label>
                         <label htmlFor="deleteModal" className="btn">No!</label>
                     </div>
                 </label>

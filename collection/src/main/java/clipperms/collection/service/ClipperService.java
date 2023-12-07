@@ -1,14 +1,14 @@
 package clipperms.collection.service;
 
 import clipperms.collection.data.interfaces.IClipperDataSource;
-import clipperms.collection.service.interfaces.IClipperService;
-import clipperms.collection.service.interfaces.ICollectedClipperService;
-import lombok.extern.slf4j.Slf4j;
 import clipperms.collection.exceptions.DatabaseFailedOperationException;
 import clipperms.collection.exceptions.ExceptionMessages;
 import clipperms.collection.exceptions.IncorrectInputException;
 import clipperms.collection.model.Clipper;
 import clipperms.collection.model.CollectedClipper;
+import clipperms.collection.service.interfaces.IClipperService;
+import clipperms.collection.service.interfaces.ICollectedClipperService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

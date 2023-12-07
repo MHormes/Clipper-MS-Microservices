@@ -1,12 +1,13 @@
 package clipperms.collection.service;
 
 import clipperms.collection.data.interfaces.ICollectedClipperDataSource;
-import clipperms.collection.service.interfaces.ICollectedClipperService;
-import lombok.extern.slf4j.Slf4j;
 import clipperms.collection.exceptions.DatabaseFailedOperationException;
 import clipperms.collection.exceptions.ExceptionMessages;
 import clipperms.collection.exceptions.IncorrectInputException;
 import clipperms.collection.model.CollectedClipper;
+import clipperms.collection.service.interfaces.IClipperService;
+import clipperms.collection.service.interfaces.ICollectedClipperService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +18,23 @@ import java.util.UUID;
 @Slf4j
 public class CollectedClipperService implements ICollectedClipperService {
 
-    @Autowired
     ICollectedClipperDataSource collectedClipperData;
+
+    IClipperService clipperService;
+
+    @Autowired
+    public CollectedClipperService(ICollectedClipperDataSource collectedClipperData, IClipperService clipperService) {
+        this.collectedClipperData = collectedClipperData;
+        this.clipperService = clipperService;
+    }
 
     @Override
     public CollectedClipper addCollectedClipper(CollectedClipper collectedToAdd) throws IncorrectInputException, DatabaseFailedOperationException {
-        //todo check collected validity
+        var clipper = clipperService.getClipperWithId(collectedToAdd.getId().toString());
+        if (clipper == null) {
+            log.error("Clipper with id {} does not exist", collectedToAdd.getId());
+            throw new IncorrectInputException(ExceptionMessages.CLIPPER_WITH_ID_NOT_FOUND + collectedToAdd.getId());
+        }
         //add to DB
         var expectedResult = collectedClipperData.addToCollection(collectedToAdd);
         if (expectedResult == null) {

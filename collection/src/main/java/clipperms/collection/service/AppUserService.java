@@ -39,34 +39,11 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class AppUserService implements IAppUserService, UserDetailsService {
+public class AppUserService implements IAppUserService {
 
     private final IAppUserRepository userRepo;
     private final IAppRoleRepository roleRepo;
     private final PasswordEncoder passwordEncoder;
-
-    /**
-     * Method to load users from the database for spring security
-     * @param username
-     * @return UserDetails
-     * @throws UsernameNotFoundException
-     */
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AppUser user = userRepo.findByUsername(username);
-        log.info("User found: {}, loadUserByUsername()", user);
-        if(user == null){
-            log.error("User: {} not found in the database", username);
-            throw new UsernameNotFoundException("User not found in database");
-        }
-        //Define list of authorities
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        for (AppRole role : user.getRoles()) {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-        }
-        //Return spring security user
-        return new User(user.getUsername(), user.getPassword(), authorities);
-    }
 
     /**
      * Method to add a new user to the database
@@ -111,68 +88,4 @@ public class AppUserService implements IAppUserService, UserDetailsService {
         userRepo.save(user);
         log.info("Role {} added to user {}", roleName, username);
     }
-
-    /**
-     * Method to get a specific user from the database
-     * @param username
-     * @return AppUser
-     */
-    @Override
-    public AppUser getUser(String username) {
-        log.info("Fetching user {}", username);
-        return userRepo.findByUsername(username);
-    }
-
-    /**
-     * Method to get all users from the database
-     * @return List<AppUser>
-     */
-    @Override
-    public List<AppUser> getUsers() {
-        log.info("Fetching all users");
-        return userRepo.findAll();
-    }
-
-    /**
-     * Method to refresh a user's token
-     ** @param request
-     * @param response
-     */
-    public void refreshAccessToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String authorizationHeader = request.getHeader(AUTHORIZATION);
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            try {
-                String refreshToken = authorizationHeader.substring("Bearer ".length());
-                Algorithm algorithm = Algorithm.HMAC256(SecurityConstants.SECRET.getBytes());
-                JWTVerifier verifier = JWT.require(algorithm).build();
-                DecodedJWT decodedJWT = verifier.verify(refreshToken);
-                String username = decodedJWT.getSubject();
-                AppUser user = getUser(username);
-                String accessToken = JWT.create()
-                        .withSubject(user.getUsername())
-                        .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
-                        .withIssuer(request.getRequestURL().toString())
-                        .withClaim("roles", user.getRoles().stream().map(AppRole::getName).collect(Collectors.toList()))
-                        .sign(algorithm);
-                Map<String, String> tokens = new HashMap<>();
-                tokens.put("access_token", accessToken);
-                tokens.put("refresh_token", refreshToken);
-                response.setContentType(APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getWriter(), tokens);
-            } catch (Exception ex) {
-                response.setHeader("error", ex.getMessage());
-                response.setStatus(FORBIDDEN.value());
-                Map<String, String> error = new HashMap<>();
-                error.put("error_msg", ex.getMessage());
-                response.setContentType(APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), error);
-            }
-        } else {
-            throw new RuntimeException("Refresh token is missing");
-        }
-
-    }
-
-
-
 }

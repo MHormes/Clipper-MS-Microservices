@@ -1,0 +1,23 @@
+@startuml
+skinparam SequenceMessageAlignment center
+actor User
+participant "Client (FE)" as Client
+participant "Trading Module" as Trading
+participant "Keycloak" as Auth
+participant "Trading DB" as TradingDB
+
+User -> Client: Request to View Potential Matches
+Client -> Trading: Fetch Potential Traders List
+
+activate Trading
+
+Trading -> Auth: Validate JWT token
+Auth -> Trading: Token validated
+
+Trading -> TradingDB: Query for Potential Traders & Tradeable clippers
+TradingDB -> Trading: Return List of Potential Traders & clippers
+
+Trading -> Client: Send Potential Traders List and Clippers Overview
+Client -> User: Display Potential Traders and Clippers Overview
+deactivate Trading
+@enduml

@@ -1,0 +1,28 @@
+@startuml
+skinparam SequenceMessageAlignment center
+actor User
+actor User2
+participant "Client (FE)" as Client
+participant "Trading Module" as Trading
+participant "WebSocket Connection" as WebSocket
+
+note over User, User2: Chat Windows Open from US-14
+
+User -> Client: Send Chat Message
+Client -> WebSocket: Transmit Message to Trading Module
+
+WebSocket -> Trading: Receive Message from User
+Trading -> WebSocket: Broadcast Message to User2's Client
+
+WebSocket -> Client: Display Received Message in User2's Chat
+note over User, User2: Real-Time Chatting
+
+User2 -> Client: Send Response Message
+Client -> WebSocket: Transmit Response Message to Trading Module
+
+WebSocket -> Trading: Receive Response Message from User2
+Trading -> WebSocket: Broadcast Response Message to User's Client
+
+WebSocket -> Client: Display Received Response Message in User's Chat
+note over User, User2: Continuous Real-Time Chat
+@enduml

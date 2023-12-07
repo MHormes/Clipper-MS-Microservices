@@ -12,9 +12,9 @@ spring:
 
   datasource:
     url: jdbc:sqlserver://localhost:1433;databaseName=collection;trustServerCertificate=true
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
     username: admin
     password: admin
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 
   rabbitmq:
     host: localhost
@@ -30,13 +30,26 @@ spring:
     properties:
         format_sql: true
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://clipper-ms.com:8180/realms/ClipperMS
+
+
 #SPRINGDOC OPENAPI
 springdoc:
   swagger-ui:
-    path: /docs/swagger-ui.html
+    path: /docs.html
+    oauth:
+      use-pkce-with-authorization-code-grant: true
+      client-id: clipper-client
     disable-swagger-default-url: true
+
+
 
 #LOGGING
 org.slf4j.simpleLogger.defaultLogLevel: error
 logging.level.org.springframework.jdbc.core: DEBUG
 
+debug: true

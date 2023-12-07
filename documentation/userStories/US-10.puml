@@ -1,0 +1,32 @@
+@startuml
+skinparam SequenceMessageAlignment center
+actor User
+participant "Client (FE)" as Client
+participant "Collection Module" as Collection
+participant "Keycloak" as Auth
+participant "Keycloak DB" as AuthDB
+participant "Collection DB" as CollectionDB
+
+User -> Client: Input Search Query for User
+Client -> Auth: Fetch Users Matching Query including JWT token
+activate Auth
+Auth -> Auth: Validate JWT token
+Auth -> AuthDB: Query for Users
+AuthDB -> Auth: Return Search Results
+Auth -> Client: Send User Search Results
+deactivate Auth
+Client -> User: Display Search Results
+
+User -> Client: Select a User Profile
+Client -> Collection: Request to View Selected User's Collection
+
+activate Collection
+Collection -> Auth: Validate JWT token
+Auth -> Collection: Token Validated
+Collection -> CollectionDB: Query for Selected User's Collection of Clippers
+CollectionDB -> Collection: Return Collection Data
+
+Collection -> Client: Send Collection Data
+deactivate Collection
+Client -> User: Display Selected User's Clippers Collection
+@enduml

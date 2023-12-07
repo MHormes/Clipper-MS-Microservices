@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@SecurityRequirement(name = "bearerAuth")
+@SecurityRequirement(name = "Keycloak")
 @RestController
 @RequestMapping("/clipper")
 public class ClipperController {

@@ -1,0 +1,38 @@
+@startuml
+skinparam SequenceMessageAlignment center
+actor Admin
+participant "Client (FE)" as Client
+participant "Collection Module" as Collection
+participant "Keycloak" as Auth
+participant "Collection Database" as CollectionDB
+participant "RabbitMQ" as MQ
+participant "Trading Module" as Trading
+participant "Trading Database" as TradingDB
+
+Admin -> Client: Choose Series to Remove
+Client -> Admin: Display Delete Confirmation Pop-up
+Admin -> Client: Confirm Removal
+
+Client -> Collection: Remove Series Request with JWT Token
+activate Collection
+Collection -> Auth: Validate JWT Token
+Auth -> Collection: Token Validated
+
+Collection -> CollectionDB: Remove Series from Database
+CollectionDB -> Collection: Series Removal Confirmation
+
+Collection -> MQ: Publish 'Series Removed' Event
+MQ -> Collection: Event Published Confirmation
+
+par
+    Collection -> Client: Confirm Series Removal
+    Client -> Admin: Display Removal Success Message
+
+    MQ -> Trading: Consume 'Series Removed' Event
+    activate Trading
+    Trading -> TradingDB: Remove Series
+    TradingDB -> Trading: Series Removed Confirmation
+    deactivate Trading
+end
+deactivate Collection
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+skinparam SequenceMessageAlignment center
+actor User2
+actor User
+participant "Client (FE)" as Client
+participant "Trading Module" as Trading
+participant "Keycloak" as Auth
+
+User -> Client: Receive Push Notification of Chat Request
+Client -> User: Open and View Chat Request
+
+User -> Client: Select and Accept Chat Request
+Client -> Trading: Process Acceptance of Chat Request including JWT token
+
+activate Trading
+
+Trading -> Auth: Validate JWT token
+Auth -> Trading: Token validated
+
+Trading -> Trading: Create WebSocket Connection
+Trading -> Client: Confirm Chat Acceptance and WebSocket Connection
+deactivate Trading
+
+Client -> User: Open chat window and start chatting
+Client -> User2: Open chat window and start chatting
+@enduml

@@ -21,9 +21,9 @@
         <!-- Lang version -->
         <java.version>17</java.version>
         <!-- Springboot Version -->
-        <spring-boot.version>3.0.11</spring-boot.version>
-        <spring-messaging.version>6.0.12</spring-messaging.version>
-        <spring-rabbitmq.version>3.0.9</spring-rabbitmq.version>
+        <spring-boot.version>3.2.0</spring-boot.version>
+        <spring-messaging.version>6.1.0</spring-messaging.version>
+        <spring-rabbitmq.version>3.1.0</spring-rabbitmq.version>
         <!-- Hibernate -->
         <hibernate-validator.version>8.0.0.Final</hibernate-validator.version>
         <!-- H2 -->
@@ -41,7 +41,8 @@
         <springdoc.version>2.2.0</springdoc.version>
         <!-- Java JWT -->
         <java-jwt.version>4.2.1</java-jwt.version>
-
+        <!-- Jackson-->
+        <jackson.version>2.15.1</jackson.version>
     </properties>
 
     <dependencyManagement>
@@ -91,6 +92,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                 <version>${springdoc.version}</version>
@@ -131,6 +138,12 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -141,12 +154,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.12.7.1</version>
         </dependency>
 
         <dependency>

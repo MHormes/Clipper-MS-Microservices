@@ -1,0 +1,37 @@
+@startuml
+skinparam SequenceMessageAlignment center
+actor User
+participant "Client (FE)" as Client
+participant "Collection Module" as Collection
+participant "Keycloak" as Auth
+participant "Collection DB" as CollectionDB
+participant "Trading Module" as Trading
+participant "Trading DB" as TradingDB
+
+User -> Client: Open trading view
+Client -> Collection: Request User's collected clippers including JWT token
+
+activate Collection
+Collection -> Auth: Validate JWT token
+Auth -> Collection: Token validated
+
+Collection -> CollectionDB: Query for User's collected clippers
+CollectionDB -> Collection: Return collection data
+
+Collection -> Client: Send collection data
+deactivate Collection
+Client -> User: Display Clippers & Selection Options
+
+User -> Client: Select Tradeable clippers
+Client -> Trading: Update Tradeable Clippers Selection
+activate Trading
+
+Trading -> Auth: Validate JWT token
+Auth -> Trading: Token validated
+
+Trading -> TradingDB: Save User's Tradeable Clippers with User ID and Clipper Ids
+TradingDB -> Trading: Confirm addition of Tradeable Clippers
+
+Trading -> Client: Acknowledge Successful Update
+Client -> User: Confirm Clippers Set for Trading
+@enduml

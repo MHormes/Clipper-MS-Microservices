@@ -1,0 +1,39 @@
+@startuml
+skinparam SequenceMessageAlignment center
+actor Admin
+participant "Client (FE)" as Client
+participant "Collection Module" as Collection
+participant "Keycloak" as Auth
+participant "Collection database" as DB
+participant "RabbitMQ" as MQ
+participant "Trading Module" as Trading
+participant "Trading database" as TradingDB
+
+Admin -> Client: Choose Clipper to Remove
+Client -> Admin: Display Delete Confirmation Pop-up
+Admin -> Client: Confirm Removal
+
+Client -> Collection: Initiate 'Remove Clipper' Action with JWT Token and Clipper UUID
+activate Collection
+
+Collection -> Auth: Validate JWT Token
+Auth -> Collection: Token Validated
+
+Collection -> DB: Remove Clipper from Database
+DB -> Collection: Clipper Removal Confirmation
+
+Collection -> MQ: Publish 'Clipper Removed' Event
+MQ -> Collection: Event Published Confirmation
+
+par
+    Collection -> Client: Confirm Removal
+    deactivate Collection
+    Client -> Admin: Display Removal Success Message
+
+    MQ -> Trading: Consume 'Clipper Removed' Event
+    activate Trading
+    Trading -> TradingDB: Remove Clipper Details
+    TradingDB -> Trading: Clipper Removal Confirmation
+    deactivate Trading
+end
+@enduml

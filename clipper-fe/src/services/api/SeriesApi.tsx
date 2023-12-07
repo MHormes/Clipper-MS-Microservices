@@ -5,17 +5,19 @@ import type {ISeries, ISeriesCreateRequest} from "../model/SeriesModel";
 const debug = false;
 
 let api;
-let prefix = ":8071/collection/api"
+let prefix = "/collection/api"
 export default class SeriesApi {
 
     constructor() {
         api = apiInstance.init();
-        if(localStorage.getItem('token')){
-            api.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
-        }
     }
 
     getSeriesWithId = async (seriesId) => {
+        //todo - create middleware to remove auth addition on each call
+        if(localStorage.getItem('access_token')){
+            api.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
+        }
+
         return api
             .get(prefix + "/series/" + seriesId)
             .then((response: AxiosResponse<ISeries>) => {
@@ -31,6 +33,11 @@ export default class SeriesApi {
     }
 
     getAllSeries = async () => {
+        //todo - create middleware to remove auth addition on each call
+        if(localStorage.getItem('access_token')){
+            api.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
+        }
+
         return api
             .get(prefix + "/series/all")
             .then((response: AxiosResponse<ISeries[]>) => {
@@ -46,6 +53,11 @@ export default class SeriesApi {
     }
 
     getAvailableSeriesNumbers = async (seriesId: string) => {
+        //todo - create middleware to remove auth addition on each call
+        if(localStorage.getItem('access_token')){
+            api.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
+        }
+
         return api
             .get(prefix + `/series/${seriesId}/available`)
             .then((response: AxiosResponse<number[]>) => {
@@ -61,6 +73,11 @@ export default class SeriesApi {
     }
 
     createSeries = async (seriesObject: ISeriesCreateRequest, image: File) => {
+        //todo - create middleware to remove auth addition on each call
+        if(localStorage.getItem('access_token')){
+            api.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
+        }
+
         const seriesJson = JSON.stringify(seriesObject);
         const seriesBlob = new Blob([seriesJson], {
             type: 'application/json'
@@ -90,6 +107,11 @@ export default class SeriesApi {
     }
 
     updateSeries = async (seriesObject: ISeriesCreateRequest, image: File) => {
+        //todo - create middleware to remove auth addition on each call
+        if(localStorage.getItem('access_token')){
+            api.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
+        }
+
         const seriesJson = JSON.stringify(seriesObject);
         const seriesBlob = new Blob([seriesJson], {
             type: 'application/json'
@@ -119,6 +141,11 @@ export default class SeriesApi {
     }
 
     deleteSeries = async (seriesId: string) => {
+        //todo - create middleware to remove auth addition on each call
+        if(localStorage.getItem('access_token')){
+            api.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
+        }
+
         return api
             .delete(prefix + "/series/delete/" + seriesId)
             .then((response) => {

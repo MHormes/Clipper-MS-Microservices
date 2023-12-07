@@ -17,6 +17,9 @@ spec:
         - image: mhormes/client:latest
           name: client
           imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: fe-secrets
           ports:
             - containerPort: 80
           resources:

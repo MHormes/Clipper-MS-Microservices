@@ -64,8 +64,9 @@ jobs:
           docker push mhormes/client:latest
           
   deploy:
+    name: Deploy to Kubernetes 🚀
+    needs: [image-build]
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -83,7 +84,5 @@ jobs:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
 
       - name: Kubernetes Deploy
-        uses: azure/k8s-deploy@v1
-        with:
-          manifests: ./.kubernetes  # Update this path to your Kubernetes manifests
-          # images: dockerhubusername/myapp:tag # Optional: Only if you want to override the image specified in the manifests
+        run: |
+          kubectl apply -f ./.kubernetes/

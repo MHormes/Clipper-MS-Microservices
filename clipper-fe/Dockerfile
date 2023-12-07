@@ -9,7 +9,7 @@ COPY postcss.config.js ./
 COPY .env ./
 
 # Install dependencies and build the app
-RUN npm install
+RUN npm install --ignore-scripts
 COPY src/ ./src
 COPY public/ ./public
 RUN npm run build

@@ -1,12 +1,12 @@
 package clipperms.collection.service;
 
 import clipperms.collection.data.interfaces.ISeriesDataSource;
-import clipperms.collection.model.Series;
-import clipperms.collection.service.interfaces.ISeriesService;
-import lombok.extern.slf4j.Slf4j;
 import clipperms.collection.exceptions.DatabaseFailedOperationException;
 import clipperms.collection.exceptions.ExceptionMessages;
 import clipperms.collection.exceptions.IncorrectInputException;
+import clipperms.collection.model.Series;
+import clipperms.collection.service.interfaces.ISeriesService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

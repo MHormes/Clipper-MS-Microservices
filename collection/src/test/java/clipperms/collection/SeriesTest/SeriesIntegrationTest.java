@@ -1,12 +1,11 @@
 package clipperms.collection.SeriesTest;
 
 import clipperms.collection.data.interfaces.ISeriesDataSource;
+import clipperms.collection.exceptions.ExceptionMessages;
 import clipperms.collection.model.AppUser;
 import clipperms.collection.model.Series;
-import clipperms.collection.service.SeriesService;
 import clipperms.collection.service.interfaces.IAppUserService;
 import clipperms.collection.service.interfaces.ISeriesService;
-import clipperms.collection.exceptions.ExceptionMessages;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -30,7 +30,7 @@ const AllSeries = () => {
             <h1 className="text-4xl text-center m-2">
                 All Series
             </h1>
-            <span className={"btn"} onClick={() => navigate("/series/add")}><FontAwesomeIcon icon={faPlus}/></span>
+            <span className={"btn"} onKeyDown={() => navigate("/series/add")} onClick={() => navigate("/series/add")}><FontAwesomeIcon icon={faPlus}/></span>
             <SeriesList
                 seriesListProp={seriesList}/>
         </div>

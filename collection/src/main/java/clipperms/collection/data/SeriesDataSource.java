@@ -2,8 +2,8 @@ package clipperms.collection.data;
 
 import clipperms.collection.data.interfaces.ISeriesDataSource;
 import clipperms.collection.data.repositories.ISeriesRepository;
-import jakarta.persistence.EntityNotFoundException;
 import clipperms.collection.model.Series;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

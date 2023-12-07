@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -23,7 +24,6 @@ public class SecurityConfig {
         corsConfiguration.setAllowedOrigins(List.of("*"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         corsConfiguration.setAllowedHeaders(List.of("*"));
-        http.csrf().disable().cors().configurationSource(request -> corsConfiguration);
 
         String seriesPath = SecurityConstants.SERIES_PATH;
         String clipperPath = SecurityConstants.CLIPPER_PATH;
@@ -31,9 +31,8 @@ public class SecurityConfig {
         String superAdmin = SecurityConstants.SUPER_ADMIN;
 
         return http
+                .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(request -> corsConfiguration))
-                //disable csrf
-                .csrf().disable()
 
                 // Stateless sessions management and saving tokens in Local storage prevent CSRF
                 .authorizeHttpRequests(auth ->

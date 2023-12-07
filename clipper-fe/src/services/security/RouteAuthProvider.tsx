@@ -1,4 +1,3 @@
-// RouteAuthProvider.tsx
 import React, { createContext, useEffect, useState } from 'react';
 import keycloak from './keycloak';
 import KeycloakService from "./keycloak"; // Import the Keycloak instance
@@ -14,7 +13,7 @@ const RouteAuthProvider = ({ children }) => {
 
     useEffect(() => {
         KeycloakService.GetAccessToken() ? setIsAuthenticated(true) : setIsAuthenticated(false);
-    });
+    }, []);
 
     const login = async () => {
         await KeycloakService.CallLogin();

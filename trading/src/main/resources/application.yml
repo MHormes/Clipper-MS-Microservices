@@ -38,8 +38,12 @@ spring:
 #SPRINGDOC OPENAPI
 springdoc:
   swagger-ui:
-    path: /docs/swagger-ui.html
+    path: /docs.html
+    oauth:
+      use-pkce-with-authorization-code-grant: true
+      client-id: clipper-client
     disable-swagger-default-url: true
+
 
 #LOGGING
 logging:

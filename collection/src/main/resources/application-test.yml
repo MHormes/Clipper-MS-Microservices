@@ -11,3 +11,9 @@ spring:
       hibernate.format_sql: true
       ddl-auto: create-drop
       show-sql: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak-service:8180/realms/Flowcontrol

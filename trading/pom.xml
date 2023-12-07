@@ -42,6 +42,11 @@
 			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+
 <!--        DOCUMENTATION-->
 		<dependency>
 			<groupId>org.springdoc</groupId>

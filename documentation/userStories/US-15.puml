@@ -1,0 +1,24 @@
+@startuml
+skinparam SequenceMessageAlignment center
+actor User2
+actor User
+participant "Client (FE)" as Client
+participant "Trading Module" as Trading
+participant "Keycloak" as Auth
+
+User -> Client: Receive Push Notification of Chat Request
+Client -> User: Open and View Chat Request
+
+User -> Client: Select and Decline Chat Request
+Client -> Trading: Process Decline of Chat Request including JWT token
+
+activate Trading
+Trading -> Auth: Validate JWT token
+Auth -> Trading: Token validated
+Trading -> Trading: Process Decline
+Trading -> Client: Confirm Chat Decline
+deactivate Trading
+
+Client -> User: Display Chat Decline Confirmation
+Client -> User2: Display User declined chat request
+@enduml

@@ -21,9 +21,9 @@
         <!-- Lang version -->
         <java.version>17</java.version>
         <!-- Springboot Version -->
-        <spring-boot.version>3.0.11</spring-boot.version>
-        <spring-messaging.version>6.0.12</spring-messaging.version>
-        <spring-rabbitmq.version>3.0.9</spring-rabbitmq.version>
+        <spring-boot.version>3.2.0</spring-boot.version>
+        <spring-messaging.version>6.1.0</spring-messaging.version>
+        <spring-rabbitmq.version>3.1.0</spring-rabbitmq.version>
         <!-- Hibernate -->
         <hibernate-validator.version>8.0.0.Final</hibernate-validator.version>
         <!-- H2 -->
@@ -87,6 +87,12 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-security</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
 

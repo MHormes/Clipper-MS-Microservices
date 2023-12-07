@@ -3,12 +3,13 @@ import ReactDOM from 'react-dom/client';
 import {BrowserRouter} from 'react-router-dom';
 import './index.css';
 import MainContainer from "./MainContainer";
+import KeycloakInit from "./services/security/KeycloakInit";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <React.StrictMode>
-        <BrowserRouter>
+    <BrowserRouter>
+        <KeycloakInit>
             <MainContainer/>
-        </BrowserRouter>
-    </React.StrictMode>
+        </KeycloakInit>
+    </BrowserRouter>
 );

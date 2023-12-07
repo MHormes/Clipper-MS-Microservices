@@ -1,0 +1,37 @@
+@startuml
+skinparam SequenceMessageAlignment center
+actor Admin
+participant "Client (FE)" as Client
+participant "Collection Module" as Collection
+participant "Keycloak" as Auth
+participant "Collection Database" as CollectionDB
+participant "RabbitMQ" as MQ
+participant "Trading Module" as Trading
+participant "Trading database" as TradingDB
+
+Admin -> Client: Initiate Add Series with Details (Name, Custom, Image)
+Client -> Collection: Create New Series with JWT Token and Series Details
+
+activate Collection
+Collection -> Auth: Validate JWT Token
+Auth -> Collection: Token Validated
+
+Collection -> CollectionDB: Add New Series
+CollectionDB -> Collection: Series Added Confirmation
+
+Collection -> MQ: Publish 'New Series Added' Event
+MQ -> Collection: Event Published Confirmation
+
+par
+    MQ -> Trading: Consume 'New Series Added' Event
+    activate Trading
+    Trading -> TradingDB: Save New Series
+    TradingDB -> Trading: Series Saved Confirmation
+    deactivate Trading
+
+    Collection -> Client: Confirm Series Addition
+    deactivate Collection
+    Client -> Admin: Display Success Message
+end
+deactivate Collection
+@enduml

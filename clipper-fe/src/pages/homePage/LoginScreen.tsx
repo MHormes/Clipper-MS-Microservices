@@ -1,6 +1,6 @@
 import {useLocation, useNavigate} from "react-router";
 import React, {useContext, useEffect, useState} from "react";
-import {AuthContext} from "../../services/RouteAuthProvider";
+import {AuthContext} from "../../services/security/RouteAuthProvider";
 import CardTitle from "../../components/card/CardTitle";
 import CardButton from "../../components/card/CardButton";
 import CardTextBox from "../../components/card/CardTextBox";
@@ -13,27 +13,10 @@ const LoginScreen = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const {tokenValue} = useContext(AuthContext);
-    const {onLogin} = useContext(AuthContext);
-
-    const [loginDetails, setLoginDetails] = useState({
-        username: "",
-        password: ""
-    })
-
-    const onChange = e => {
-        setLoginDetails({
-            ...loginDetails,
-            [e.target.name]: e.target.value
-        });
-    }
-
-    //VALUES FOR WALKING SKELETON TEST
-    const [collectionCall, setCollectionCall] = useState<string>("");
-    const [tradingCall, setTradingCall] = useState<string>("");
+    const { isAuthenticated, login } = useContext(AuthContext);
 
     useEffect(() => {
-        console.log("Component Mounted");
+        console.log("LoginScreen Component Mounted");
 
         //WALKING SKELETON TEST CALL - REMOVE LATER
         const api = apiInstance.init();
@@ -60,40 +43,26 @@ const LoginScreen = () => {
                 console.log(error.message);
             });
 
-        //todo check token validity
-        if (tokenValue) {
-            console.log("Token found, redirecting....");
+        // Redirect if already authenticated
+        if (isAuthenticated) {
+            console.log("Already authenticated, redirecting...");
             const origin = location.state?.from?.pathname || '/Clippers';
             navigate(origin);
         }
-    }, [navigate, tokenValue, location.state?.from?.pathname]);
+    }, [navigate, isAuthenticated, location.state?.from?.pathname]);
 
-    async function handleLogin() {
-        let data = {
-            username: loginDetails.username,
-            password: loginDetails.password
-        }
-        await onLogin(data);
-    }
+    const handleLogin = () => {
+        login();
+    };
+
+    //VALUES FOR WALKING SKELETON TEST
+    const [collectionCall, setCollectionCall] = useState<string>("");
+    const [tradingCall, setTradingCall] = useState<string>("");
 
     return (
         <div className="card card-side bg-base-300 m-3">
             <div className="card-body items-center text-center">
                 <CardTitle cardTitle={"Login"} centered={true}/>
-                <CardTextBox
-                    boxHint={"Username"}
-                    boxLabel={"Username"}
-                    onChange={onChange}
-                    value={loginDetails.username}
-                    fieldName={"username"}
-                />
-                <CardTextBox
-                    boxHint={"Password"}
-                    boxLabel={"Password"}
-                    onChange={onChange}
-                    value={loginDetails.password}
-                    fieldName={"password"}
-                    type={"password"}/>
                 <CardButton
                     buttonAction={() => handleLogin()}
                     buttonText={"Login"}

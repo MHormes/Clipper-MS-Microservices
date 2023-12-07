@@ -11,7 +11,7 @@ services:
     hostname: rabbitmq-service
     image: rabbitmq:management
     ports:
-      - ${RABBIT_PORT}:${RABBIT_PORT}
+      - "5672:5672"
       - "15672:15672"
 
     networks:

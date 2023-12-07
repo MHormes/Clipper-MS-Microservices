@@ -1,0 +1,53 @@
+@startuml
+skinparam SequenceMessageAlignment center
+actor Admin
+participant "Client (FE)" as Client
+participant "Collection Module" as Collection
+participant "Keycloak" as Auth
+participant "Collection DB" as DB
+participant "RabbitMQ" as MQ
+participant "Trading Module" as Trading
+participant "Trading DB" as TradingDB
+
+Admin -> Client: Open 'Create Clipper' Page
+Client -> Collection: Request Series List
+activate Collection
+Collection -> DB: Fetch Series
+DB -> Collection: Return Series List
+Collection -> Client: Send Series List
+Client -> Admin: Display Series with Select Box
+
+Admin -> Client: Input Clipper Details (Name, Series, Number, Image)
+Client -> Client: Check if Series is Custom
+
+alt If Series is Custom
+    Client -> Collection: Request Available Number for Clipper
+    Collection -> Auth: Validate JWT token
+    Auth -> Collection: Token validated
+    Collection -> DB: Fetch Available Number
+    DB -> Collection: Return Available Number
+    Collection -> Client: Provide Available Number
+end
+
+Client -> Collection: Initiate 'Add Clipper' Action with JWT Token, Clipper Details, and Series Info
+Collection -> Auth: Validate JWT token
+Auth -> Collection: Token validated
+
+Collection -> DB: Save new clipper details
+DB -> Collection: Clipper added confirmation
+
+Collection -> MQ: Publish 'New clipper added' event
+MQ -> Collection: Event Published Confirmation
+
+par
+    Collection -> Client: Confirm addition
+    deactivate Collection
+    Client -> Admin: Display Confirmation
+
+    MQ -> Trading: Consume clipper added event
+    activate Trading
+    Trading -> TradingDB: Save new clipper details
+    TradingDB -> Trading: Clipper added confirmation
+    deactivate Trading
+end
+@enduml

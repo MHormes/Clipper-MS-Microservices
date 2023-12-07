@@ -1,0 +1,24 @@
+@startuml
+skinparam SequenceMessageAlignment center
+actor User
+participant "Client (FE)" as Client
+participant "Keycloak" as Keycloak
+participant "Keycloak DB" as AuthDB
+
+User -> Client: Click login
+Client -> Client: Generate code verifier and code challenge
+Client -> Keycloak: Authorization code request with code challenge
+Keycloak -> User: Redirect to login/authentication page
+
+User -> Keycloak: Login / Authenticate
+Keycloak -> AuthDB: Validate Credentials and Generate Authorization Code
+AuthDB -> Keycloak: Authorization Code Generated
+Keycloak --> Client: Return Authorization Code
+
+Client -> Keycloak: Request Access Token using Authorization Code + Code Verifier
+Keycloak -> AuthDB: Validate Code Verifier and Issue Access Token
+AuthDB -> Keycloak: Access Token Issued
+Keycloak --> Client: Return ID and Access Token
+
+note right of User: Post-login actions can now be performed with authenticated access
+@enduml

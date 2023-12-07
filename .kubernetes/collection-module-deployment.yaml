@@ -18,7 +18,17 @@ spec:
           imagePullPolicy: Always
           env:
             - name: spring.datasource.url
-              value: jdbc:sqlserver://clipperms.database.windows.net:1433;database=collection;user=clipper-admin@clipperms;password={password};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+              value: jdbc:sqlserver://clipperms.database.windows.net:1433;database=collection;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+            - name: spring.datasource.username
+              valueFrom:
+                secretKeyRef:
+                  name: catalogs-secrets
+                  key: DATABASE_USERNAME
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                  name: catalogs-secrets
+                  key: DATABASE_PASSWORD
             - name: spring.rabbitmq.host
               value: rabbitmq-service
             - name: spring.rabbitmq.port

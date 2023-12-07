@@ -1,0 +1,22 @@
+@startuml
+skinparam SequenceMessageAlignment center
+actor User
+participant "Client (FE)" as Client
+participant "Collection Service" as Collection
+participant "Keycloak" as Auth
+participant "Collection DB" as DB
+
+User -> Client: Select 'Add to Collection'
+Client -> Collection: Initiate 'Add' Action with JWT Token, Clipper UUID, and user UUID
+activate Collection
+
+Collection -> Auth: Validate JWT Token
+Auth -> Collection: Token Validated
+
+Collection -> DB: Add Clipper to Collection
+DB -> Collection: Clipper Added Confirmation
+
+Collection -> Client: Confirm Addition
+deactivate Collection
+Client -> User: Display Confirmation
+@enduml

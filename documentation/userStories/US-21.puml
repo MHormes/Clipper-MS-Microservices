@@ -1,0 +1,35 @@
+@startuml
+skinparam SequenceMessageAlignment center
+actor User
+participant "Client (FE)" as Client
+participant "Collection Service" as Collection
+participant "Keycloak" as Auth
+participant "Collection DB" as DB
+participant "RabbitMQ" as MQ
+participant "Trading Module" as Trading
+participant "Trading DB" as TradingDB
+
+User -> Client: Select 'Add to Wishlist' and Choose Clipper
+Client -> Collection: Initiate 'Add to Wishlist' Action with JWT Token and Clipper ID
+activate Collection
+
+Collection -> Auth: Validate JWT Token
+Auth -> Collection: Token Validated
+
+Collection -> DB: Add Clipper to Wishlist in Collection DB
+DB -> Collection: Wishlist Clipper Added Confirmation
+
+Collection -> MQ: Publish 'Wishlist Clipper Added' Event
+deactivate Collection
+
+par
+    MQ -> Trading: Consume 'Wishlist Clipper Added' Event
+    activate Trading
+    Trading -> TradingDB: Update Wishlist in Trading DB
+    TradingDB -> Trading: Wishlist Update Confirmation
+    deactivate Trading
+
+    Collection -> Client: Confirm Wishlist Addition
+    Client -> User: Display Wishlist Addition Confirmation
+end
+@enduml

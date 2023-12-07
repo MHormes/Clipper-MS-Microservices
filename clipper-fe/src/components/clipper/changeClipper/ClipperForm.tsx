@@ -28,7 +28,7 @@ const ClipperForm = (props) => {
         }else{
             setAvailableSeriesNumbers(availableNumbers);
         }
-    }, [props.clipper.seriesNumber, props.mode]); // Add any dependencies the function relies on
+    }, [props.clipper, props.mode]); // Add any dependencies the function relies on
 
     useEffect(() => {
         async function assignUpdateValues() {

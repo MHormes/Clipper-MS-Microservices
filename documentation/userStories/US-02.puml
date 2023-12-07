@@ -1,0 +1,21 @@
+@startuml
+skinparam SequenceMessageAlignment center
+actor User
+participant "Client (FE)" as Client
+participant "Collection Module" as Collection
+participant "Keycloak" as Auth
+participant "Collection DB" as DB
+
+User -> Client: Select 'Remove from Collection'
+Client -> Collection: Initiate 'Remove' Action with JWT Token, Clipper UUID, and User UUID
+activate Collection
+Collection -> Auth: Validate JWT Token
+Auth -> Collection: Token Validated
+
+Collection -> DB: Remove Clipper from Collection
+DB -> Collection: Clipper Removed Confirmation
+
+Collection -> Client: Confirm Removal
+deactivate Collection
+Client -> User: Display Confirmation
+@enduml

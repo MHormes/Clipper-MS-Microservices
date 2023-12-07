@@ -62,3 +62,28 @@ jobs:
         run: |
           docker build -t mhormes/client:latest -f Dockerfile .
           docker push mhormes/client:latest
+          
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Set up Kubernetes context
+        uses: azure/aks-set-context@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+
+      - name: Kubernetes Deploy
+        uses: azure/k8s-deploy@v1
+        with:
+          manifests: ./.kubernetes  # Update this path to your Kubernetes manifests
+          # images: dockerhubusername/myapp:tag # Optional: Only if you want to override the image specified in the manifests

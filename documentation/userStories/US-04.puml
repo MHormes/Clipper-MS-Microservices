@@ -1,0 +1,43 @@
+@startuml
+skinparam SequenceMessageAlignment center
+actor Admin
+participant "Client (FE)" as Client
+participant "Collection Module" as Collection
+participant "Keycloak" as Auth
+participant "Collection DB" as DB
+participant "RabbitMQ" as MQ
+participant "Trading Module" as Trading
+participant "Trading DB" as TradingDB
+
+Admin -> Client: Open 'Update Clipper' Page
+Client -> Collection: Request Clipper Details
+activate Collection
+Collection -> DB: Fetch Clipper Details
+DB -> Collection: Return Clipper Details
+Collection -> Client: Send Clipper Details
+Client -> Admin: Display Clipper with Input Fields for Update
+
+Admin -> Client: Input Updated Details (Name, Series, Number, Image)
+Client -> Collection: Initiate 'Update Clipper' Action with JWT Token and Updated Details
+
+Collection -> Auth: Validate JWT Token
+Auth -> Collection: Token Validated
+
+Collection -> DB: Update Clipper Details in Database
+DB -> Collection: Clipper Updated Confirmation
+
+Collection -> MQ: Publish 'Update Clipper' Event
+MQ -> Collection: Event Published Confirmation
+
+par
+    Collection -> Client: Confirm Update
+    deactivate Collection
+    Client -> Admin: Display Update Success Message
+
+    MQ -> Trading: Consume 'Update Clipper' Event
+    activate Trading
+    Trading -> TradingDB: Update Clipper Details
+    TradingDB -> Trading: Clipper Updated Confirmation
+    deactivate Trading
+end
+@enduml

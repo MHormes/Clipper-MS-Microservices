@@ -1,0 +1,24 @@
+@startuml
+skinparam SequenceMessageAlignment center
+actor User
+actor User2
+participant "Client (FE)" as Client
+participant "Trading Module" as Trading
+participant "Keycloak" as Auth
+
+note over User: Potential Traders and Clippers Overview Displayed (End of US-12)
+
+User -> Client: Select Potential Match and Request Chat
+Client -> Trading: Initiate Chat Request with Selected Match including JWT token
+
+activate Trading
+Trading -> Auth: Validate JWT token
+Auth -> Trading: Token validated
+
+Trading -> Trading: Process Chat Request
+Trading -> Client: Confirm Chat Request Initiation
+deactivate Trading
+
+Client -> User: Display Chat Request Confirmation
+Client -> User2: Send Chat Request
+@enduml

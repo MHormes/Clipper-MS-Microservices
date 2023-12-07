@@ -43,3 +43,10 @@ spec:
                 name: client
                 port:
                   number: 3000
+          - path: /*
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: client
+                port:
+                  number: 3000

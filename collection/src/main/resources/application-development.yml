@@ -12,9 +12,9 @@ spring:
 
   datasource:
     url: jdbc:sqlserver://localhost:1433;databaseName=collection;trustServerCertificate=true
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
     username: admin
     password: admin
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 
   rabbitmq:
     host: localhost
@@ -29,6 +29,14 @@ spring:
     show-sql: true
     properties:
         format_sql: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://clipper-ms.com:8180/realms/ClipperMS/protocol/openid-connect/certs
+          issuer-uri: http://clipper-ms.com:8180/realms/ClipperMS
+
 
 #SPRINGDOC OPENAPI
 springdoc:

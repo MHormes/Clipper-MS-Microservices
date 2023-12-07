@@ -21,7 +21,17 @@ spec:
             - name: DB_VENDOR
               value: mssql
             - name: DB_ADDR
-              value: jdbc:sqlserver://clipperms.database.windows.net:1433;database=trading;user=clipper-admin@clipperms;password={password};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+              value: jdbc:sqlserver://clipperms.database.windows.net:1433;database=trading;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: catalogs-secrets
+                  key: DATABASE_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: catalogs-secrets
+                  key: DATABASE_PASSWORD
             - name: DB_SCHEMA
               value: dbo
             - name: KC_TRANSACTION_XA_ENABLED

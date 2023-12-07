@@ -1,0 +1,35 @@
+@startuml
+skinparam SequenceMessageAlignment center
+actor User
+participant "Client (FE)" as Client
+participant "Collection Service" as Collection
+participant "Keycloak" as Auth
+participant "Collection DB" as DB
+participant "RabbitMQ" as MQ
+participant "Trading Module" as Trading
+participant "Trading DB" as TradingDB
+
+User -> Client: View Clipper and Click 'Remove from Wishlist'
+Client -> Collection: Initiate 'Remove from Wishlist' Action with JWT Token and Clipper ID
+activate Collection
+
+Collection -> Auth: Validate JWT Token
+Auth -> Collection: Token Validated
+
+Collection -> DB: Remove Clipper from Wishlist in Collection DB
+DB -> Collection: Wishlist Clipper Removed Confirmation
+
+Collection -> MQ: Publish 'Wishlist Clipper Removed' Event
+deactivate Collection
+
+par
+    MQ -> Trading: Consume 'Wishlist Clipper Removed' Event
+    activate Trading
+    Trading -> TradingDB: Update Wishlist in Trading DB
+    TradingDB -> Trading: Wishlist Update Confirmation
+    deactivate Trading
+
+    Collection -> Client: Confirm Wishlist Removal
+    Client -> User: Display Wishlist Removal Confirmation
+end
+@enduml

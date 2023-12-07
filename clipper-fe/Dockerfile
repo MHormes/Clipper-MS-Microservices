@@ -16,7 +16,8 @@ RUN npm run build
 
 # Stage 2: Serve the React application from Nginx
 FROM nginx:1.25.2-alpine
-
+#Conf for nginx
+COPY nginx.conf /etc/nginx/nginx.conf
 # Copy the built React application from the build stage to Nginx's HTML directory
 COPY --from=build-stage /clipper-fe/build /usr/share/nginx/html
 

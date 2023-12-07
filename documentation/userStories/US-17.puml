@@ -1,0 +1,52 @@
+@startuml
+skinparam SequenceMessageAlignment center
+actor User
+participant "Client (FE)" as Client
+participant "Trading Module" as Trading
+participant "Keycloak" as Auth
+participant "RabbitMQ" as MQ
+participant "Collection Module" as Collection
+participant "Collection DB" as CollectionDB
+
+note over User: Users chatted to each other in US-16
+
+User -> Client: View Trade Offer
+Client -> User: Decide to Accept or Decline Trade
+
+
+
+alt If Trade is Accepted
+    User -> Client: Accept Trade
+    Client -> Trading: Process Trade Acceptance with JWT Token
+
+    activate Trading
+    Trading -> Auth: Validate JWT Token
+    Auth -> Trading: Token Validated
+    Trading -> MQ: Publish 'Clipper Traded' Event
+    MQ -> Trading: Receive event publish confirmation
+    Trading -> Client: Confirm Trade Acceptance and Collection Update
+    deactivate Trading
+
+    Client -> User: Display Trade Acceptance Confirmation
+    MQ -> Collection: Consume 'Clipper Traded' Event
+
+    activate Collection
+    Collection -> CollectionDB: Update Collections & Wish lists with Traded Clippers
+    CollectionDB -> Collection: Confirm Collections Updated
+    deactivate Collection
+
+else If Trade is Declined
+    User -> Client: Decline Trade
+    Client -> Trading: Process Trade Decline with JWT Token
+
+    activate Trading
+    Trading -> Auth: Validate JWT Token
+    Auth -> Trading: Token Validated
+    Trading -> Client: Offer Options to Stop Chatting or Try Again
+    deactivate Trading
+
+    Client -> User: Display Options
+    User -> Client: Select Option
+    Client -> Client: Process User Decision
+end
+@enduml

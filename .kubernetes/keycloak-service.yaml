@@ -9,4 +9,4 @@ spec:
       targetPort: 8180
   selector:
     app: keycloak-service
-  type: ClusterIP
+  type: LoadBalancer

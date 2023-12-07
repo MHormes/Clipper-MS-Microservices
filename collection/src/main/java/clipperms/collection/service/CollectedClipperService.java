@@ -20,21 +20,14 @@ public class CollectedClipperService implements ICollectedClipperService {
 
     ICollectedClipperDataSource collectedClipperData;
 
-    IClipperService clipperService;
-
     @Autowired
-    public CollectedClipperService(ICollectedClipperDataSource collectedClipperData, IClipperService clipperService) {
+    public CollectedClipperService(ICollectedClipperDataSource collectedClipperData) {
         this.collectedClipperData = collectedClipperData;
-        this.clipperService = clipperService;
     }
 
     @Override
     public CollectedClipper addCollectedClipper(CollectedClipper collectedToAdd) throws IncorrectInputException, DatabaseFailedOperationException {
-        var clipper = clipperService.getClipperWithId(collectedToAdd.getId().toString());
-        if (clipper == null) {
-            log.error("Clipper with id {} does not exist", collectedToAdd.getId());
-            throw new IncorrectInputException(ExceptionMessages.CLIPPER_WITH_ID_NOT_FOUND + collectedToAdd.getId());
-        }
+       //todo check if clipper exists
         //add to DB
         var expectedResult = collectedClipperData.addToCollection(collectedToAdd);
         if (expectedResult == null) {

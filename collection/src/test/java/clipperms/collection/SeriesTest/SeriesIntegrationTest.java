@@ -2,18 +2,14 @@ package clipperms.collection.SeriesTest;
 
 import clipperms.collection.data.interfaces.ISeriesDataSource;
 import clipperms.collection.exceptions.ExceptionMessages;
-import clipperms.collection.model.AppUser;
 import clipperms.collection.model.Series;
-import clipperms.collection.service.interfaces.IAppUserService;
 import clipperms.collection.service.interfaces.ISeriesService;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 @ActiveProfiles("test")
@@ -27,22 +23,11 @@ class SeriesIntegrationTest {
     @Autowired
     ISeriesService seriesService;
 
-    @Autowired
-    IAppUserService appUserService;
-
-    AppUser creator;
-
-    @BeforeEach
-    void setUp() {
-        this.creator = new AppUser(UUID.randomUUID() ,"Maarten", "MHormes", "Hormes123", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-        appUserService.saveUser(creator);
-    }
-
     //Test adding new series. Asserts based on inputted name and name returned by db after add
     @Test
     void addNewSeriesSuccessfulTest() {
         //Create series to add
-        Series seriesToAdd = new Series("Love letter", false, creator);
+        Series seriesToAdd = new Series("Love letter", false, UUID.fromString("8abd08f3-02ae-48af-a552-fe19b552d867"));
 
         //Make new series instance to get db return
         Series databaseReturn = new Series();
@@ -60,7 +45,7 @@ class SeriesIntegrationTest {
     @Test
     void getSeriesWithIdSuccessfulTest() {
         //Create series to add and get after adding (no series added means no series to get)
-        Series seriesToAdd = new Series("Weed Letters",  false, creator);
+        Series seriesToAdd = new Series("Weed Letters",  false, UUID.fromString("8abd08f3-02ae-48af-a552-fe19b552d867"));
         //Make new series instance to get db return
         Series databaseAddReturn = new Series();
         try {
@@ -85,7 +70,7 @@ class SeriesIntegrationTest {
     @Test
     void updateSeriesSuccessful(){
         //Create series to add
-        Series seriesToAdd = new Series("Hippie mandala", false, creator);
+        Series seriesToAdd = new Series("Hippie mandala", false, UUID.fromString("8abd08f3-02ae-48af-a552-fe19b552d867"));
 
         //Make new series instance to get db return
         Series databaseAddReturn = new Series();
@@ -114,7 +99,7 @@ class SeriesIntegrationTest {
     @Test
     void deleteSeriesSuccessful(){
         //Create series to add and delete
-        Series seriesToAdd = new Series("60's drawings", false, creator);
+        Series seriesToAdd = new Series("60's drawings", false, UUID.fromString("8abd08f3-02ae-48af-a552-fe19b552d867"));
 
         //Make new series instance to get db return
         Series databaseAddReturn = new Series();

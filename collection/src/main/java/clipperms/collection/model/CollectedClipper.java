@@ -28,12 +28,7 @@ public class CollectedClipper {
     @JsonBackReference
     private Clipper clipperId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id",
-            nullable = false,
-            updatable = false)
-    @JsonBackReference
-    private AppUser userId;
+    private UUID userId;
 
     @Column(name = "notes")
     private String notes;

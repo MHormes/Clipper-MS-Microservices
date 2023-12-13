@@ -1,11 +1,9 @@
 package clipperms.collection.dto.mapper;
 
-import clipperms.collection.data.repositories.IAppUserRepository;
 import clipperms.collection.dto.series.SeriesCreateRequest;
 import clipperms.collection.dto.series.SeriesNoClipperResponse;
 import clipperms.collection.dto.series.SeriesWithClipperResponse;
 import clipperms.collection.model.Series;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -22,16 +20,14 @@ import java.util.UUID;
 @Slf4j
 public class SeriesConverter {
 
-    private final IAppUserRepository appUserRepo;
-
     public Series convertCreateRequestNoClipperToModel(SeriesCreateRequest seriesDTO, MultipartFile imageFile) throws IOException {
         log.info("Converting seriesNoClipperRequest to series model: {}", seriesDTO);
-        return new Series((seriesDTO.getId() != null && !seriesDTO.getId().equals("") ? UUID.fromString(seriesDTO.getId()) : null), seriesDTO.getName(), imageFile.getBytes(), seriesDTO.isCustom(), appUserRepo.findById(UUID.fromString(seriesDTO.getCreatedBy())).orElseThrow(() -> new EntityNotFoundException("User with supplied id not found")));
+        return new Series((seriesDTO.getId() != null && !seriesDTO.getId().isEmpty() ? UUID.fromString(seriesDTO.getId()) : null), seriesDTO.getName(), imageFile.getBytes(), seriesDTO.isCustom(), UUID.fromString(seriesDTO.getCreatedBy()));
     }
 
     public SeriesNoClipperResponse convertModelToResponseNoClipper(Series series){
         log.info("Converting series model to seriesNoClipperRequest: {}", series);
-        return new SeriesNoClipperResponse(series.getId().toString(), series.getName(), Base64.getEncoder().encodeToString(series.getImageData()), series.isCustom(), series.getCreatedBy().getId().toString());
+        return new SeriesNoClipperResponse(series.getId().toString(), series.getName(), Base64.getEncoder().encodeToString(series.getImageData()), series.isCustom(), series.getCreatedBy().toString());
     }
 
     public SeriesWithClipperResponse convertModelToResponseWithClipper(Series series){
@@ -41,7 +37,7 @@ public class SeriesConverter {
         seriesWithClipperResponse.setName(series.getName());
         seriesWithClipperResponse.setImageData(Base64.getEncoder().encodeToString(series.getImageData()));
         seriesWithClipperResponse.setCustom(series.isCustom());
-        seriesWithClipperResponse.setCreatedBy(series.getCreatedBy().getId().toString());
+        seriesWithClipperResponse.setCreatedBy(series.getCreatedBy().toString());
         return seriesWithClipperResponse;
     }
 

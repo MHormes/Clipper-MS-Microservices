@@ -13,8 +13,8 @@ spring:
   datasource:
     url: jdbc:sqlserver://localhost:1433;databaseName=trading;trustServerCertificate=true
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    username: admin
-    password: admin
+    username: clipperDev
+    password: devDBpassword!
 
   jpa:
     properties:

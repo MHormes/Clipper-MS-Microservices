@@ -1,0 +1,52 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: clipperms-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: clipper-ms.com
+      http:
+        paths:
+          - path: /collection
+            pathType: Prefix
+            backend:
+              service:
+                name: collection-module
+                port:
+                  number: 8071
+          - path: /trading
+            pathType: Prefix
+            backend:
+              service:
+                name: trading-module
+                port:
+                  number: 8070
+          - path: /keycloak
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak-service
+                port:
+                  number: 8180
+          - path: /rabbit
+            pathType: Prefix
+            backend:
+              service:
+                name: rabbitmq-service
+                port:
+                  number: 5672
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: client
+                port:
+                  number: 3000
+          - path: /*
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: client
+                port:
+                  number: 3000

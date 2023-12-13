@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trading-module
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trading-module
+  template:
+    metadata:
+      labels:
+        app: trading-module
+    spec:
+      containers:
+        - name: trading-module
+          image: mhormes/trading-module:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8070
+          resources: {}

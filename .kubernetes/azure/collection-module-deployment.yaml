@@ -33,6 +33,8 @@ spec:
               value: rabbitmq-service
             - name: spring.rabbitmq.port
               value: "5672"
+            - name: security.oauth2.resourceserver.jwt.issuer-uri
+              value: http://clipper-ms.com:8180/realms/ClipperMS
           ports:
             - containerPort: 8071
           resources: {}

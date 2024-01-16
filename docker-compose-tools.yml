@@ -48,3 +48,33 @@ services:
 
     networks:
       - backend
+
+  #==================KEYCLOAK================
+  keycloak-service:
+    image: quay.io/keycloak/keycloak:22.0.0
+    container_name: clipperms.keycloak
+    environment:
+      KC_DB: mssql
+      KC_DB_URL: jdbc:sqlserver://database-dev;databaseName=keycloak;trustServerCertificate=false;encrypt=false
+      KC_DB_USERNAME: ${DATABASE_DEV_USERNAME}
+      KC_DB_PASSWORD: ${DATABASE_DEV_PASSWORD}
+
+      KC_TRANSACTION_XA_ENABLED: false
+
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KEYCLOAK_LOGLEVEL: INFO
+
+    ports:
+      - "8180:8180"
+
+    depends_on:
+      - database-dev
+
+    command:
+      - start-dev --http-port=8180 #--log-level=DEBUG #start keycloak in dev mode with port 8180
+
+    volumes:
+      - ${KEYCLOAK_VOLUME}/json/export:/opt/keycloak/data #map the export folder of the linux machine to my windows folder
+    networks:
+      - backend

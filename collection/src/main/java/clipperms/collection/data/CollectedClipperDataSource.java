@@ -55,4 +55,10 @@ public class CollectedClipperDataSource implements ICollectedClipperDataSource {
         collectedClipperRepo.deleteById(collectedClipperId);
         return getCollectedClipperWithId(collectedClipperId);
     }
+
+    @Override
+    public CollectedClipper removeFromCollection(UUID clipperId, UUID userId) {
+        collectedClipperRepo.deleteCollectedClipperByClipperIdAndUserId(clipperId, userId);
+        return getCollectedClipperWithId(clipperId);
+    }
 }

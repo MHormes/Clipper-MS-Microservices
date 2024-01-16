@@ -22,7 +22,10 @@ public class SeriesConverter {
 
     public Series convertCreateRequestNoClipperToModel(SeriesCreateRequest seriesDTO, MultipartFile imageFile) throws IOException {
         log.info("Converting seriesNoClipperRequest to series model: {}", seriesDTO);
-        return new Series((seriesDTO.getId() != null && !seriesDTO.getId().isEmpty() ? UUID.fromString(seriesDTO.getId()) : null), seriesDTO.getName(), imageFile.getBytes(), seriesDTO.isCustom(), UUID.fromString(seriesDTO.getCreatedBy()));
+        if(imageFile != null){
+            return new Series((seriesDTO.getId() != null && !seriesDTO.getId().isEmpty() ? UUID.fromString(seriesDTO.getId()) : null), seriesDTO.getName(), imageFile.getBytes(), seriesDTO.isCustom(), UUID.fromString(seriesDTO.getCreatedBy()));
+        }
+        return new Series((seriesDTO.getId() != null && !seriesDTO.getId().isEmpty() ? UUID.fromString(seriesDTO.getId()) : null), seriesDTO.getName(), seriesDTO.isCustom(), UUID.fromString(seriesDTO.getCreatedBy()));
     }
 
     public SeriesNoClipperResponse convertModelToResponseNoClipper(Series series){

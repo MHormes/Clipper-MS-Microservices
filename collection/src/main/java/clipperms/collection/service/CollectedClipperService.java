@@ -73,4 +73,13 @@ public class CollectedClipperService implements ICollectedClipperService {
         }
         log.info("Deleting collected clipper with id {}", clipperId);
     }
+
+    @Override
+    public void deleteCollectedClipper(String clipperId, String userId) throws IncorrectInputException, DatabaseFailedOperationException {
+        if(collectedClipperData.removeFromCollection(UUID.fromString(clipperId), UUID.fromString(userId)) != null){
+            log.error("Collected clipper with id {} and user id {} could not be deleted", clipperId, userId);
+            throw new DatabaseFailedOperationException(ExceptionMessages.C_CLIPPER_PRESENT_AFTER_DELETE);
+        }
+        log.info("Deleting collected clipper with clipperId {} and userId {}", clipperId, userId);
+    }
 }

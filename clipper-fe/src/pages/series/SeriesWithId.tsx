@@ -58,7 +58,7 @@ const SeriesWithId = () => {
                         seriesProp={seriesWithId}
                     />
                     <CardIconButton buttonIcon={faPen} buttonAction={updateSeries}/>
-                    {seriesWithId.clippers.length > 0 ?
+                    {seriesWithId.clippers && seriesWithId.clippers.length > 0 ?
                         <ClipperList
                             clipperListProp={seriesWithId.clippers}
                             seriesView={true}

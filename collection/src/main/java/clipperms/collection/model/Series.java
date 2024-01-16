@@ -65,6 +65,14 @@ public class Series {
         this.clippers = new ArrayList<>();
     }
 
+    public Series(UUID id, String name, boolean custom, UUID createdBy) {
+        this.id = id;
+        this.name = name;
+        this.custom = custom;
+        this.createdBy = createdBy;
+        this.clippers = new ArrayList<>();
+    }
+
     public Series(UUID id, String name, List<Clipper> clipperList, boolean custom, UUID createdBy) {
         this.id = id;
         this.name = name;

@@ -66,24 +66,24 @@ public class Seeder {
                 clipperService.addClipper(skate4, skateSeries.getId().toString());
                 clipperService.addClipper(mascotte, mascotteSeries.getId().toString());
 
-                UUID superAdminId = UUID.fromString("8abd08f3-02ae-48af-a552-fe19b552d867");
-                UUID adminId = UUID.fromString("5727899c-7dbf-4feb-9dec-800d0996b653");
-
-                CollectedClipper cSkate1 = new CollectedClipper(UUID.fromString("489f550a-4612-43e8-a36c-1a88925ed81e"), skate1, superAdminId, "", LocalDate.now(), ROERMOND);
-                CollectedClipper cSkate2 = new CollectedClipper(UUID.fromString("5d4861b4-ead4-49f2-bd80-a069556e7aac"), skate2, superAdminId,"", LocalDate.now(), ROERMOND);
-                CollectedClipper cSkate3 = new CollectedClipper(UUID.fromString("8f0b5659-b3a3-42c6-9e61-260461d507a4"), skate3, superAdminId,  "", LocalDate.now(), ROERMOND);
-                CollectedClipper cSkate4 = new CollectedClipper(UUID.fromString("0bd1f4ee-a230-4658-a846-7cbb4ef4e0fd"), skate4, superAdminId, "", LocalDate.now(), ROERMOND);
-                CollectedClipper cMascotte1 = new CollectedClipper(UUID.fromString("45b3d63c-2bdc-48c0-9f92-5472ef1c7295"), mascotte, superAdminId, "", LocalDate.now(), LOMMEL);
-                CollectedClipper cMascotte2 = new CollectedClipper(UUID.fromString("23f8248b-d3d4-4a78-9694-b847cc13ea6b"), mascotte, adminId, "", LocalDate.now(), LOMMEL);
-                CollectedClipper cNoSeries = new CollectedClipper(UUID.fromString("25bc8b10-a90c-4f9a-aab2-a6e0e2ebaec0"), skate1, adminId, "", LocalDate.now(), NIJMEGEN);
-
-                collectedClipperService.addCollectedClipper(cSkate1);
-                collectedClipperService.addCollectedClipper(cSkate2);
-                collectedClipperService.addCollectedClipper(cSkate3);
-                collectedClipperService.addCollectedClipper(cSkate4);
-                collectedClipperService.addCollectedClipper(cMascotte1);
-                collectedClipperService.addCollectedClipper(cMascotte2);
-                collectedClipperService.addCollectedClipper(cNoSeries);
+//                UUID superAdminId = UUID.fromString("8abd08f3-02ae-48af-a552-fe19b552d867");
+//                UUID adminId = UUID.fromString("5727899c-7dbf-4feb-9dec-800d0996b653");
+//
+//                CollectedClipper cSkate1 = new CollectedClipper(UUID.fromString("489f550a-4612-43e8-a36c-1a88925ed81e"), skate1, superAdminId, "", LocalDate.now(), ROERMOND);
+//                CollectedClipper cSkate2 = new CollectedClipper(UUID.fromString("5d4861b4-ead4-49f2-bd80-a069556e7aac"), skate2, superAdminId,"", LocalDate.now(), ROERMOND);
+//                CollectedClipper cSkate3 = new CollectedClipper(UUID.fromString("8f0b5659-b3a3-42c6-9e61-260461d507a4"), skate3, superAdminId,  "", LocalDate.now(), ROERMOND);
+//                CollectedClipper cSkate4 = new CollectedClipper(UUID.fromString("0bd1f4ee-a230-4658-a846-7cbb4ef4e0fd"), skate4, superAdminId, "", LocalDate.now(), ROERMOND);
+//                CollectedClipper cMascotte1 = new CollectedClipper(UUID.fromString("45b3d63c-2bdc-48c0-9f92-5472ef1c7295"), mascotte, superAdminId, "", LocalDate.now(), LOMMEL);
+//                CollectedClipper cMascotte2 = new CollectedClipper(UUID.fromString("23f8248b-d3d4-4a78-9694-b847cc13ea6b"), mascotte, adminId, "", LocalDate.now(), LOMMEL);
+//                CollectedClipper cNoSeries = new CollectedClipper(UUID.fromString("25bc8b10-a90c-4f9a-aab2-a6e0e2ebaec0"), skate1, adminId, "", LocalDate.now(), NIJMEGEN);
+//
+//                collectedClipperService.addCollectedClipper(cSkate1);
+//                collectedClipperService.addCollectedClipper(cSkate2);
+//                collectedClipperService.addCollectedClipper(cSkate3);
+//                collectedClipperService.addCollectedClipper(cSkate4);
+//                collectedClipperService.addCollectedClipper(cMascotte1);
+//                collectedClipperService.addCollectedClipper(cMascotte2);
+//                collectedClipperService.addCollectedClipper(cNoSeries);
 
             } catch (Exception ex) {
                 log.error("Seeder failed on: " + ex.getMessage());

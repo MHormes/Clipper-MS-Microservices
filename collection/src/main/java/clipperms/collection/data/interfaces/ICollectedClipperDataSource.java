@@ -16,4 +16,5 @@ public interface ICollectedClipperDataSource {
     CollectedClipper updateClipper(CollectedClipper clipperWithUpdate);
 
     CollectedClipper removeFromCollection(UUID collectedClipperId);
+    CollectedClipper removeFromCollection(UUID clipperId, UUID userId);
 }

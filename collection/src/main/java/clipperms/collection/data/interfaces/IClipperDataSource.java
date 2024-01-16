@@ -19,5 +19,7 @@ public interface IClipperDataSource {
     Clipper updateClipper(Clipper clipperWithUpdate);
 
     Clipper deleteClipper(UUID clipperId);
+
+    void deleteAllClippersInSeries(UUID seriesId);
 }
 

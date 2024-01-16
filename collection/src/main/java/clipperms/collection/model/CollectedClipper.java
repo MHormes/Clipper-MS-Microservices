@@ -41,4 +41,11 @@ public class CollectedClipper {
     @Column(name = "location_bought")
     private String locationBought;
 
+    public CollectedClipper(Clipper clipperId, UUID userId){
+        this.id = UUID.randomUUID();
+        this.clipperId = clipperId;
+        this.userId = userId;
+        this.dateAdded = LocalDate.now();
+    }
+
 }

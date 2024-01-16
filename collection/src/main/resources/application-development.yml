@@ -34,7 +34,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://clipper-ms.com:8180/realms/ClipperMS
+          issuer-uri: http://keycloak-service:8180/realms/ClipperMS
 
 
 #SPRINGDOC OPENAPI

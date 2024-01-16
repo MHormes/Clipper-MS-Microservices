@@ -28,12 +28,7 @@ public class CollectedClipper {
     @JsonBackReference
     private Clipper clipperId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id",
-            nullable = false,
-            updatable = false)
-    @JsonBackReference
-    private AppUser userId;
+    private UUID userId;
 
     @Column(name = "notes")
     private String notes;
@@ -45,5 +40,12 @@ public class CollectedClipper {
 
     @Column(name = "location_bought")
     private String locationBought;
+
+    public CollectedClipper(Clipper clipperId, UUID userId){
+        this.id = UUID.randomUUID();
+        this.clipperId = clipperId;
+        this.userId = userId;
+        this.dateAdded = LocalDate.now();
+    }
 
 }

@@ -62,27 +62,28 @@ jobs:
         run: |
           docker build -t mhormes/client:latest -f Dockerfile .
           docker push mhormes/client:latest
-          
-  deploy:
-    name: Deploy to Kubernetes 🚀
-    needs: [image-build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
 
-      - name: Login to Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Set up Kubernetes context
-        uses: azure/aks-set-context@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
-          resource-group: ${{ secrets.RESOURCE_GROUP }}
-
-      - name: Kubernetes Deploy
-        run: |
-          kubectl apply -f ./.kubernetes/
+# Deploy disabled -> Stack is not running -> too expensive
+#  deploy:
+#    name: Deploy to Kubernetes 🚀
+#    needs: [image-build]
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v2
+#
+#      - name: Login to Azure
+#        uses: azure/login@v1
+#        with:
+#          creds: ${{ secrets.AZURE_CREDENTIALS }}
+#
+#      - name: Set up Kubernetes context
+#        uses: azure/aks-set-context@v1
+#        with:
+#          creds: ${{ secrets.AZURE_CREDENTIALS }}
+#          cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
+#          resource-group: ${{ secrets.RESOURCE_GROUP }}
+#
+#      - name: Kubernetes Deploy
+#        run: |
+#          kubectl apply -f ./.kubernetes/azure/

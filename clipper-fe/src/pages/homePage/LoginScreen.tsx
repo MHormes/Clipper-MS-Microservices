@@ -18,7 +18,8 @@ const LoginScreen = () => {
         console.log("LoginScreen Component Mounted");
 
         //WALKING SKELETON TEST CALL - REMOVE LATER
-        const api = apiInstance.init();
+        const api = apiInstance.init("8071");
+        const apiTrad = apiInstance.init("8070");
         //Request message endpoint so send a message on the message bus
         // this message is returned with the api call and displayed on the screen
         api
@@ -28,7 +29,7 @@ const LoginScreen = () => {
                 if (response.status === 200) {
                     setCollectionCall(response.data);
                     // Flag is set, now initiate the second API call
-                    return api.get("/trading/api/test/message");
+                    return apiTrad.get("/trading/api/test/message");
                 }
                 return Promise.reject("Failed to fetch from collection API");
             })

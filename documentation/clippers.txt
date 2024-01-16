@@ -1,0 +1,57 @@
+[Maarten Wish]
+Skateboard #1,
+Skateboard #2,
+Text messages #1,
+Coffee sketch #4,
+
+[Maarten Trad]
+Mascotte #2,
+DipDye #3,
+World flags #1
+
+
+
+[Sten Wish]
+Mushrooms #4,
+Anime Ducks #1,
+Mascotte #2,
+Colored Shapes #3
+
+[Sten Trad]
+Emoji #1,
+Italy flag
+Sketch animals #1
+
+
+
+[Luca Wish]
+DipDye #3,
+Spain Items #3,
+Sketch animals #1
+La Spezia
+
+[Luca Trad]
+Sarcastic characters #3,
+Skateboard #1,
+Anime Ducks #1,
+Mushrooms #4,
+Geometry animals #3
+
+
+
+[My match]
+M1, L2 +
+M3, S1 -
+M4, L1 -
+S1, L4 +
+S2, L3 +
+S3, M1 +
+S4, L5 -
+L1, M2 +
+L2, M3 -
+L3, S3 +
+L4, S2 -
+
+Results:
+Luca en Sten
+Maarten en Luca

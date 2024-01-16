@@ -47,20 +47,25 @@ public class Clipper {
     )
     private int seriesNumber;
 
-    @ManyToOne
-    @JoinColumn(name = "created_by")
-    @JsonBackReference
-    private AppUser createdBy;
-
     @Lob
     @Column(name = "image_data", length = 1000)
     private byte[] imageData;
 
-    public Clipper() {
+    @NotNull
+    private UUID createdBy;
 
+    public Clipper() {
     }
 
-    public Clipper(String name, Series series, int seriesNumber, AppUser creator) {
+    public Clipper(String name, Series series, int seriesNumber, UUID creator) {
+        this.name = name;
+        this.series = series;
+        this.seriesNumber = seriesNumber;
+        this.createdBy = creator;
+    }
+
+    public Clipper(UUID id, String name, Series series, int seriesNumber, UUID creator) {
+        this.id = id;
         this.name = name;
         this.series = series;
         this.seriesNumber = seriesNumber;

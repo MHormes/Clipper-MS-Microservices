@@ -13,8 +13,8 @@ spring:
   datasource:
     url: jdbc:sqlserver://localhost:1433;databaseName=collection;trustServerCertificate=true
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    username: admin
-    password: admin
+    username: clipperDev
+    password: devDBpassword!
 
   rabbitmq:
     host: localhost
@@ -34,7 +34,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://clipper-ms.com:8180/realms/ClipperMS
+          issuer-uri: http://keycloak-service:8180/realms/ClipperMS
 
 
 #SPRINGDOC OPENAPI
@@ -51,5 +51,3 @@ springdoc:
 #LOGGING
 org.slf4j.simpleLogger.defaultLogLevel: error
 logging.level.org.springframework.jdbc.core: DEBUG
-
-debug: true

@@ -2,18 +2,14 @@ package clipperms.collection.ClipperTest;
 
 import clipperms.collection.data.interfaces.IClipperDataSource;
 import clipperms.collection.exceptions.ExceptionMessages;
-import clipperms.collection.model.AppUser;
 import clipperms.collection.model.Clipper;
-import clipperms.collection.service.interfaces.IAppUserService;
 import clipperms.collection.service.interfaces.IClipperService;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 @ActiveProfiles("test")
@@ -27,22 +23,11 @@ class ClipperIntegrationTest {
     @Autowired
     IClipperService clipperService;
 
-    @Autowired
-    IAppUserService appUserService;
-
-    AppUser creator;
-
-    @BeforeEach
-    void setUp() {
-        this.creator = new AppUser(UUID.randomUUID() ,"Maarten", "MHormes", "Hormes123", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-        appUserService.saveUser(creator);
-    }
-
     //Test adding new clipper. Asserts based on inputted name and name returned by db after add
     @Test
     void addNewClipperSuccessfulTest() {
         //Create clipper to add
-        Clipper clipperToAdd = new Clipper("Berlin <3", null, 0, creator);
+        Clipper clipperToAdd = new Clipper("Berlin <3", null, 0, UUID.fromString("8abd08f3-02ae-48af-a552-fe19b552d867"));
 
         //Make new clipper instance to get db return
         Clipper databaseReturn = new Clipper();
@@ -60,7 +45,7 @@ class ClipperIntegrationTest {
     @Test
     void getClipperWithIdSuccessfulTest() {
         //Create clipper to add and get after adding (no clipper added means no clipper to get)
-        Clipper clipperToAdd = new Clipper("Modena <3", null, 0, creator);
+        Clipper clipperToAdd = new Clipper("Modena <3", null, 0, UUID.fromString("8abd08f3-02ae-48af-a552-fe19b552d867"));
         //Make new clipper instance to get db return
         Clipper databaseAddReturn = new Clipper();
         try {
@@ -85,7 +70,7 @@ class ClipperIntegrationTest {
     @Test
     void updateClipperSuccessful(){
         //Create clipper to add
-        Clipper clipperToAdd = new Clipper("California <3", null, 0, creator);
+        Clipper clipperToAdd = new Clipper("California <3", null, 0, UUID.fromString("8abd08f3-02ae-48af-a552-fe19b552d867"));
 
         //Make new clipper instance to get db return
         Clipper databaseAddReturn = new Clipper();
@@ -96,7 +81,7 @@ class ClipperIntegrationTest {
         }
 
         //create clipper with update values. Set id manually -> normally gets taken from FE
-        Clipper clipperWithUpdate = new Clipper("new name", null, 0, creator);
+        Clipper clipperWithUpdate = new Clipper("new name", null, 0, UUID.fromString("8abd08f3-02ae-48af-a552-fe19b552d867"));
         clipperWithUpdate.setId(databaseAddReturn.getId());
 
         //Make new clipper instance to get db return
@@ -116,7 +101,7 @@ class ClipperIntegrationTest {
     @Test
     void deleteClipperSuccessful(){
         //Create clipper to add and delete
-        Clipper clipperToAdd = new Clipper("Valencia <3", null, 0, creator);
+        Clipper clipperToAdd = new Clipper("Valencia <3", null, 0, UUID.fromString("8abd08f3-02ae-48af-a552-fe19b552d867"));
 
         //Make new clipper instance to get db return
         Clipper databaseAddReturn = new Clipper();

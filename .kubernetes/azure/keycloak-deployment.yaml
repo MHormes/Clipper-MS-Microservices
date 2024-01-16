@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak-service
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: keycloak-service
+    spec:
+      containers:
+        - args:
+            - start-dev --http-port=8180
+          env:
+            - name: DB_VENDOR
+              value: "mssql"
+            - name: DB_ADDR
+              value: "clipperms.database.windows.net"
+            - name: DB_PORT
+              value: "1433"
+            - name: DB_DATABASE
+              value: "keycloak"
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: catalogs-secrets
+                  key: DATABASE_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: catalogs-secrets
+                  key: DATABASE_PASSWORD
+            - name: DB_SCHEMA
+              value: "dbo"
+            - name: KC_TRANSACTION_XA_ENABLED
+              value: "false"
+            - name: KEYCLOAK_ADMIN
+              value: "admin"
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              value: "admin"
+            - name: KEYCLOAK_LOGLEVEL
+              value: "INFO"
+            - name: JDBC_PARAMS
+              value: "encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
+          image: quay.io/keycloak/keycloak:22.0.1
+          name: keycloak-service
+          ports:
+            - containerPort: 8180
+          resources: {}
+      hostname: keycloak-service
+      restartPolicy: Always

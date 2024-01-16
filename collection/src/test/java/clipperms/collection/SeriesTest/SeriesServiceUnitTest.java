@@ -43,19 +43,19 @@ class SeriesServiceUnitTest {
         when(seriesDataSource.getSeriesWithId(UUID.fromString(seriesId1))).thenReturn(null);
         //simulate series return with random amount of clippers inside -> amount of clippers can be exchanged,
         //as long as they get changed in the test methods 2.
-        when(seriesDataSource.getSeriesWithId(UUID.fromString(seriesId2))).thenReturn(new Series(UUID.fromString(seriesId2), "custom series", new ArrayList<>(List.of(new Clipper(), new Clipper())),true));
+        when(seriesDataSource.getSeriesWithId(UUID.fromString(seriesId2))).thenReturn(new Series(UUID.fromString(seriesId2), "custom series", new ArrayList<>(List.of(new Clipper(), new Clipper())),true, UUID.fromString("8abd08f3-02ae-48af-a552-fe19b552d867")));
         //simulate random number return on get taken series numbers -> numbers can be exchanged,
         // as long as they get changed in the test method 2.
         when(seriesDataSource.getTakenSeriesNumber(UUID.fromString(seriesId3))).thenReturn(new int[]{1, 3});
         //simulate expected database response when id should exist -> return series
-        when(seriesDataSource.getSeriesWithId(UUID.fromString(seriesId3))).thenReturn(new Series("actual series", false, null));
+        when(seriesDataSource.getSeriesWithId(UUID.fromString(seriesId3))).thenReturn(new Series("actual series", false, UUID.fromString("8abd08f3-02ae-48af-a552-fe19b552d867")));
     }
 
 
     //Test if add method throws exception when series has empty name.
     @Test()
     void addNewSeriesEmptyNameTest() {
-        Series seriesToAdd = new Series("", false, null);
+        Series seriesToAdd = new Series("", false, UUID.fromString("8abd08f3-02ae-48af-a552-fe19b552d867"));
 
         Series expectedResult = null;
         try {
@@ -118,7 +118,7 @@ class SeriesServiceUnitTest {
     @Test
     void updateSeriesNonExisting() {
         //Create series as if it comes from FE. Assign non-existing id for test -> will be assigned in FE normally
-        Series seriesWithUpdate = new Series("updated series", false, null);
+        Series seriesWithUpdate = new Series("updated series", false, UUID.fromString("8abd08f3-02ae-48af-a552-fe19b552d867"));
         seriesWithUpdate.setId(UUID.fromString(seriesId1));
 
         Series expectedResult = null;

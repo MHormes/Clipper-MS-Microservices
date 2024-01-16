@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trading-module
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trading-module
+  template:
+    metadata:
+      labels:
+        app: trading-module
+    spec:
+      containers:
+        - name: trading-module
+          image: mhormes/trading-module:latest
+          imagePullPolicy: Always
+          env:
+            - name: spring.datasource.url
+              value: jdbc:sqlserver://clipperms.database.windows.net:1433;database=trading;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+            - name: spring.datasource.username
+              valueFrom:
+                secretKeyRef:
+                  name: catalogs-secrets
+                  key: DATABASE_USERNAME
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                  name: catalogs-secrets
+                  key: DATABASE_PASSWORD
+            - name: spring.rabbitmq.host
+              value: rabbitmq-service
+            - name: spring.rabbitmq.port
+              value: "5672"
+            - name: security.oauth2.resourceserver.jwt.issuer-uri
+              value: http://clipper-ms.com:8180/realms/ClipperMS
+          ports:
+            - containerPort: 8070
+          resources: {}

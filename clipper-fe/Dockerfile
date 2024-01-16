@@ -6,7 +6,8 @@ WORKDIR /clipper-fe
 COPY package*.json ./
 COPY tsconfig.json ./
 COPY postcss.config.js ./
-COPY .env ./
+#env gets injected by kubernetes
+#COPY .env ./
 
 # Install dependencies and build the app
 RUN npm install --ignore-scripts

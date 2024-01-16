@@ -37,7 +37,7 @@ class ClipperServiceUnitTest {
     //Test if add method throws exception when clipper has empty name.
     @Test
     void addNewClipperEmptyName() {
-        Clipper clipperToAdd = new Clipper("", null, 0, null);
+        Clipper clipperToAdd = new Clipper("", null, 0, UUID.fromString("8abd08f3-02ae-48af-a552-fe19b552d867"));
 
         Clipper expectedResult = null;
         try {
@@ -54,7 +54,7 @@ class ClipperServiceUnitTest {
     @Test
     void addNewClipperNonExistingSeries(){
         //SeriesId set to null -> conversion from dto to model sets this value. Controller sends actual seriesId separately to add method
-        Clipper clipperToAdd = new Clipper("new clipper", null, 0, null);
+        Clipper clipperToAdd = new Clipper("new clipper", null, 0, UUID.fromString("8abd08f3-02ae-48af-a552-fe19b552d867"));
 
         Clipper expectedResult = null;
         try{
@@ -87,12 +87,12 @@ class ClipperServiceUnitTest {
     @Test
     void updateClipperNonExisting(){
         //Create clipper as if it comes from FE. Assign non-existing id for test -> will be assigned in FE normally
-        Clipper clipperWithUpdate = new Clipper("updated clipper", null, 0, null);
+        Clipper clipperWithUpdate = new Clipper("updated clipper", null, 0, UUID.fromString("8abd08f3-02ae-48af-a552-fe19b552d867"));
         clipperWithUpdate.setId(UUID.fromString("b7319afb-946e-410d-a6f0-e72d7c3c314e"));
 
         Clipper expectedResult = null;
         try {
-//            expectedResult = clipperService.updateClipper(clipperWithUpdate);
+            expectedResult = clipperService.updateClipper(clipperWithUpdate, clipperId);
         } catch (Exception ex) {
             System.out.println(ex);
             Assertions.assertEquals(ExceptionMessages.CLIPPER_WITH_ID_NOT_FOUND + clipperId, ex.getMessage());

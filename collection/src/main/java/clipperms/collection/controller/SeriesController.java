@@ -10,6 +10,7 @@ import clipperms.collection.exceptions.DatabaseFailedOperationException;
 import clipperms.collection.exceptions.IncorrectInputException;
 import clipperms.collection.model.Clipper;
 import clipperms.collection.model.Series;
+import clipperms.collection.service.interfaces.IClipperService;
 import clipperms.collection.service.interfaces.ISeriesService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.NotNull;
@@ -30,14 +31,17 @@ public class SeriesController {
 
     private final ISeriesService seriesService;
 
+    private final IClipperService clipperService;
+
     private final SeriesConverter seriesConverter;
 
     private final ClipperConverter clipperConverter;
 
 
     @Autowired
-    public SeriesController(ISeriesService seriesService, SeriesConverter seriesConverter, ClipperConverter clipperConverter) {
+    public SeriesController(ISeriesService seriesService, IClipperService clipperService, SeriesConverter seriesConverter, ClipperConverter clipperConverter) {
         this.seriesService = seriesService;
+        this.clipperService = clipperService;
         this.seriesConverter = seriesConverter;
         this.clipperConverter = clipperConverter;
     }
@@ -86,11 +90,10 @@ public class SeriesController {
         return ResponseEntity.ok().body(seriesWithClipperResponse);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/update")
     public ResponseEntity<SeriesDTO> updateSeries(
-            @PathVariable(value = "id") String id,
-            @RequestPart ("series") SeriesCreateRequest seriesDTO,
-            @NotNull @RequestPart ("image") MultipartFile file) throws DatabaseFailedOperationException, IOException {
+            @NotNull @RequestPart ("series") SeriesCreateRequest seriesDTO,
+            @RequestPart(value = "image", required = false) MultipartFile file) throws DatabaseFailedOperationException, IOException {
         var seriesWithUpdate = seriesConverter.convertCreateRequestNoClipperToModel(seriesDTO, file);
         var updatedSeriesReturn = seriesService.updateSeries(seriesWithUpdate);
         return ResponseEntity.ok().body(seriesConverter.convertModelToResponseWithClipper(updatedSeriesReturn));
@@ -98,6 +101,7 @@ public class SeriesController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> deleteSeries(@PathVariable(value = "id") String id) throws DatabaseFailedOperationException {
+        clipperService.deleteAllClippersInSeries(id);
         seriesService.deleteSeries(id);
         return ResponseEntity.ok().build();
     }

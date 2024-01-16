@@ -37,10 +37,8 @@ public class Series {
     @Column(name = "image_data", length = 1000)
     private byte[] imageData;
 
-    @ManyToOne
     @NotNull
-    @JoinColumn(name = "created_by")
-    private AppUser createdBy;
+    private UUID createdBy;
 
     @Column(name = "custom",
             nullable = false)
@@ -51,14 +49,14 @@ public class Series {
 
     }
 
-    public Series(String name, boolean custom, AppUser createdBy) {
+    public Series(String name, boolean custom, UUID createdBy) {
         this.name = name;
         this.custom = custom;
         this.clippers = new ArrayList<>();
         this.createdBy = createdBy;
     }
 
-    public Series(UUID id, String name, byte[] imageBytes, boolean custom, AppUser createdBy) {
+    public Series(UUID id, String name, byte[] imageBytes, boolean custom, UUID createdBy) {
         this.id = id;
         this.name = name;
         this.imageData = imageBytes;
@@ -67,11 +65,20 @@ public class Series {
         this.clippers = new ArrayList<>();
     }
 
-    public Series(UUID id, String name, List<Clipper> clipperList, boolean custom) {
+    public Series(UUID id, String name, boolean custom, UUID createdBy) {
+        this.id = id;
+        this.name = name;
+        this.custom = custom;
+        this.createdBy = createdBy;
+        this.clippers = new ArrayList<>();
+    }
+
+    public Series(UUID id, String name, List<Clipper> clipperList, boolean custom, UUID createdBy) {
         this.id = id;
         this.name = name;
         this.clippers = clipperList;
         this.custom = custom;
+        this.createdBy = createdBy;
     }
 
     @Override

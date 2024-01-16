@@ -21,21 +21,15 @@ spec:
             - name: DB_VENDOR
               value: "mssql"
             - name: DB_ADDR
-              value: "clipperms.database.windows.net"
+              value: "localhost"
             - name: DB_PORT
               value: "1433"
             - name: DB_DATABASE
-              value: "trading"
+              value: "keycloak"
             - name: DB_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: catalogs-secrets
-                  key: DATABASE_USERNAME
+              value: "admin"
             - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: catalogs-secrets
-                  key: DATABASE_PASSWORD
+              value: "admin"
             - name: DB_SCHEMA
               value: "dbo"
             - name: KC_TRANSACTION_XA_ENABLED

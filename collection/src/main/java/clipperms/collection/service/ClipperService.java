@@ -158,4 +158,13 @@ public class ClipperService implements IClipperService {
             throw new DatabaseFailedOperationException(ExceptionMessages.CLIPPER_PRESENT_AFTER_DELETE);
         }
     }
+
+    /**
+     * Method to delete al clippers based on ID
+     * @param seriesId
+     */
+    public void deleteAllClippersInSeries(String seriesId) {
+        clipperData.deleteAllClippersInSeries(UUID.fromString(seriesId));
+    }
+
 }

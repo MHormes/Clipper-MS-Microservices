@@ -2,7 +2,7 @@ import Keycloak from "keycloak-js";
 
 
 // @ts-ignore
-const clientId = process.env.REACT_APP_KEYCLOAK_CLIENT_ID;
+const clientId = "clipper-client";
 // @ts-ignore
 const realm = process.env.REACT_APP_KEYCLOAK_REALM;
 // @ts-ignore

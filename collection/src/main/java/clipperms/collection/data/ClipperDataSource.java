@@ -74,4 +74,9 @@ public class ClipperDataSource implements IClipperDataSource {
         clipperRepo.deleteById(clipperId);
         return getClipperWithId(clipperId);
     }
+
+    @Override
+    public void deleteAllClippersInSeries(UUID seriesId) {
+        clipperRepo.deleteAllBySeriesId(seriesId);
+    }
 }

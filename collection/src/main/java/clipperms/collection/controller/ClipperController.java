@@ -73,11 +73,10 @@ public class ClipperController {
         }
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/update")
     public ResponseEntity<ClipperDTO> updateClipper(
-            @PathVariable(value = "id") String id,
-            @RequestPart ("clipper") ClipperCreateRequest clipperDTO,
-            @RequestPart ("image") MultipartFile imageFile) throws IncorrectInputException, DatabaseFailedOperationException, IOException {
+            @NotNull @RequestPart ("clipper") ClipperCreateRequest clipperDTO,
+            @RequestPart(value = "image", required = false) MultipartFile imageFile) throws IncorrectInputException, DatabaseFailedOperationException, IOException {
         var clipperWithUpdate = clipperConverter.convertClipperCreateToModel(clipperDTO, imageFile);
         var updatedClipperReturn = clipperService.updateClipper(clipperWithUpdate, clipperDTO.getSeriesId());
         if (updatedClipperReturn.getSeries() == null) {

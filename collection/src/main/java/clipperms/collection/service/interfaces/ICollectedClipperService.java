@@ -17,4 +17,5 @@ public interface ICollectedClipperService {
     CollectedClipper updateCollectedClipper(CollectedClipper clipperWithUpdate) throws IncorrectInputException, DatabaseFailedOperationException;
 
     void deleteCollectedClipper(String clipperId) throws IncorrectInputException, DatabaseFailedOperationException;
+    void deleteCollectedClipper(String clipperId, String userId) throws IncorrectInputException, DatabaseFailedOperationException;
 }

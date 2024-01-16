@@ -20,4 +20,6 @@ public interface IClipperService {
     Clipper updateClipper(Clipper clipperWithUpdate, String seriesId) throws IncorrectInputException, DatabaseFailedOperationException;
 
     void deleteClipper(String clipperId) throws IncorrectInputException, DatabaseFailedOperationException;
+
+    void deleteAllClippersInSeries(String seriesId) throws DatabaseFailedOperationException;
 }
